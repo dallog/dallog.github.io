@@ -1,17 +1,13 @@
 module.exports = {
-  title: "hoodie",
-  description: "Hello :) I'm Hudi who developed gatsby-starter-hoodie theme.",
-  author: "Hudi",
+  title: "dal.log",
+  description: "우아한테크코스 4기 달록팀 기술 블로그입니다.",
+  author: "dallog",
   siteUrl: "https://devhudi.github.io/gatsby-starter-hoodie/",
   links: {
-    github: "https://github.com/devHudi",
-    linkedIn: "https://linkedin.com",
-    facebook: "https://www.facebook.com",
-    instagram: "https://www.instagram.com",
-    email: "mailto:devhudi@gmail.com",
+    github: "https://github.com/woowacourse-teams/2022-dallog",
   },
   utterances: {
-    repo: "devHudi/gatsby-starter-hoodie",
+    repo: "dallog/dallog.github.io",
     type: "pathname",
   },
-}
+};
