@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://devhudi.github.io/sitemap/sitemap-index.xml
-Host: https://devhudi.github.io
+Sitemap: https://dallog.github.io/sitemap/sitemap-index.xml
+Host: https://dallog.github.io
