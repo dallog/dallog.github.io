@@ -1,7 +1,7 @@
 ---
 title: "달록팀의 git 브랜치 전략을 소개합니다."
-date: 2022-07-07 00:00:00
-update: 2022-07-07 00:00:00
+date: 2022-07-12 23:00:00
+update: 2022-07-12 23:00:00
 tags:
   - git
   - git-flow
@@ -174,3 +174,8 @@ git-flow는 빠르게 급변하는 웹 서비스에는 맞지 않은 git 브랜�
 ## 정리
 
 지금까지 간단히 `git-flow의 흐름`과 이것을 기반으로 `달록에 적용한 과정`들을 알아보았다. git-flow는 언급한 것 처럼 부가적인 브랜치로 인해 `관리에 대한 부담감`을 느낄 수 있다. 하지만 `upstream`과 `origin`을 분리한 환경은 좀 더 도전적인 과제들을 적용하기에 매우 좋은 환경을 구성해준다. 또한 `pull request`를 통한 코드 리뷰를 통해 보다 더 양질의 애플리케이션 개발에 힘쓸 수 있다.
+
+## References.
+
+[git flow; 환상과 현실 그 사이에 서비스](https://vallista.kr/git-flow;-%ED%99%98%EC%83%81%EA%B3%BC-%ED%98%84%EC%8B%A4-%EA%B7%B8-%EC%82%AC%EC%9D%B4%EC%97%90-%EC%84%9C%EB%B9%84%EC%8A%A4/)<br>
+[우린 Git-flow를 사용하고 있어요](https://woowabros.github.io/experience/2017/10/30/baemin-mobile-git-branch-strategy.html)<br>
