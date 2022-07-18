@@ -5,7 +5,7 @@ tags:
   - intellij
 ---
 
-> 이 글은 우테코 달록팀 크루 '[후디](https://github.com/devHudi)'가 작성했습니다.
+> 이 글은 우테코 달록팀 크루 [후디](https://github.com/devHudi)가 작성했습니다.
 
 ## 배경
 

@@ -3,12 +3,12 @@ title: "Spring Data JPA의 Auditing"
 date: 2022-07-18 23:00:00
 update: 2022-07-18 23:00:00
 tags:
-- Spring
-- Data JPA
-- Auditing
+  - Spring
+  - Data JPA
+  - Auditing
 ---
 
-> 이 글은 우테코 달록팀 크루 '[파랑](https://github.com/summerlunaa)'이 작성했습니다.
+> 이 글은 우테코 달록팀 크루 [파랑](https://github.com/summerlunaa)이 작성했습니다.
 
 > auditing이란 엔티티와 관련된 이벤트(insert, update, delete)를 추적하고 기록하는 것을 의미한다.
 
@@ -89,7 +89,7 @@ public abstract class BaseEntity {
 
 ```java
 public class AuditorAwareImpl implements AuditorAware<String> {
-    
+
     @Override
     public String getCurrentAuditor() {
         // your custom logic
@@ -104,12 +104,12 @@ public class AuditorAwareImpl implements AuditorAware<String> {
 @EnableJpaAuditing(auditorAwareRef="auditorProvider")
 public class JpaConfig {
     //...
-    
+
     @Bean
     AuditorAware<String> auditorProvider() {
         return new AuditorAwareImpl();
     }
-    
+
     //...
 }
 ```

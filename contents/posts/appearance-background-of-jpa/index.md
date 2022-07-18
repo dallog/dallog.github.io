@@ -4,10 +4,9 @@ date: 2022-07-07 00:00:00
 update: 2022-07-07 00:00:00
 tags:
   - JPA
-series: "JPA 시리즈"
 ---
 
-> 이 글은 우테코 달록팀 크루 '[리버](https://github.com/gudonghee2000)'가 작성했습니다.
+> 이 글은 우테코 달록팀 크루 [리버](https://github.com/gudonghee2000)가 작성했습니다.
 
 ## JPA 등장배경
 

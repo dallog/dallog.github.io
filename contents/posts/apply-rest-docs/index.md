@@ -7,26 +7,29 @@ tags:
   - Rest API
 ---
 
-> 이 글은 우테코 달록팀 크루 '[리버](https://github.com/gudonghee2000)'가 작성했습니다.
+> 이 글은 우테코 달록팀 크루 [리버](https://github.com/gudonghee2000)가 작성했습니다.
 
 ## Rest Docs
+
 Spring Rest Docs는 테스트 코드 기반으로 자동으로 Rest API 문서를 작성 할 수 있도록 도와주는 프레임 워크이다.
 
 ## Rest Docs와 Swagger
+
 자바 문서 자동화에는 주로 Rest Docs와 Swagger가 사용된다.
 각 자동화 프레임 워크의 장단점을 살펴보자.
 ![](https://velog.velcdn.com/images/gudonghee2000/post/ffc0e7eb-3190-43ca-9a85-16f9b8bbbb4e/image.JPG)
 
-Swagger는 API 문서의 작성을 위해 프로덕션 코드에 추가적인 코드를 작성해야한다. 
+Swagger는 API 문서의 작성을 위해 프로덕션 코드에 추가적인 코드를 작성해야한다.
 그래서 Swagger의 사용은 프로덕션 코드의 가독성을 떨어트린다고 생각한다.
 
 반대로, Spring Rest Docs는 테스트 코드에 의존적이기 때문에 Spring Rest Docs를 사용하는것이 좋다고 생각한다.
 
 ## MockMvc vs Rest Assured
+
 Spring Rest Docs를 사용하여 문서를 작성 하려면 테스트 코드가 필요하다.
 테스트 코드를 작성 할 때, 대표적으로 MockMvc와 Rest Assured를 사용한다.
 
-MockMvc를 사용하면  `@WebMvcTest`로 테스트 할 수 있다.
+MockMvc를 사용하면 `@WebMvcTest`로 테스트 할 수 있다.
 그래서 Controller Layer만으로 테스트 하기 때문에 테스트 속도가 빠르다.
 
 반면, RestAssured는 `@SpringBootTest`로 수행해야한다. 그러면 전체 어플리케이션 컨텍스트를 로드하여 빈을 주입하기에 테스트 속도가 느리다.
@@ -38,42 +41,45 @@ MockMvc를 사용하면  `@WebMvcTest`로 테스트 할 수 있다.
 @WebMvcTest는 Application Context를 완전하게 Start하지 않고 Present Layer 관련 컴포넌트만 스캔하여 빈 등록한다.
 반면, @SpringBootTest의 경우 모든 빈을 로드하여 등록한다.
 
-
 ## AsciiDoc
 
 Spring Boot Rest Docs는 Asciidoc를 문서 번역을 위한 텍스트 프로세서로 사용한다.
 
 ## Rest Docs API 문서 생성 매커니즘
+
 우선, Rest Docs의 문서 생성 매커니즘을 살펴보자.
 
 1. MockMvc로 작성한 테스트 코드를 실행한다.
 
-2. 테스트가 통과하면 아래와 같이 `build/generated-snippets` 하위에 스니펫(문서조각)들이 생성된다. 
-![](https://velog.velcdn.com/images/gudonghee2000/post/f4555336-cc43-4cc7-b7ca-8c1f903b2afd/image.png)
+2. 테스트가 통과하면 아래와 같이 `build/generated-snippets` 하위에 스니펫(문서조각)들이 생성된다.
+   ![](https://velog.velcdn.com/images/gudonghee2000/post/f4555336-cc43-4cc7-b7ca-8c1f903b2afd/image.png)
 
    _❗❗ gradle은 build/generated-snippets에 스니펫이 생성된다._
 
 3. `build/generated-snippets` 하위에 생성된 스니펫들을 묶어서 HTML 문서를 만들기 위해서는, gradle의 경우 아래와 같이`src/docs/asciidoc` 하위에 스니펫들을 묶은 adoc문서를 만든다.![](https://velog.velcdn.com/images/gudonghee2000/post/bc769cd9-2fd2-483d-8c65-a4885f628e37/image.png)
 
 4. 스니펫을 이용해서 `src/docs/asciidoc` 하위에 adoc 파일을 생성했다면, `./gradlew build` 명령어를 통해 빌드를 해준다.
-![](https://velog.velcdn.com/images/gudonghee2000/post/f1948f04-9742-4267-8d19-3d962097f129/image.png)
-빌드가 완료되면 위와 같이 `resources - static - docs` 하위에 HTML 문서가 생성된다.
+   ![](https://velog.velcdn.com/images/gudonghee2000/post/f1948f04-9742-4267-8d19-3d962097f129/image.png)
+   빌드가 완료되면 위와 같이 `resources - static - docs` 하위에 HTML 문서가 생성된다.
 
-5. 어플리케이션을 실행 한 후, `http://localhost:8080/docs/{HTML 파일명}` 을 웹브라우저에 검색하면 생성한 REST API 문서를 확인 할 수 있다. 
+5. 어플리케이션을 실행 한 후, `http://localhost:8080/docs/{HTML 파일명}` 을 웹브라우저에 검색하면 생성한 REST API 문서를 확인 할 수 있다.
 
-	**❗❗ API문서 url은 코드를 통해 변경 가능하다.**
-    
+   **❗❗ API문서 url은 코드를 통해 변경 가능하다.**
+
 ### ❗유의할 점
+
 resources - static - docs 하위의 HTML 파일은 실제로는 build.gradle의 설정파일에 따라서 위와같이 build - docs - asciidoc 하위의 HTML 파일을 복사해온 파일이다.
 ![](https://velog.velcdn.com/images/gudonghee2000/post/7b70d45e-15a7-4278-9e3a-033370c2a600/image.png)
 
 ### 아이디어
+
 REST API 문서를 확인할 때, `http://localhost:8080/docs/{HTML 파일명}` 을 통해서 웹브라우저에 접근하지 않아도 확인하는 방법이 있다.
 ![](https://velog.velcdn.com/images/gudonghee2000/post/8f5177d6-5ba0-4f3e-be3a-3cba37012c46/image.png)
-AsciiDoc 플러그인을 설치하면 위와같이, 인텔리제이 상에서도 REST API 문서를 실시간으로 확인할수 있다.  (✔설치 추천)
+AsciiDoc 플러그인을 설치하면 위와같이, 인텔리제이 상에서도 REST API 문서를 실시간으로 확인할수 있다. (✔설치 추천)
 
 ## Rest Docs 사용을 위한 빌드파일 설정
-``` java
+
+```java
 plugins {
     id 'org.asciidoctor.jvm.convert' version '3.3.2' // 1
 }
@@ -82,7 +88,7 @@ ext {
     snippetsDir = file('build/generated-snippets') // 2
 }
 
-test { 
+test {
     outputs.dir snippetsDir // 3
     useJUnitPlatform()
 }
@@ -92,8 +98,8 @@ configurations {
 }
 
 asciidoctor { // 4
-    configurations 'asciidoctorExtensions' 
-    inputs.dir snippetsDir 
+    configurations 'asciidoctorExtensions'
+    inputs.dir snippetsDir
     dependsOn test
 }
 
@@ -104,16 +110,15 @@ dependencies {
 
 task copyDocument(type: Copy) { // 7
     dependsOn asciidoctor
-    
+
     from file("build/docs/asciidoc")
     into file("src/main/resources/static/docs")
 }
-	
-bootJar { 
+
+bootJar {
     dependsOn copyDocument // 8
 }
-  ```
-
+```
 
 1. gradle7부터 사용하는 플러그인으로 asciidoc 파일 변환, build 디렉토리에 복사하는 플러그인이다.
 
@@ -122,8 +127,7 @@ bootJar {
 3. 테스트 Task의 결과 아웃풋 디렉토리를 `build/generated-snippets`로 지정한다.
 
 4. asciidoctor Task가 사용할 인풋 디렉토리를 `build/generated-snippets`로 지정한다.
-	dependsOn test로 문서가 작성되기 전에 테스트가 실행되도록 한다.
-    
+   dependsOn test로 문서가 작성되기 전에 테스트가 실행되도록 한다.
 5. MockMvc를 테스트에 사용하기 위한 의존성을 추가 해준다.
 
 6. 일반 텍스트를 처리하고 HTML 파일을 생성하는 의존성을 추가 해준다.
@@ -132,8 +136,7 @@ bootJar {
 
 8. bootJar 실행시 copyDocument를 먼저 실행하도록 한다.
 
-
---- 
+---
 
 ✅MockMvc를 사용한 Rest Docs 테스트 작성을 알아보기 전에 우선 MockMvc에 대해 알아보자.
 
@@ -141,6 +144,7 @@ bootJar {
 어떠한 것들이 있는지 알아보고 밑에서 자세히 알아보자.
 
 ### perform()
+
 가상의 request를 처리한다.
 
 ```java
@@ -148,9 +152,10 @@ mockMvc.perform(get("/api/schedules/?year=2022&month=7"))
 ```
 
 ### andExpert()
+
 andExpert()
 
-예상값을 검증한다. 
+예상값을 검증한다.
 
 ```java
 .andExpect(status().isOk())
@@ -161,6 +166,7 @@ andExpert()
 ```
 
 ### andDo()
+
 요청에 대한 처리를 맡는다. print() 메소드가 일반적이다.
 
 ```java
@@ -168,6 +174,7 @@ andExpert()
 ```
 
 ### andReturn()
+
 테스트한 결과 객체를 받을 때 사용한다.
 
 ```java
@@ -178,14 +185,14 @@ MvcResult result = mockMvc.perform(get("/"))
 ```
 
 ## MockMvc 요청 만들기
+
 요청을 만들 때는 static 메서드인 get, post, put, delete, fileUpload 등을 이용해서 MockHttpServletRequestBuilder 객체를 생성하는 것에서 시작한다.
 
 MockHttpServletRequestBuilder는 ServletRequest를 구성하기에 필요한 다양한 메서드를 제공한다.
 ![](https://velog.velcdn.com/images/gudonghee2000/post/ee7412c0-3698-4e26-9ad2-ce826495d20e/image.JPG)
 위 메서드들은 메서드 체이닝을 지원하기 때문에, 아래와 같이 요청 데이터를 연결해서 작성하면된다.
 
-
-```java 
+```java
 @Test
     void test() throws Exception {
         MockHttpServletRequestBuilder builder = get("/api/schedules")
@@ -199,10 +206,12 @@ MockHttpServletRequestBuilder는 ServletRequest를 구성하기에 필요한 다
     }
 
 ```
+
 _**❗❗ 유의 할 점**_
-MockMvc.perform() 의 파라미터 값이 MockHttpServletRequestBuilder의 상위 객체이다. 
+MockMvc.perform() 의 파라미터 값이 MockHttpServletRequestBuilder의 상위 객체이다.
 
 그래서 perform() 파라미터로 아래와 같이 넣어주어도 작동된다.
+
 ```java
 @Test
     void test() throws Exception {
@@ -216,6 +225,7 @@ MockMvc.perform() 의 파라미터 값이 MockHttpServletRequestBuilder의 상�
 ```
 
 ## MockMvc 실행 결과 검증
+
 perform()은 반환 값으로 ResultActions가 반환된다.
 ResultActions의 andExpect는 요청 실행 결과를 검증 하려면 ResultMatcher를 넘겨줘서 검증해야한다.
 ResultMatcher는 다음의 MockMvcResultMatchers가 가지는 static 메서드를 통해서 얻는다.
@@ -225,6 +235,7 @@ MockMvcResultMatchers는 다음의 static 메서드를 통해 다양한 ResultMa
 ![](https://velog.velcdn.com/images/gudonghee2000/post/f1d670a7-c355-4c1c-9d01-2d84ea6412b7/image.JPG)
 
 아래의 예시를 살펴보자.
+
 ```java
 	@Test
     void test() throws Exception {
@@ -239,12 +250,13 @@ MockMvcResultMatchers는 다음의 static 메서드를 통해 다양한 ResultMa
 ```
 
 ## MockMvc 실행 결과 처리
+
 실행 결과를 출력할 떄는 andDo 메서드를 사용한다.
 andDo 메서드 의 인수에는 실행 결과를 처리 할 수 있는 ResultHandler를 지정한다.
 MockMvcResultHandlers는 다양한 ResultHandler를 제공하지만 print()를 주로 사용한다.
 
-
 ## MockMvc를 사용한 Rest Docs 생성
+
 테스트 코드와 함께 MockMvc를 사용한 Rest Docs 생성을 알아보자.
 
 ```java
@@ -296,9 +308,10 @@ class ScheduleControllerTest {
 
 4. test 수행시 `andDo(document("xxx"))`를 통해서 `./build/generated-snippets` 하위에 문서가 작성된다.
 
-
 ---
-## 끝내면서 
+
+## 끝내면서
+
 이상 Rest Docs의 매커니즘, 설정 그리고 MockMvc를 활용한 Rest Docs 생성 방법을 살펴보았다.
 프로젝트에 RestAssuered를 사용한 Rest Docs를 적용하면서 테스트 격리에 문제를 경험하였는데,
 테스트 격리에 대해서 추후에 포스팅 해봐야겠다.

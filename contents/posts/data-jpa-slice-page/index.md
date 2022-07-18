@@ -3,13 +3,13 @@ title: "Spring Data JPA의 Slice & Page"
 date: 2022-07-18 22:00:00
 update: 2022-07-18 22:00:00
 tags:
-- Spring
-- Data JPA
-- Slice
-- Page
+  - Spring
+  - Data JPA
+  - Slice
+  - Page
 ---
 
-> 이 글은 우테코 달록팀 크루 '[파랑](https://github.com/summerlunaa)'이 작성했습니다.
+> 이 글은 우테코 달록팀 크루 [파랑](https://github.com/summerlunaa)이 작성했습니다.
 
 Spring Data JPA에서는 Pagination을 위한 두 가지 객체를 제공한다. 바로 Slice와 Page다. Repository 코드를 먼저 보자.
 
@@ -23,7 +23,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 // queryParameter를 통해 page, size를 받는다
 @GetMapping("/api/members")
 public List<MemberResponse> findAll(@RequestParam int page, @RequestParam int size) {
-    // 생략   
+    // 생략
 }
 
 // Service
@@ -38,9 +38,9 @@ Page<Member> pages = memberRepository.findPageBy(pageRequest);
 
 `PageRequest`는 정적 팩토리 메서드 `of`를 사용하여 인스턴스를 생성할 수 있다. `PageRequest`는 인자로 page, size, 필요하다면 sort까지 받을 수 있다.
 
--   `page` : 0부터 시작하는 페이지 인덱스 번호
--   `size` : 한 페이지에 반환할 데이터의 개수
--   `sort` : 정렬 방식
+- `page` : 0부터 시작하는 페이지 인덱스 번호
+- `size` : 한 페이지에 반환할 데이터의 개수
+- `sort` : 정렬 방식
 
 page와 size를 쿼리 파라미터로 받아 `PageRequest`를 생성하여 Repository 메서드에 넘겨주는 것으로 간단하게 Pagination을 구현할 수 있는 것이다.
 
@@ -81,9 +81,9 @@ Page의 경우 전체 데이터 개수를 조회하는 쿼리가 추가적으로
 
 ```java
 public interface PagingAndSortingRepository<T, ID> extends CrudRepository<T, ID> {
-    
+
     Iterable<T> findAll(Sort sort);
-    
+
     Page<T> findAll(Pageable pageable);
 }
 ```
@@ -107,18 +107,18 @@ public interface PagingAndSortingRepository<T, ID> extends CrudRepository<T, ID>
 // queryParameter를 통해 page, size를 받는다
 @GetMapping("/api/members")
 public List<MemberResponse> findAll(@RequestParam int page, @RequestParam int size) {
-    // 생략   
+    // 생략
 }
 ```
 
-하지만 이렇게 구현하니까 _“ModelAttribute를 통해 queryParameter를 DTO로 받는 것처럼, queryParameter를 Pageable 객체로 받을 수 없을까?”_하는 의문이 생겼다. 직접 ArgumentResolver를 구현할 뻔했지만 찾아보니 역시 똑똑한 JPA.. Pageable 객체를 인수로 설정하면 어노테이션 없이도 자동으로 객체를 만들어준다. `PageableHandlerMethodArgumentResolver` 가 이미 구현되어 있기 때문이다.
+하지만 이렇게 구현하니까 *“ModelAttribute를 통해 queryParameter를 DTO로 받는 것처럼, queryParameter를 Pageable 객체로 받을 수 없을까?”*하는 의문이 생겼다. 직접 ArgumentResolver를 구현할 뻔했지만 찾아보니 역시 똑똑한 JPA.. Pageable 객체를 인수로 설정하면 어노테이션 없이도 자동으로 객체를 만들어준다. `PageableHandlerMethodArgumentResolver` 가 이미 구현되어 있기 때문이다.
 
 ```java
 // Controller
 // Pageable 객체를 바로 받을 수 있다.
 @GetMapping("/api/members")
 public List<MemberResponse> findAll(Pageable pagealbe) {
-    // 생략   
+    // 생략
 }
 
 // Service
