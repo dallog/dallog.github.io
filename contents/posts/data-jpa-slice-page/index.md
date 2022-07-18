@@ -1,7 +1,7 @@
 ---
 title: "Spring Data JPA의 Slice & Page"
-date: 2022-07-18 00:00:00
-update: 2022-07-18 00:00:00
+date: 2022-07-18 22:00:00
+update: 2022-07-18 22:00:00
 tags:
 - Spring
 - Data JPA
@@ -9,7 +9,7 @@ tags:
 - Page
 ---
 
-> 이 글은 우테코 달록팀 크루 '[파랑](https://github.com/summerlunaa)'가 작성했습니다.
+> 이 글은 우테코 달록팀 크루 '[파랑](https://github.com/summerlunaa)'이 작성했습니다.
 
 Spring Data JPA에서는 Pagination을 위한 두 가지 객체를 제공한다. 바로 Slice와 Page다. Repository 코드를 먼저 보자.
 
