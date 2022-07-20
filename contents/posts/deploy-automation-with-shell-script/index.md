@@ -3,6 +3,7 @@ title: "쉘 스크립트와 함께하는 달록의 스프링부트 어플리케�
 date: 2022-07-19 01:45:00
 tags:
   - DevOps
+series: "달록팀 CI/CD 이야기"
 ---
 
 > 이 글은 우테코 달록팀 크루 [후디](https://github.com/devHudi)가 작성했습니다.
