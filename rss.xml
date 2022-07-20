@@ -1,4 +1,151 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 18 Jul 2022 16:45:48 GMT</lastBuildDate><item><title><![CDATA[쉘 스크립트와 함께하는 달록의 스프링부트 어플리케이션 배포 자동화]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 후디가 작성했습니다. 웹서비스 개발팀은 새롭게 개발한 서비스의 기능을 어떻게 사용자에게 전달할까요? 새로운 기능이 메인 브랜치에 병합될 때 마다 EC2 인스턴스에 접속하여 브랜치를 Pull…]]></description><link>https://dallog.github.io/deploy-automation-with-shell-script/</link><guid isPermaLink="false">https://dallog.github.io/deploy-automation-with-shell-script/</guid><pubDate>Tue, 19 Jul 2022 01:45:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Wed, 20 Jul 2022 15:19:38 GMT</lastBuildDate><item><title><![CDATA[EC2 환경에서 도커를 활용한 젠킨스 설치하기]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 후디가 작성했습니다. 안녕하세요, 우테코 달록팀 후디입니다. 이번 스프린트에서는 저는 배포와 CI/CD…]]></description><link>https://dallog.github.io/install-jenkins-with-docker-on-ec2/</link><guid isPermaLink="false">https://dallog.github.io/install-jenkins-with-docker-on-ec2/</guid><pubDate>Thu, 21 Jul 2022 00:15:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/devHudi&quot;&gt;후디&lt;/a&gt;가 작성했습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;안녕하세요, 우테코 달록팀 후디입니다. 이번 스프린트에서는 저는 배포와 CI/CD와 같이 인프라와 관련된 태스크에 집중하고 있습니다.&lt;/p&gt;
+&lt;p&gt;지난번 포스팅으로 달록팀이 쉘 스크립트를 통해 배포 자동화를 구축한 이야기를 했었죠. 하지만 새로운 기능이 병합될 때 마다 SSH로 EC2 인스턴스에 접속하여 쉘 스크립트를 &lt;strong&gt;매번 실행해야한다는 단점&lt;/strong&gt;이 존재했습니다. 따라서 저희 팀은 메인 브랜치에 기능이 새로 병합 될 때마다 자동으로 감지하고, 스프링 어플리케이션을 &lt;code class=&quot;language-text&quot;&gt;jar&lt;/code&gt; 파일로 빌드하여 배포하는 환경이 필요하다고 느꼈습니다. 따라서 &lt;strong&gt;CI/CD 도구를 도입&lt;/strong&gt;하기로 결정했습니다.&lt;/p&gt;
+&lt;p&gt;이번 포스팅에서는 달록이 EC2 환경에서 도커를 사용하여 젠킨스를 설치한 방법에 대해서 정리합니다.&lt;/p&gt;
+&lt;h2&gt;젠킨스 도입 배경&lt;/h2&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/98a0df2f651f2d57bf0909634184ba03/b986c/google-trends.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 60%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAMCAYAAABiDJ37AAAACXBIWXMAABYlAAAWJQFJUiTwAAABjklEQVQoz41Ti3LjMAj0/3/a3Ud0JrnWjh0/a71BW5BiJ7256RzJDgItCCHcJGLEGIGc5Z9BKSGGUHxqMyWkVNcqSez4YlMiBOGrX6VZNoNhuOOQfVlwa1us21psZxaM9+HcX/YN/TCUAgpf4ru2g3OuJmRmMFOtjkhOojM4SbW6r7G6p+sjUX7cSH+HqN1o5n3fC9EYg3VdS7Cu53ku19Hrq/844CecCQ9Ya+G9L4kOvNq6/o5QYjSP6kZJ0zSVahRa2Xmd/4DKcaDqBv+QnxM8NQ79Ik11VFJtOj/J+SXo4Q9JeOJzSXuW0RuGjQwdv/IoXgizq6cocfWMTeCEFCTICxbH2D1htoR+Z4yWcTdVj6JXVzmRJGEnhN9tHRWSCr04jczoGoDJV+h6cfLy6THMj1vyX62SgiXhJ+PXNZwJcwzIQbJ4GdSg8EVnX0HymqzaGrCA7I5UtDymjFvjAuE2bqVHJH3w84Q43hH7W8XQF+1v8jV8vCOKjn2H0F4RuytS/w735wJzeZODLL4AwzqsnFEiEkgAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;유명한 CI/CD 도구들의 구글 트렌드 결과&apos; title=&apos;유명한 CI/CD 도구들의 구글 트렌드 결과&apos; src=&apos;/static/98a0df2f651f2d57bf0909634184ba03/ca1dc/google-trends.png&apos; srcset=&apos;/static/98a0df2f651f2d57bf0909634184ba03/e7570/google-trends.png 170w,
+/static/98a0df2f651f2d57bf0909634184ba03/f46e7/google-trends.png 340w,
+/static/98a0df2f651f2d57bf0909634184ba03/ca1dc/google-trends.png 680w,
+/static/98a0df2f651f2d57bf0909634184ba03/02d09/google-trends.png 1020w,
+/static/98a0df2f651f2d57bf0909634184ba03/9d567/google-trends.png 1360w,
+/static/98a0df2f651f2d57bf0909634184ba03/b986c/google-trends.png 1846w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;유명한 CI/CD 도구들의 구글 트렌드 결과&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;달록은 CI/CD 도구로 &lt;strong&gt;Jenkins&lt;/strong&gt;를 선정하였습니다. 위 사진은 시중에 배포되어있는 여러 CI/CD 도구의 구글 트렌드 분석 결과입니다. 파란색이 Jenkins 인데요, &lt;strong&gt;압도적으로 높은 관심도&lt;/strong&gt;를 유지하고 있습니다.&lt;/p&gt;
+&lt;p&gt;아무래도 달록팀 모두가 CI/CD에 익숙하지 않아 가장 사람들이 많이 사용하고, 그에 따라 &lt;strong&gt;생태계가 넓고 레퍼런스가 많은 도구&lt;/strong&gt;를 선정하는 것이 좋다고 판단하였습니다. &lt;strong&gt;레퍼런스가 많아&lt;/strong&gt; 초기 학습 비용이 적게 들고, 이슈가 발생했을때에도 &lt;strong&gt;트러블슈팅이 비교적 쉽다&lt;/strong&gt;고 생각했습니다.&lt;/p&gt;
+&lt;h2&gt;도커&lt;/h2&gt;
+&lt;p&gt;달록팀은 EC2 인스턴스에 &lt;strong&gt;도커를 사용하여&lt;/strong&gt; 젠킨스 컨테이너를 띄웠습니다. 도커를 사용하지 않고 젠킨스를 우분투에 직접 설치한다면 해주어야할 환경 설정이 가득합니다. 젠킨스를 돌리기 위한 JDK 설치, 젠킨스 설치, 젠킨스 포트 설정, 방화벽 설정 등등...&lt;/p&gt;
+&lt;p&gt;하지만 도커를 사용하면 이런 &lt;strong&gt;환경 설정 없이 간단한 명령어 몇가지로 젠킨스를 설치하고 서버에 띄울 수 있습니다.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;도커는 서비스를 운용하는데 필요한 실행환경, 라이브러리, 소프트웨어, 코드 등을 컨테이너라는 단위로 가상화하는 컨테이너 기반 가상화 플랫폼입니다. 도커를 사용하면 EC2 인스턴스에는 미리 &lt;strong&gt;도커라이징(Dockerizing)&lt;/strong&gt;된 이미지를 다운로드 받고 도커를 통해 실행하기만 하면되며, 해당 컨테이너가 어떤 환경을 필요로 하는지 전혀 알 필요가 없습니다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;더 자세한 내용은 제가 작성한 &lt;a href=&quot;https://hudi.blog/about-docker/&quot;&gt;이론과 실습을 통해 이해하는 Docker 기초&lt;/a&gt;를 읽어보시면 좋을 것 같습니다 🤭&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;우분투에 도커 설치&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;달록팀은 EC2 t4g.micro 인스턴스에 우분투 22.04 (ARM 64) 환경을 사용하고 있습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;아래 설치 방법은 &lt;a href=&quot;https://docs.docker.com/engine/install/ubuntu/&quot;&gt;도커 공식 도큐먼트&lt;/a&gt;에서 제공되는 내용입니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4&gt;레포지토리 셋업&lt;/h4&gt;
+&lt;p&gt;아래 명령을 통해서 우분투의 &lt;code class=&quot;language-text&quot;&gt;apt&lt;/code&gt;의 패키지 인덱스를 최신화하고, &lt;code class=&quot;language-text&quot;&gt;apt&lt;/code&gt;가 HTTPS를 통해 패키지를 설치할 수 있도록 설정합니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;apt-get&lt;/span&gt; update
+$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;apt-get&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+    ca-certificates &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;token function&quot;&gt;curl&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+    gnupg &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+    lsb-release&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4&gt;도커의 공식 GPG 키 추가&lt;/h4&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;mkdir&lt;/span&gt; -p /etc/apt/keyrings
+$ &lt;span class=&quot;token function&quot;&gt;curl&lt;/span&gt; -fsSL https://download.docker.com/linux/ubuntu/gpg &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; gpg --dearmor -o /etc/apt/keyrings/docker.gpg&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4&gt;레포지토리 셋업&lt;/h4&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ &lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;token string&quot;&gt;&quot;deb [arch=&lt;span class=&quot;token variable&quot;&gt;&lt;span class=&quot;token variable&quot;&gt;$(&lt;/span&gt;dpkg --print-architecture&lt;span class=&quot;token variable&quot;&gt;)&lt;/span&gt;&lt;/span&gt; signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  &lt;span class=&quot;token variable&quot;&gt;&lt;span class=&quot;token variable&quot;&gt;$(&lt;/span&gt;lsb_release -cs&lt;span class=&quot;token variable&quot;&gt;)&lt;/span&gt;&lt;/span&gt; stable&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;tee&lt;/span&gt; /etc/apt/sources.list.d/docker.list &lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; /dev/null&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4&gt;도커 엔진 설치&lt;/h4&gt;
+&lt;p&gt;아래 명령을 실행하면 가장 최신버전의 도커 엔진이 설치됩니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;apt-get&lt;/span&gt; update
+$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;apt-get&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt; docker-ce docker-ce-cli containerd.io docker-compose-plugin&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4&gt;도커 설치 확인&lt;/h4&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; docker run hello-world
+
+Hello from Docker&lt;span class=&quot;token operator&quot;&gt;!&lt;/span&gt;
+This message shows that your installation appears to be working correctly.
+&lt;span class=&quot;token punctuation&quot;&gt;..&lt;/span&gt;.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;위 명령을 실행하여 위와 같이 &lt;code class=&quot;language-text&quot;&gt;Hello from Docker!&lt;/code&gt; 메시지가 출력되면 성공적으로 도커 설치가 완료된 것 입니다. 다음 단계로 넘어가볼까요? 🤗&lt;/p&gt;
+&lt;h2&gt;젠킨스 컨테이너 실행&lt;/h2&gt;
+&lt;h3&gt;젠킨스 이미지 다운로드&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ docker pull jenkins/jenkins:lts&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;위 명령을 통해 Jenkins LTS(Long Term Support) 버전의 이미지를 다운로드 받습니다.&lt;/p&gt;
+&lt;h3&gt;젠킨스 컨테이너 띄우기&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; docker run -d -p &lt;span class=&quot;token number&quot;&gt;8080&lt;/span&gt;:8080 -v /jenkins:/var/jenkins_home --name jenkins -u root jenkins/jenkins:lts&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;위 명령을 통해 다운로드 받은 젠킨스 이미지를 컨테이너로 띄울 수 있습니다. 사용된 각 옵션을 간단히 알아볼까요?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;-d&lt;/strong&gt; : 컨테이너를 &lt;strong&gt;데몬&lt;/strong&gt;으로 띄웁니다.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;-p 8080:8080&lt;/strong&gt; : 컨테이너 외부와 내부 포트를 &lt;strong&gt;포워딩&lt;/strong&gt;합니다. 좌측이 호스트 포트, 우측이 컨테이너 포트입니다.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;-v /jenkins:/var/jenkins_home&lt;/strong&gt; : 도커 컨테이너의 데이터는 &lt;strong&gt;컨테이너가 종료되면 휘발&lt;/strong&gt;됩니다. 도커 컨테이너의 데이터를 보존하기 위한 여러 방법이 존재하는데, 그 중 한 방법이 &lt;strong&gt;볼륨 마운트&lt;/strong&gt;입니다. 이 옵션을 사용하여 젠킨스 컨테이너의 &lt;code class=&quot;language-text&quot;&gt;/var/jenkins_home&lt;/code&gt; 이라는 디렉토리를 호스트의 &lt;code class=&quot;language-text&quot;&gt;/jenkins&lt;/code&gt; 와 마운트하고 데이터를 보존할 수 있습니다.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;--name jenkins&lt;/strong&gt; : 도커 컨테이너의 이름을 설정합니다.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;-u root&lt;/strong&gt; : 컨테이너가 실행될 리눅스의 사용자 계정을 root 로 명시합니다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;docker-compose 사용하기&lt;/h3&gt;
+&lt;p&gt;하지만 위와 같은 명령어를 모두 외우고 있다가, 도커 컨테이너를 실행할 때 마다 입력하게 된다면 굉장히 번거롭겠죠. 따라서 도커는 docker-compose 라는 것을 지원합니다. 도커 컴포즈는 여러 컨테이너의 실행을 한번에 관리할 수 있게 도와주는 도커의 도구입니다. 하지만 저희와 같이 하나의 컨테이너만 필요한 상황에서도 유용하게 사용할 수 있죠.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;apt&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt; docker-compose&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;위 명령을 이용하여 &lt;code class=&quot;language-text&quot;&gt;docker-compose&lt;/code&gt; 를 설치합니다.&lt;/p&gt;
+&lt;p&gt;그리고 도커를 실행할 경로에 &lt;code class=&quot;language-text&quot;&gt;docker-compose.yml&lt;/code&gt; 이란 파일을 만들고, 아래의 내용을 작성해줍니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;yaml&quot;&gt;&lt;pre class=&quot;language-yaml&quot;&gt;&lt;code class=&quot;language-yaml&quot;&gt;&lt;span class=&quot;token key atrule&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;3&quot;&lt;/span&gt;
+&lt;span class=&quot;token key atrule&quot;&gt;services&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;token key atrule&quot;&gt;jenkins&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token key atrule&quot;&gt;image&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; jenkins/jenkins&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;lts
+    &lt;span class=&quot;token key atrule&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; root
+    &lt;span class=&quot;token key atrule&quot;&gt;volumes&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; ./jenkins&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;/var/jenkins_home
+    &lt;span class=&quot;token key atrule&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; 8080&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;8080&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;생성한 &lt;code class=&quot;language-text&quot;&gt;docker-compose.yml&lt;/code&gt; 이 존재하는 경로에서 아래의 명령을 실행하면 복잡한 명령 없이도 도커 컨테이너를 실행할 수 있습니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; docker-compose up -d&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;-d 옵션은 컨테이너가 데몬으로 실행됨을 의미합니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;젠킨스 설정&lt;/h2&gt;
+&lt;p&gt;도커를 사용하여 젠킨스 컨테이너가 EC2 인스턴스에 성공적으로 띄워졌다면, EC2의 퍼블릭 IP를 통해 외부에서 접속할 수 있을 것 입니다. localhost:8080으로 접속하면 아래와 같은 화면이 보일 것 입니다.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; margin-bottom: 16px;&apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/960b1726cd3b94778b3a7bf6dba2b159/7c958/unlock-jenkins.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 42.94117647058824%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAJCAYAAAAywQxIAAAACXBIWXMAABYlAAAWJQFJUiTwAAABHUlEQVQoz4WSW4+CMBCF+f8/To26D4QHEELk2isg97OdIgTduE7ype3QHmZO63ieB9d1kaYpiqKw5Hm+sea+UZYlwjCE07Ytuq7Dp5jn+SMgnnsoOOdwpmlClmUIgsBws1VFUQTf9xHHsf3ZMAx/GMdxg9akQ5U6pEwCp+MRl/MZt8DHz/WC0+FgxiuoAzrQ9/02vkOiFIyxRVBXFZjgyIRGXCrceWXJuUSWZ0gN9yRBYhBCQGttqcw5GlfLbMs06esGj4KjKYVBLjBlcgKdyXcmPzYtvsUm2FQ1NBeopYRmHMpAa82XuSwZtFS2IqXUVtHLBe0FpaTWzDMxpj7Is6fRw7hj5x95RiJ0ESuvLe8Mpo//PZV3IWK9FBL8Bd0qt5ADeAszAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;unlock jenkins&apos; title=&apos;unlock jenkins&apos; src=&apos;/static/960b1726cd3b94778b3a7bf6dba2b159/ca1dc/unlock-jenkins.png&apos; srcset=&apos;/static/960b1726cd3b94778b3a7bf6dba2b159/e7570/unlock-jenkins.png 170w,
+/static/960b1726cd3b94778b3a7bf6dba2b159/f46e7/unlock-jenkins.png 340w,
+/static/960b1726cd3b94778b3a7bf6dba2b159/ca1dc/unlock-jenkins.png 680w,
+/static/960b1726cd3b94778b3a7bf6dba2b159/02d09/unlock-jenkins.png 1020w,
+/static/960b1726cd3b94778b3a7bf6dba2b159/9d567/unlock-jenkins.png 1360w,
+/static/960b1726cd3b94778b3a7bf6dba2b159/7c958/unlock-jenkins.png 2026w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; docker logs jenkins&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;위 명령을 사용하면, &lt;code class=&quot;language-text&quot;&gt;jenkins&lt;/code&gt; 컨테이너에 출력된 로그를 확인할 수 있습니다. 젠킨스를 최초로 설치하고 실행하면 사진에서 요구하는 initial admin password를 출력해주는데요, 로그를 확인해봅시다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;*************************************************************
+*************************************************************
+*************************************************************
+
+Jenkins initial setup is required. An admin user has been created and a password generated.
+
+Please use the following password to proceed to installation:
+
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
+This may also be found at: /var/jenkins_home/secrets/initialAdminPassword
+
+*************************************************************
+*************************************************************
+*************************************************************&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;위에서 표시된 &lt;code class=&quot;language-text&quot;&gt;XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&lt;/code&gt; 를 웹사이트에 넣어주시면 됩니다.&lt;/p&gt;
+&lt;p&gt;혹은 아래의 명령으로 &lt;code class=&quot;language-text&quot;&gt;jenkins&lt;/code&gt; 컨테이너 내부에 직접 접속하여, &lt;code class=&quot;language-text&quot;&gt;/var/jenkins_home/secrets/initialAdminPassword&lt;/code&gt; 파일의 내용을 조회하는 방법도 있습니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; docker &lt;span class=&quot;token builtin class-name&quot;&gt;exec&lt;/span&gt; -it jenkins /bin/bash
+$ &lt;span class=&quot;token function&quot;&gt;cat&lt;/span&gt; /var/jenkins_home/secrets/initialAdminPassword&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; margin-bottom: 16px;&apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/34033c88d26a34735801aa2c4d16bf9a/d9349/customize-jenkins.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 50.588235294117645%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAYAAAC0VX7mAAAACXBIWXMAABYlAAAWJQFJUiTwAAABcElEQVQoz32S2W6DMBBF+f+f6lNbtVLVtA8hkETsS4AQcBKz59YzCNKqKCNd2WPsM3eMNV3Xsd/vWVmWIc9zHI/HeZxE+SMVRQHLsqB5noeu69C2LR7F7XbDMAw8LokijmNovu/zxiAI2OV2u4VpmqBCjuOAOqD8er3yvr7vWTSfcjI0AwlEQYfXax2GOkwQ27a5wEbNDcPgtiopGcy6XCBVTrDJ4eFwgBZFESdU6XdQ9a7r/6zTYVJd16ymafj7BEyS5A4MThc8mz5WToIPO4ZfSJTtAFH3CMIQG+XSVl1QW1So49aHsfgS0MoEntYuNocSzkkiFDUS2SOXLd/nbrdDWZYQQrCzum7mH7no0M0v+A5yrNwMX/4Rn27KeVhckaqNdNeu687K1FMi8Hg9C0A9PuHFTvDmpHh3R72quRkraBjAIZBy6nk+O/bU65Cymu/7HzA9S3YTlXeFSplaP4sztyp4HFWWAlVV/XmHBPwBwYz5V7eUMhUAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;customize jenkins&apos; title=&apos;customize jenkins&apos; src=&apos;/static/34033c88d26a34735801aa2c4d16bf9a/ca1dc/customize-jenkins.png&apos; srcset=&apos;/static/34033c88d26a34735801aa2c4d16bf9a/e7570/customize-jenkins.png 170w,
+/static/34033c88d26a34735801aa2c4d16bf9a/f46e7/customize-jenkins.png 340w,
+/static/34033c88d26a34735801aa2c4d16bf9a/ca1dc/customize-jenkins.png 680w,
+/static/34033c88d26a34735801aa2c4d16bf9a/02d09/customize-jenkins.png 1020w,
+/static/34033c88d26a34735801aa2c4d16bf9a/9d567/customize-jenkins.png 1360w,
+/static/34033c88d26a34735801aa2c4d16bf9a/d9349/customize-jenkins.png 2040w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;그 다음 위 화면에서 Install suggested plugins를 클릭하여 추천되는 플러그인을 설치합니다. 그 이후 요구되는 여러 정보의 입력을 끝 마쳐주세요.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;System.setProperty(&amp;#39;org.apache.commons.jelly.tags.fmt.timeZone&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;이후 대시보드에서 &lt;strong&gt;Jenkins 관리 &gt; Script Console&lt;/strong&gt; 에서 위의 스크립트를 입력하여 타임존을 서울로 설정하기만 하면, 젠킨스 기본 설정이 완료됩니다! 🎉&lt;/p&gt;
+&lt;h2&gt;마치며&lt;/h2&gt;
+&lt;p&gt;다음 포스팅에서는 달록이 젠킨스를 이용하여 어떻게 배포 자동화 프로세스를 구축하였는지 작성해보도록 하겠습니다. 많은 기대 부탁드립니다 🙏&lt;/p&gt;</content:encoded></item><item><title><![CDATA[쉘 스크립트와 함께하는 달록의 스프링부트 어플리케이션 배포 자동화]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 후디가 작성했습니다. 웹서비스 개발팀은 새롭게 개발한 서비스의 기능을 어떻게 사용자에게 전달할까요? 새로운 기능이 메인 브랜치에 병합될 때 마다 EC2 인스턴스에 접속하여 브랜치를 Pull…]]></description><link>https://dallog.github.io/deploy-automation-with-shell-script/</link><guid isPermaLink="false">https://dallog.github.io/deploy-automation-with-shell-script/</guid><pubDate>Tue, 19 Jul 2022 01:45:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
 &lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/devHudi&quot;&gt;후디&lt;/a&gt;가 작성했습니다.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;웹서비스 개발팀은 새롭게 개발한 서비스의 기능을 어떻게 사용자에게 전달할까요? 새로운 기능이 메인 브랜치에 병합될 때 마다 EC2 인스턴스에 접속하여 브랜치를 Pull 하고, 프로젝트를 빌드하고, 현재 동작중인 어플리케이션의 프로세스를 종료하고, 새롭게 빌드된 어플리케이션의 프로세스를 띄우는 과정...&lt;/p&gt;
@@ -796,7 +943,7 @@ $ &lt;span class=&quot;token function&quot;&gt;git&lt;/span&gt; rebase upstream/
 &lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/devHudi&quot;&gt;후디&lt;/a&gt;가 작성했습니다.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2&gt;배경&lt;/h2&gt;
-&lt;p&gt;우테코 레벨3 달록 팀에서 메소드의 파라미터에는 반드시 &lt;code class=&quot;language-text&quot;&gt;final&lt;/code&gt; 키워드를 붙이도록 컨벤션을 정했습니다. 이유는 무엇일까요? 일반적으로 가변적인 변수는 프로그램의 흐름을 예측하기 어렵게 만든다. 따라서 변수를 가변적으로 만드는 것이 중요한데, 자바에서는 변수의 재할당을 막기 위해 &lt;code class=&quot;language-text&quot;&gt;final&lt;/code&gt; 키워드를 사용합니다. 물론 &lt;code class=&quot;language-text&quot;&gt;final&lt;/code&gt; 키워드 하나만으로 완전한 불변을 보장하도록 만들수는 없지만, 어느정도 예측 가능한 코드를 만드는데에는 도움이 됩니다.&lt;/p&gt;
+&lt;p&gt;우테코 레벨3 달록 팀에서 메소드의 파라미터에는 반드시 &lt;code class=&quot;language-text&quot;&gt;final&lt;/code&gt; 키워드를 붙이도록 컨벤션을 정했습니다. 이유는 무엇일까요? 일반적으로 가변적인 변수는 프로그램의 흐름을 예측하기 어렵게 만듭니다. 따라서 변수를 가변적으로 만드는 것이 중요한데, 자바에서는 변수의 재할당을 막기 위해 &lt;code class=&quot;language-text&quot;&gt;final&lt;/code&gt; 키워드를 사용합니다. 물론 &lt;code class=&quot;language-text&quot;&gt;final&lt;/code&gt; 키워드 하나만으로 완전한 불변을 보장하도록 만들수는 없지만, 어느정도 예측 가능한 코드를 만드는데에는 도움이 됩니다.&lt;/p&gt;
 &lt;p&gt;이는 메소드의 파라미터에도 적용됩니다. 아래의 코드는 &lt;code class=&quot;language-text&quot;&gt;Memo&lt;/code&gt; 객체를 생성하기 위한 생성자입니다. &lt;code class=&quot;language-text&quot;&gt;value&lt;/code&gt; 라는 String 값을 전달받아 객체 필드에 할당합니다.&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Memo&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;String&lt;/span&gt; value&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;token function&quot;&gt;validateLength&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;value&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
