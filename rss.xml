@@ -1,4 +1,159 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 24 Jul 2022 06:49:47 GMT</lastBuildDate><item><title><![CDATA[외부와 의존성 분리하기]]></title><description><![CDATA[…]]></description><link>https://dallog.github.io/separated-interface/</link><guid isPermaLink="false">https://dallog.github.io/separated-interface/</guid><pubDate>Sun, 24 Jul 2022 15:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 24 Jul 2022 08:55:40 GMT</lastBuildDate><item><title><![CDATA[젠킨스를 사용한 달록팀의 지속적 배포 환경 구축기 (1) - 백엔드편]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 후디가 작성했습니다. 안녕하세요, 달록팀 후디입니다. 지난번 포스팅에서 달록팀이 도커를 활용하여 EC…]]></description><link>https://dallog.github.io/continuous-deploy-with-jenkins-1-backend/</link><guid isPermaLink="false">https://dallog.github.io/continuous-deploy-with-jenkins-1-backend/</guid><pubDate>Sun, 24 Jul 2022 18:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/devHudi&quot;&gt;후디&lt;/a&gt;가 작성했습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;안녕하세요, 달록팀 후디입니다. 지난번 포스팅에서 달록팀이 도커를 활용하여 EC2 인스턴스에 도커를 설치한 과정을 이야기 드렸었죠. 이번 포스팅에서는 젠킨스를 활용해서 백엔드와 프론트엔드에 지속적 배포 환경을 구성한 과정에 대해 이야기 드리려고 합니다.&lt;/p&gt;
+&lt;h2&gt;달록팀 지속적 배포 환경&lt;/h2&gt;
+&lt;p&gt;일단 현재 구성된 달록팀의 지속적 배포 환경을 간단한 다이어그램으로 살펴보겠습니다.&lt;/p&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/362ecaa69f58311f8c89b2bb692cde67/2bae1/be.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 44.705882352941174%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAJCAYAAAAywQxIAAAACXBIWXMAABYlAAAWJQFJUiTwAAABdElEQVQoz3VSTUvDQBDNr/fk2au99SAooiDeqgc9iYhSDy2VQm2bZNN8NN3uZ54zm0ZaaBeGTHZ23pt5M1HTNGDj0/o++Cr5Acp58J2zaLyH97vYYgRXLMFZ3rtw732LEXWAnXlK5pO/XuHtoYdEU5JzUNpAqS0YUgwuIb8H4JfWGBgyrTURuxbw1HmeppiXNbbVCso6aNdW6aiaLst4Hb58z8ARO1LKwJBmK1zdPUJkOdIkgazXqEWK/vkZ9IaAjUVR5CjLkiqzkKbGy/SeyDYkSdMCKqUghIC1BnEqcNHrYxGnSOIYs/kCo9EYN9e3GA6HkEqjqiqs12tK1phkX3j/fcJYfIQKrbWIuG92wlDosshXrfgkhaO+RFFgPJlgtlhSez7o2b03VlM3Alstg/6hwn3NNsoiy6swOSZiGSwDkDkC64T/j1HbDMIEB0PpBrOSDT6XVMXu3+9WpbNmtzbHYt1KHQAyW1Fvic2cnPz++2OxP3yMuVsRjMY3AAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;백엔드 지속적 배포 환경&apos; title=&apos;백엔드 지속적 배포 환경&apos; src=&apos;/static/362ecaa69f58311f8c89b2bb692cde67/ca1dc/be.png&apos; srcset=&apos;/static/362ecaa69f58311f8c89b2bb692cde67/e7570/be.png 170w,
+/static/362ecaa69f58311f8c89b2bb692cde67/f46e7/be.png 340w,
+/static/362ecaa69f58311f8c89b2bb692cde67/ca1dc/be.png 680w,
+/static/362ecaa69f58311f8c89b2bb692cde67/02d09/be.png 1020w,
+/static/362ecaa69f58311f8c89b2bb692cde67/9d567/be.png 1360w,
+/static/362ecaa69f58311f8c89b2bb692cde67/2bae1/be.png 2308w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;백엔드 지속적 배포 환경&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;우선, 달록의 백엔드 개발자가 열심히 기능을 개발하여 Github에 PR을 생성합니다. 이때 PR 코드가 정상적으로 빌드되고, 모든 테스트를 통과하는지 &lt;strong&gt;Github Actions&lt;/strong&gt;를 사용하여 우선적으로 검사합니다. 이때, PR 브랜치의 코드가 문제가 있다면 develop 브랜치로 병합이 불가능합니다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;달록팀의 브랜치 전략에 대해서는 달록팀 매트가 작성한 &apos;&lt;a href=&quot;https://dallog.github.io/git-branch-strategy/&quot;&gt;달록팀의 git 브랜치 전략을 소개합니다.&lt;/a&gt;&apos; 포스팅을 참고해주세요!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;정상적으로 빌드가 되는 코드는 이후 달록 개발자들끼리 코드리뷰가 진행되고, develop 브랜치에 병합이 됩니다. 이때, Github는 달록팀이 구축한 젠킨스 서버에 &lt;strong&gt;Webhook&lt;/strong&gt;을 통해 병합 사실을 알립니다.&lt;/p&gt;
+&lt;p&gt;Webhook이란, 특정한 애플리케이션이 다른 애플리케이션으로 &lt;strong&gt;이벤트 발생 정보를 실시간으로 제공하기 위한 방법&lt;/strong&gt;입니다. 젠킨스는 외부에 Webhook URL을 열어두고, Github으로부터 이 Webhook URL로 요청을 받아 이벤트가 발생한 즉시 그 사실을 알 수 있습니다.&lt;/p&gt;
+&lt;p&gt;Webhook을 통해 신호를 받은 젠킨스는 미리 지정된 젠킨스 파이프라인 스크립트를 실행하여 스프링부트 어플리케이션을 빌드하여 &lt;code class=&quot;language-text&quot;&gt;jar&lt;/code&gt; 파일을 생성합니다.&lt;/p&gt;
+&lt;p&gt;생성한 &lt;code class=&quot;language-text&quot;&gt;jar&lt;/code&gt; 파일은 스프링부트 어플리케이션이 실행되고 있는 EC2 인스턴스로 전송됩니다. 그리고 스프링부트 인스턴스에서 &lt;code class=&quot;language-text&quot;&gt;jar&lt;/code&gt; 파일이 실행되어 배포가 완료됩니다.&lt;/p&gt;
+&lt;h2&gt;프리스타일과 파이프라인&lt;/h2&gt;
+&lt;p&gt;젠킨스에서 잡(Job)을 생성하는 방식은 크게 &lt;strong&gt;프리스타일과 파이프라인&lt;/strong&gt; 두가지로 나뉩니다.&lt;/p&gt;
+&lt;h3&gt;프리스타일&lt;/h3&gt;
+&lt;p&gt;프리스타일은 &lt;strong&gt;GUI기반&lt;/strong&gt;으로 젠킨스 잡을 구성할 수 있습니다. 따라서 간단한 작업에 적합하고, &lt;strong&gt;복잡한 작업에는 다소 적절치 않습니다.&lt;/strong&gt; 또한 GUI 기반이므로 설정 과정이 다소 난잡하게 느껴질 수 있습니다.&lt;/p&gt;
+&lt;h3&gt;파이프라인&lt;/h3&gt;
+&lt;p&gt;반면 젠킨스 파이프라인은 일련의 배포 과정을 &lt;strong&gt;코드로 작성&lt;/strong&gt;할 수 있습니다. 이 코드는 &lt;strong&gt;Jenkinsfile&lt;/strong&gt; 라고 불리는 파일로 관리할 수 있어, Git 등을 통한 &lt;strong&gt;버전관리&lt;/strong&gt;도 가능합니다. 또한 파이프라인을 사용하면 스테이지(Stage)라는 단위로 각 작업에 소요되는 시간, 실패여부를 &lt;strong&gt;시각화&lt;/strong&gt;하여 확인할 수 있습니다.&lt;/p&gt;
+&lt;p&gt;달록은 프리스타일 대신 젠킨스 파이프라인을 이용하여 잡(Job)을 생성했습니다. 개발자 입장에서는 아무래도 GUI보다는 코드 기반으로 작업 과정을 작성하는 것이 편하게 느껴집니다. 또한 추후 배포 프로세스 자체를 Github 저장소에서 관리할 수 있다는 것이 큰 장점으로 다가왔습니다.&lt;/p&gt;
+&lt;h4&gt;Scripted vs Declarative&lt;/h4&gt;
+&lt;p&gt;파이프라인도 문법에 따라 크게 &lt;strong&gt;Scripted Pipeline&lt;/strong&gt;과 &lt;strong&gt;Declarative Pipeline&lt;/strong&gt; 두가지로 나뉩니다.&lt;/p&gt;
+&lt;p&gt;Scripted는 Groovy라는 언어로 작성되며, 변수 선언등이 지원되어 프로그래밍을 할 수 있다는 특징이 있다. 반면, Declarative는 Scripted에 비해 간단하며, Groovy를 알지 않아도 사용할 수 있다는 장점이 존재합니다. &lt;strong&gt;Scripted 문법은 Declarative에 비해 유연성이나 확장성이 높지만, 복잡도와 유지보수 난이도가 더 높습니다&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;최근 CI/CD 기조는 Declarative 스타일로 많이 이동되고 있다고 합니다 (&lt;a href=&quot;https://www.theserverside.com/answer/Declarative-vs-scripted-pipelines-Whats-the-difference&quot;&gt;참고&lt;/a&gt;). 당장 비교적 최근에 출시된 Github Actions 도 YAML 기반의 Declarative 스타일만 사용할 수 있습니다. 따라서 달록팀은 Declarative 문법을 사용하기로 결정했습니다.&lt;/p&gt;
+&lt;h2&gt;잡(Job) 생성 및 세팅&lt;/h2&gt;
+&lt;h3&gt;파이프라인으로 생성&lt;/h3&gt;
+&lt;p&gt;&lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; margin-bottom: 16px;&apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/bb5fc7fc2233f7523c1e8c017a45a138/973af/pipeline.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 40%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAICAYAAAD5nd/tAAAACXBIWXMAABYlAAAWJQFJUiTwAAABFklEQVQoz5WSyXbDIAxF/f9/120zeIZ4AINtbOMsXiUdJ216mkUX90gC8XgMSQgBzjl474WZ6nVdsSzLvwhEjBGJMQZpmiLNMpwvFzRtCz+Osolz/uB7w3dwD5tLVGdxKjQy3SO/kTjFq+qQEhKpPpUN2t5ioo3+EhuPcXaajHOAbg2MoQXTTO4mcfg7jtNE8+9hURF0zuL6+YG6rpHnObquE+vzPP/gdTGPsYDk1PsYkztcwoi2PiMvChGsqkrE+76XYwzDIPBdM8Pg5L44t9ZKD0fuEUEfVpSthdbq+VL8ytu2Ie671JLHI3/W8YWdevf7HQk3sO2iLFESSimJ7FRpLW45Z5qmkaPKD3g8CB2XfwKbYcEvY5hhgTOF7S0AAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;pipeline&apos; title=&apos;pipeline&apos; src=&apos;/static/bb5fc7fc2233f7523c1e8c017a45a138/ca1dc/pipeline.png&apos; srcset=&apos;/static/bb5fc7fc2233f7523c1e8c017a45a138/e7570/pipeline.png 170w,
+/static/bb5fc7fc2233f7523c1e8c017a45a138/f46e7/pipeline.png 340w,
+/static/bb5fc7fc2233f7523c1e8c017a45a138/ca1dc/pipeline.png 680w,
+/static/bb5fc7fc2233f7523c1e8c017a45a138/02d09/pipeline.png 1020w,
+/static/bb5fc7fc2233f7523c1e8c017a45a138/9d567/pipeline.png 1360w,
+/static/bb5fc7fc2233f7523c1e8c017a45a138/973af/pipeline.png 1956w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;젠킨스 메뉴에서 &apos;새로운 Item&apos;을 클릭하고, &apos;Pipeline&apos;을 선택하여 새로운 잡을 생성합니다.&lt;/p&gt;
+&lt;h3&gt;Github URL 설정&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;General &gt; GitHub project &gt; Project url&lt;/strong&gt; 에 저희 깃허브 저장소 주소인 &lt;strong&gt;&lt;a href=&quot;https://github.com/woowacourse-teams/2022-dallog&quot;&gt;https://github.com/woowacourse-teams/2022-dallog&lt;/a&gt;&lt;/strong&gt; 를 입력합니다.&lt;/p&gt;
+&lt;h3&gt;오래된 빌드 삭제&lt;/h3&gt;
+&lt;p&gt;빌드 이력을 오래 가지고 있어봤자 큰 의미가 없을 것 같기도 하고, 아무래도 &lt;strong&gt;t4g.micro&lt;/strong&gt; 에서 돌리다보니 용량이 넉넉치 않기도 합니다. 따라서 &lt;strong&gt;General &gt; 오래된 빌드 삭제&lt;/strong&gt; 옵션을 클릭하여 활성화하고, 보관할 최대 갯수를 3으로 지정했습니다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;나중에 빌드 이력 보관 개수가 너무 적다고 판단되면 조금 더 늘릴 생각입니다 🙂&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;빌드 트리거 설정&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Build Triggers &gt; GitHub hook trigger for GITScm polling&lt;/strong&gt; 을 체크해줍니다. Github의 Webhook을 통해 빌드가 트리거되는 옵션입니다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;이 기능은 &lt;strong&gt;GitHub plugin&lt;/strong&gt;에서 제공하는 기능입니다. 최초 젠킨스를 설치했을 때 Install suggested plugins 를 선택하지 않으면 이 플러그인이 설치되어있지 않을수도 있습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h4&gt;Github 저장소에 Webhook 등록하기&lt;/h4&gt;
+&lt;p&gt;Webhook을 사용하려면 Github 저장소의 Settings &gt; Webhooks 에서 Webhook URL을 등록해주어야 합니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;http://{서비스 IP 혹은 도메인 주소}/github-webhook/&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;위와 같이 URL을 등록해줍니다. 이때 URL의 마지막에 &lt;code class=&quot;language-text&quot;&gt;/&lt;/code&gt;가 들어가지 않으면 오류가 발생하니 꼭 추가합니다.&lt;/p&gt;
+&lt;h2&gt;파이프라인 작성&lt;/h2&gt;
+&lt;p&gt;이제 빌드가 트리거 되었을 때 실행될 파이프라인 스크립트를 작성할 차례입니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;groovy&quot;&gt;&lt;pre class=&quot;language-groovy&quot;&gt;&lt;code class=&quot;language-groovy&quot;&gt;pipeline &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+   agent any
+   stages &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+       &lt;span class=&quot;token function&quot;&gt;stage&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;Github&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+           steps &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+               git branch&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;develop&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; url&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;https://github.com/woowacourse-teams/2022-dallog.git&apos;&lt;/span&gt;
+           &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+       &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+       &lt;span class=&quot;token function&quot;&gt;stage&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;Build&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+           steps &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+               &lt;span class=&quot;token function&quot;&gt;dir&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;backend&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+                   sh &lt;span class=&quot;token string gstring&quot;&gt;&quot;./gradlew bootJar&quot;&lt;/span&gt;
+               &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+           &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+       &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+       &lt;span class=&quot;token function&quot;&gt;stage&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;Deploy&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+           steps &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+               &lt;span class=&quot;token function&quot;&gt;dir&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;backend/build/libs&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+                   &lt;span class=&quot;token function&quot;&gt;sshagent&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;credentials&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;key-dallog&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+                        sh &lt;span class=&quot;token string&quot;&gt;&apos;scp backend-0.0.1-SNAPSHOT.jar ubuntu@192.168.XXX.XXX:/home/ubuntu&apos;&lt;/span&gt;
+                        sh &lt;span class=&quot;token string&quot;&gt;&apos;ssh ubuntu@192.168.XXX.XXX &quot;sh run.sh&quot; &amp;amp;&apos;&lt;/span&gt;
+                   &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+               &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+           &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+       &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+   &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;Github stage&lt;/h3&gt;
+&lt;p&gt;Github stage에서는 사용할 깃허브의 저장소 주소와 브랜치를 설정합니다. 젠킨스는 이 스테이지에 명시된 저장소와 브랜치를 기준으로 코드를 가져옵니다.&lt;/p&gt;
+&lt;h3&gt;Build stage&lt;/h3&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;gradlew&lt;/code&gt; 파일을 사용하여 빌드합니다. 이때, &lt;code class=&quot;language-text&quot;&gt;dir&lt;/code&gt; 지시어(Directive)를 사용하여 명령을 수행할 디렉토리를 지정할 수 있습니다.&lt;/p&gt;
+&lt;h3&gt;Deploy stage&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;이 작업을 위해서 사전에 Jenkins 관리 &gt; Manage Credentials 에서 &apos;SSH Username with private key&apos; 로 AWS에서 발급 받은 PEM 키를 먼저 등록해야합니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;달록팀은 SSH Agent 플러그인을 사용하여 배포 서버에 원격으로 접속합니다. SSH Agent 플러그인을 사용하여 파이프라인에서 젠킨스에 등록해둔 SSH 자격증명을 쉽게 사용할 수 있습니다. 플러그인을 설치하면 &lt;code class=&quot;language-text&quot;&gt;sshagent&lt;/code&gt; 라는 Directive를 사용할 수 있는데, 인자로 사전에 젠킨스 Credential로 등록한 PEM키의 이름을 넣어줍니다. 이렇게 만들어진 &lt;code class=&quot;language-text&quot;&gt;sshagent&lt;/code&gt; Directive Block 내부에서 &lt;code class=&quot;language-text&quot;&gt;sh&lt;/code&gt; 를 통해 &lt;code class=&quot;language-text&quot;&gt;ssh&lt;/code&gt; 관련 명령을 수행할 수 있습니다.&lt;/p&gt;
+&lt;h4&gt;jar 파일 전송&lt;/h4&gt;
+&lt;p&gt;SCP(Secure Copy)는 SSH 통신 기반으로 원격지에 파일이나 디렉토리를 전송할 수 있는 프로토콜입니다. 리눅스에서는 &lt;code class=&quot;language-text&quot;&gt;scp&lt;/code&gt; 명령을 통해 SCP 프로토콜을 사용할 수 있습니다. 달록팀은 이 &lt;code class=&quot;language-text&quot;&gt;scp&lt;/code&gt; 명령을 통해 스프링부트 애플리케이션이 실행되고 있는 EC2 인스턴스로 빌드된 &lt;code class=&quot;language-text&quot;&gt;jar&lt;/code&gt; 파일을 전송합니다.&lt;/p&gt;
+&lt;h4&gt;원격지의 쉘 스크립트 실행&lt;/h4&gt;
+&lt;p&gt;스프링부트 인스턴스에는 사전에 &lt;code class=&quot;language-text&quot;&gt;run.sh&lt;/code&gt; 라는 이름의 쉘 스크립트가 작성되어 있습니다. 이 쉘 스크립트는 현재 실행중인 스프링부트 애플리케이션의 프로세스를 제거하고, 환경변수를 설정하고, 같은 디렉토리에 있는 &lt;code class=&quot;language-text&quot;&gt;jar&lt;/code&gt; 파일을 실행합니다. 스크립트는 아래와 같습니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;&lt;span class=&quot;token shebang important&quot;&gt;#! /bin/bash&lt;/span&gt;
+
+&lt;span class=&quot;token assign-left variable&quot;&gt;PROJECT_NAME&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;backend
+&lt;span class=&quot;token assign-left variable&quot;&gt;CURRENT_PID&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token variable&quot;&gt;&lt;span class=&quot;token variable&quot;&gt;$(&lt;/span&gt;pgrep -f $&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;PROJECT_NAME&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;-.*.jar &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;head&lt;/span&gt; -n &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token variable&quot;&gt;)&lt;/span&gt;&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt; -z &lt;span class=&quot;token string&quot;&gt;&quot;&lt;span class=&quot;token variable&quot;&gt;$CURRENT_PID&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;then&lt;/span&gt;
+    &lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;🌈 구동중인 애플리케이션이 없으므로 종료하지 않습니다.&quot;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;else&lt;/span&gt;
+    &lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;🌈 구동중인 애플리케이션을 종료했습니다. (pid : &lt;span class=&quot;token variable&quot;&gt;$CURRENT_PID&lt;/span&gt;)&quot;&lt;/span&gt;
+    &lt;span class=&quot;token function&quot;&gt;kill&lt;/span&gt; -15 &lt;span class=&quot;token variable&quot;&gt;$CURRENT_PID&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;fi&lt;/span&gt;
+
+&lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;&lt;span class=&quot;token entity&quot; title=&quot;\n&quot;&gt;\n&lt;/span&gt;🌈 SpringBoot 환경변수 설정&quot;&lt;/span&gt;
+
+&lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token assign-left variable&quot;&gt;GOOGLE_CLIENT_ID&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;XXXXXXXXXXXXXX&quot;&lt;/span&gt;
+&lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token assign-left variable&quot;&gt;GOOGLE_CLIENT_SECRET&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;XXXXXXXXXXXXXX&quot;&lt;/span&gt;
+&lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token assign-left variable&quot;&gt;GOOGLE_REDIRECT_URI&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;XXXXXXXXXXXXXX&quot;&lt;/span&gt;
+&lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token assign-left variable&quot;&gt;GOOGLE_TOKEN_URI&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;XXXXXXXXXXXXXX&quot;&lt;/span&gt;
+&lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token assign-left variable&quot;&gt;JWT_EXPIRE_LENGTH&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;86400000&lt;/span&gt;
+&lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token assign-left variable&quot;&gt;JWT_SECRET_KEY&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;XXXXXXXXXXXXXX&quot;&lt;/span&gt;
+
+&lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;&lt;span class=&quot;token entity&quot; title=&quot;\n&quot;&gt;\n&lt;/span&gt;🌈 SpringBoot 애플리케이션을 실행합니다.&lt;span class=&quot;token entity&quot; title=&quot;\n&quot;&gt;\n&lt;/span&gt;&quot;&lt;/span&gt;
+
+&lt;span class=&quot;token assign-left variable&quot;&gt;JAR_NAME&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token variable&quot;&gt;&lt;span class=&quot;token variable&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;grep&lt;/span&gt; .jar &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;head&lt;/span&gt; -n &lt;span class=&quot;token number&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;token variable&quot;&gt;)&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; -E &lt;span class=&quot;token function&quot;&gt;nohup&lt;/span&gt; java -jar /home/ubuntu/&lt;span class=&quot;token variable&quot;&gt;$JAR_NAME&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&amp;amp;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;지난 포스팅인 &lt;strong&gt;&lt;a href=&quot;/deploy-automation-with-shell-script&quot;&gt;쉘 스크립트와 함께하는 달록의 스프링부트 어플리케이션 배포 자동화&lt;/a&gt;&lt;/strong&gt; 에서 소개드린 쉘 스크립트에서 소스코드를 Pull 해오고 빌드하는 과정만 사라진 스크립트입니다.&lt;/p&gt;
+&lt;p&gt;이 원격지에 있는 스크립트를 &lt;code class=&quot;language-text&quot;&gt;ssh&lt;/code&gt; 명령을 통해 실행하게되면 배포과정이 완료됩니다.&lt;/p&gt;
+&lt;h2&gt;트러블슈팅&lt;/h2&gt;
+&lt;h3&gt;Webhook 트리거 이슈&lt;/h3&gt;
+&lt;p&gt;처음 젠킨스를 설정할 때 아무리 Webhook 설정을 건드려봐도 빌드가 트리거되지 않는 이슈가 발생했었습니다.&lt;/p&gt;
+&lt;p&gt;먼저 위 파이프라인 스크립트의 Github 스테이지에서 사용된 &lt;code class=&quot;language-text&quot;&gt;git&lt;/code&gt; Directive를 명시적으로 사용해줘야합니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;git branch: &amp;#39;develop&amp;#39;, url: &amp;#39;https://github.com/woowacourse-teams/2022-dallog.git&amp;#39;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;또한 최초로 &apos;지금 빌드&apos; 버튼을 클릭해야지 그 이후 Webhook 요청을 수신할 수 있게됩니다.&lt;/p&gt;
+&lt;h3&gt;SSH 자격 증명 이슈&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;Host key verification failed.
+lost connection&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;젠킨스 서버에서 다른 인스턴스에 최초로 SSH 연결을 시도할 경우 젠킨스에서 위와 같은 에러가 발생할 수 있습니다. 다들 SSH로 최초 원격접속 시 아래와 같은 메시지를 본 적이 있을 것 입니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;root@XXXXXXXX:/home# ssh -i key.pem ubuntu@192.168.XXX.XXX
+The authenticity of host &amp;#39;192.168.XXX.XXX (192.168.XXX.XXX)&amp;#39; can&amp;#39;t be established.
+ECDSA key fingerprint is SHA256:XXXXXXXXXXXXXXXX
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;터미널에서 직접 접속할 때에는 yes 를 입력하면, 곧바로 접속될텐데요. 젠킨스 파이프라인에서는 불가능합니다. 따라서 미리 젠킨스 측의 &lt;code class=&quot;language-text&quot;&gt;known_hosts&lt;/code&gt; 에 원격지의 공개키를 등록해야합니다.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;keyscan&lt;/code&gt; 명령을 통해서 호스트의 공개키를 수집할 수 있습니다. 이 명령을 통해서 &lt;code class=&quot;language-text&quot;&gt;~/.ssh/known_hosts&lt;/code&gt; 에 접속할 호스트의 공개키를 추가해야합니다.&lt;/p&gt;
+&lt;h2&gt;마치며&lt;/h2&gt;
+&lt;p&gt;이번 포스팅으로 달록팀이 젠킨스를 활용하여 스프링부트 애플리케이션의 지속적 배포 환경을 구축한 방법을 소개드렸습니다. 이어지는 다음 포스팅에서는 달록팀의 프론트엔드 배포 환경과 지속적 배포 환경 구축 방법을 소개드리려고 합니다. 읽어주셔서 감사드립니다 😄&lt;/p&gt;</content:encoded></item><item><title><![CDATA[외부와 의존성 분리하기]]></title><description><![CDATA[…]]></description><link>https://dallog.github.io/separated-interface/</link><guid isPermaLink="false">https://dallog.github.io/separated-interface/</guid><pubDate>Sun, 24 Jul 2022 15:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
 &lt;p&gt;이 글은 우테코 달록팀 크루 &apos;&lt;a href=&quot;https://github.com/hyeonic&quot;&gt;매트&lt;/a&gt;&apos;가 작성했습니다.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2&gt;외부와 의존성 분리하기&lt;/h2&gt;
@@ -245,7 +400,22 @@
     &lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h2&gt;References.&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;https://www.martinfowler.com/eaaCatalog/separatedInterface.htmlhttps://www.martinfowler.com/eaaCatalog/separatedInterface.html&quot;&gt;Separated Interface&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[EC2 환경에서 도커를 활용한 젠킨스 설치하기]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 후디가 작성했습니다. 안녕하세요, 우테코 달록팀 후디입니다. 이번 스프린트에서는 저는 배포와 CI/CD…]]></description><link>https://dallog.github.io/install-jenkins-with-docker-on-ec2/</link><guid isPermaLink="false">https://dallog.github.io/install-jenkins-with-docker-on-ec2/</guid><pubDate>Thu, 21 Jul 2022 00:15:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.martinfowler.com/eaaCatalog/separatedInterface.htmlhttps://www.martinfowler.com/eaaCatalog/separatedInterface.html&quot;&gt;Separated Interface&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[젠킨스를 사용한 달록팀의 지속적 배포 환경 구축기 (2) - 프론트엔드편]]></title><description><![CDATA[프론트엔드의 지속적 배포 과정도 백엔드와 크게 다른점이 없습니다. PR이 생성되고, 병합되고, 이 이벤트가 Webhook을 통해 젠킨스 서버에 전달됩니다. 젠킨스 서버는 Webpack…]]></description><link>https://dallog.github.io/continuous-deploy-with-jenkins-2-frontend/</link><guid isPermaLink="false">https://dallog.github.io/continuous-deploy-with-jenkins-2-frontend/</guid><pubDate>Sat, 23 Jul 2022 00:00:00 GMT</pubDate><content:encoded>&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/91e04a38c950370c6add24f7154e184c/42d3e/fe.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 45.294117647058826%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAJCAYAAAAywQxIAAAACXBIWXMAABYlAAAWJQFJUiTwAAABaklEQVQoz3VSS0vDQBDOX/fuyYuevYmgogdFwYsHqSDSqgRbiq22ia1tmqRJ9r2fs0ti66MfDJnszHzzDKy1cOKwrsvZG6BKrxuj6d3Udnr+HJCzhPO0xnzbHIKGpBGjlTfEZ9t4al2hMEQgJYQQXjQRvB9uIQzbqLQF5xy8trn4ABtQkeNFL0JaMXBWQBIxly6ZxTTLcUm2Bq42TkmN1giUUmCMUVuUeRzj/PoGZVkhjmPvPHx+xOnejtezokRRFhCMqtIc3cUI4XyI9+UMWmloR+jIkmTh2wq7fezuHyCjCkajEaKPCTrtDk6OjhGNx0iXBfkmyNIUkzzFw7SH+8kLBvl0RSjr+TgoKXxgsyBpLPqvA9y27jw5jcx3oihQWfxtmZb3Y4bZklqlQKUk3CiEkJD0lTQ7R8K58ISuCLcI5uXXUlanYhHlFr15nbWuxtbi9bXzav69mH/OxoFRBUle+eo2ofHdZPsC8ji4T1JhqTcAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;프론트엔드 지속적 배포 환경&apos; title=&apos;프론트엔드 지속적 배포 환경&apos; src=&apos;/static/91e04a38c950370c6add24f7154e184c/ca1dc/fe.png&apos; srcset=&apos;/static/91e04a38c950370c6add24f7154e184c/e7570/fe.png 170w,
+/static/91e04a38c950370c6add24f7154e184c/f46e7/fe.png 340w,
+/static/91e04a38c950370c6add24f7154e184c/ca1dc/fe.png 680w,
+/static/91e04a38c950370c6add24f7154e184c/02d09/fe.png 1020w,
+/static/91e04a38c950370c6add24f7154e184c/9d567/fe.png 1360w,
+/static/91e04a38c950370c6add24f7154e184c/42d3e/fe.png 2314w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;프론트엔드 지속적 배포 환경&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;프론트엔드의 지속적 배포 과정도 백엔드와 크게 다른점이 없습니다. PR이 생성되고, 병합되고, 이 이벤트가 Webhook을 통해 젠킨스 서버에 전달됩니다.&lt;/p&gt;
+&lt;p&gt;젠킨스 서버는 Webpack을 이용하여 리액트 프로젝트를 빌드하고, &lt;code class=&quot;language-text&quot;&gt;index.html&lt;/code&gt;과 &lt;code class=&quot;language-text&quot;&gt;bundle.js&lt;/code&gt;를 생성합니다. 달록의 프론트엔드 EC2 인스턴스에는 &lt;strong&gt;NGINX가 도커 컨테이너&lt;/strong&gt;로 띄워져 있는데요, 생성된 정적파일은 이 NGINX 디렉토리로 전송됩니다.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[EC2 환경에서 도커를 활용한 젠킨스 설치하기]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 후디가 작성했습니다. 안녕하세요, 우테코 달록팀 후디입니다. 이번 스프린트에서는 저는 배포와 CI/CD…]]></description><link>https://dallog.github.io/install-jenkins-with-docker-on-ec2/</link><guid isPermaLink="false">https://dallog.github.io/install-jenkins-with-docker-on-ec2/</guid><pubDate>Thu, 21 Jul 2022 00:15:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
 &lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/devHudi&quot;&gt;후디&lt;/a&gt;가 작성했습니다.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;안녕하세요, 우테코 달록팀 후디입니다. 이번 스프린트에서는 저는 배포와 CI/CD와 같이 인프라와 관련된 태스크에 집중하고 있습니다.&lt;/p&gt;
@@ -424,7 +594,7 @@ $ &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt
 $ &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token assign-left variable&quot;&gt;GOOGLE_REDIRECT_URI&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;XXXXX&quot;&lt;/span&gt;
 $ &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token assign-left variable&quot;&gt;GOOGLE_TOKEN_URI&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;XXXXX&quot;&lt;/span&gt;
 $ &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token assign-left variable&quot;&gt;JWT_SECRET_KEY&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;XXXXX&quot;&lt;/span&gt;
-$ &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token assign-left variable&quot;&gt;JWT_EXPIRE_LENGTH&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;3600&lt;/span&gt;
+$ &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token assign-left variable&quot;&gt;JWT_EXPIRE_LENGTH&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;86400000&lt;/span&gt;
 
 &lt;span class=&quot;token punctuation&quot;&gt;..&lt;/span&gt;.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h3&gt;5. 드디어 실행&lt;/h3&gt;
