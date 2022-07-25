@@ -1,7 +1,7 @@
 ---
 title: "MockMvc를 사용한 Spring RestDocs"
-date: 2022-07-18 00:00:00
-update: 2022-07-18 00:00:00
+date: 2022-07-26 00:00:00
+update: 2022-07-26 00:00:00
 tags:
   - Spring
   - Rest API
