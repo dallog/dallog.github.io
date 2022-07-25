@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 25 Jul 2022 12:51:31 GMT</lastBuildDate><item><title><![CDATA[젠킨스를 사용한 달록팀의 지속적 배포 환경 구축기 (2) - 프론트엔드편]]></title><description><![CDATA[…]]></description><link>https://dallog.github.io/continuous-deploy-with-jenkins-2-frontend/</link><guid isPermaLink="false">https://dallog.github.io/continuous-deploy-with-jenkins-2-frontend/</guid><pubDate>Sun, 24 Jul 2022 18:30:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 25 Jul 2022 12:55:39 GMT</lastBuildDate><item><title><![CDATA[젠킨스를 사용한 달록팀의 지속적 배포 환경 구축기 (2) - 프론트엔드편]]></title><description><![CDATA[…]]></description><link>https://dallog.github.io/continuous-deploy-with-jenkins-2-frontend/</link><guid isPermaLink="false">https://dallog.github.io/continuous-deploy-with-jenkins-2-frontend/</guid><pubDate>Sun, 24 Jul 2022 18:30:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
 &lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/devHudi&quot;&gt;후디&lt;/a&gt;가 작성했습니다.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;안녕하세요, 우테코 달록팀 후디입니다. 바로 &lt;a href=&quot;https://dallog.github.io/continuous-deploy-with-jenkins-1-backend/&quot;&gt;직전 포스팅&lt;/a&gt;으로 달록팀 백엔드의 배포 환경과 지속적 배포 환경을 구축한 방법을 소개해드렸었죠. 이번 포스팅에서는 프론트엔드의 배포 환경과 지속적 배포 환경 구성을 소개해드리려고 합니다. 바로 시작할까요?&lt;/p&gt;
@@ -657,7 +657,168 @@ $ &lt;span class=&quot;token function&quot;&gt;cat&lt;/span&gt; /var/jenkins_hom
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;System.setProperty(&apos;org.apache.commons.jelly.tags.fmt.timeZone&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;이후 대시보드에서 &lt;strong&gt;Jenkins 관리 &gt; Script Console&lt;/strong&gt; 에서 위의 스크립트를 입력하여 타임존을 서울로 설정하기만 하면, 젠킨스 기본 설정이 완료됩니다! 🎉&lt;/p&gt;
 &lt;h2&gt;마치며&lt;/h2&gt;
-&lt;p&gt;다음 포스팅에서는 달록이 젠킨스를 이용하여 어떻게 배포 자동화 프로세스를 구축하였는지 작성해보도록 하겠습니다. 많은 기대 부탁드립니다 🙏&lt;/p&gt;</content:encoded></item><item><title><![CDATA[쉘 스크립트와 함께하는 달록의 스프링부트 어플리케이션 배포 자동화]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 후디가 작성했습니다. 웹서비스 개발팀은 새롭게 개발한 서비스의 기능을 어떻게 사용자에게 전달할까요? 새로운 기능이 메인 브랜치에 병합될 때 마다 EC2 인스턴스에 접속하여 브랜치를 Pull…]]></description><link>https://dallog.github.io/deploy-automation-with-shell-script/</link><guid isPermaLink="false">https://dallog.github.io/deploy-automation-with-shell-script/</guid><pubDate>Tue, 19 Jul 2022 01:45:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;다음 포스팅에서는 달록이 젠킨스를 이용하여 어떻게 배포 자동화 프로세스를 구축하였는지 작성해보도록 하겠습니다. 많은 기대 부탁드립니다 🙏&lt;/p&gt;</content:encoded></item><item><title><![CDATA[JPA 작동 메커니즘]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 '리버'가 작성했습니다. 들어가기에 앞서 이전 포스팅에서 SQL 중심적인 개발의 문제점을 살펴보고 객체 중심적인 개발을 하기위한 JAVA의 JPA를 가볍게 언급해보았다. 그렇다면, JPA는 어떠한 매커니즘으로 JAVA…]]></description><link>https://dallog.github.io/mechanism-of-jpa/</link><guid isPermaLink="false">https://dallog.github.io/mechanism-of-jpa/</guid><pubDate>Wed, 20 Jul 2022 00:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;이 글은 우테코 달록팀 크루 &apos;&lt;a href=&quot;https://github.com/gudonghee2000&quot;&gt;리버&lt;/a&gt;&apos;가 작성했습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;들어가기에 앞서&lt;/h3&gt;
+&lt;p&gt;이전 포스팅에서 SQL 중심적인 개발의 문제점을 살펴보고 객체 중심적인 개발을 하기위한 JAVA의 JPA를 가볍게 언급해보았다.&lt;/p&gt;
+&lt;p&gt;그렇다면, JPA는 어떠한 매커니즘으로 JAVA에서 작동할까?
+이번 포스팅에서 JPA의 구동방식을 자세히 알아보자.  &lt;/p&gt;
+&lt;h3&gt;JPA 구동방식&lt;/h3&gt;
+&lt;p&gt;우선, 아래의 그림을 통해 JPA의 구동방식을 가볍게 살펴보자.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; margin-bottom: 16px;&apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/a03ffcc3f1c93248b7d90f632efc734b/64756/jpa-mechanism.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 56.470588235294116%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAIAAADwazoUAAAACXBIWXMAABJ0AAASdAHeZh94AAABG0lEQVQoz5VS2XLCMAzM/39gmSmQlBzQ0JDLxKdkV8JuKaEvaHZsj0ar1eFMiXqRRggxT5PRKrxiWbo9hIB8gg3e8yMBySOmYewv0zhc5zGg44BIvt04j8PhUJItVxHQBKdvUAyP/TC8bTbb3e7S90ngrkyZwLErIgSlVNM0PiqQVIBlHgkUyrX8Kt87AMP4zziYUqCbBdu6Z0A08uq0dIDPXIaT1IJUmopakf3l63z+PNFJ8PiHD9YqqeVijQajA9rHaXMPQHOqyo9jUym5pCHHeq1u27aq67o8zEMXEDzXb+mRyN6Zqizft9s8L45N7XlbP+J42x9actIIi6LY7/Ou6+LCshSB8LDb57bjOkgZHInFmOylL7VK/Q3CQoTKKFZc0gAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;jpa mechanism&apos; title=&apos;jpa mechanism&apos; src=&apos;/static/a03ffcc3f1c93248b7d90f632efc734b/ca1dc/jpa-mechanism.png&apos; srcset=&apos;/static/a03ffcc3f1c93248b7d90f632efc734b/e7570/jpa-mechanism.png 170w,
+/static/a03ffcc3f1c93248b7d90f632efc734b/f46e7/jpa-mechanism.png 340w,
+/static/a03ffcc3f1c93248b7d90f632efc734b/ca1dc/jpa-mechanism.png 680w,
+/static/a03ffcc3f1c93248b7d90f632efc734b/02d09/jpa-mechanism.png 1020w,
+/static/a03ffcc3f1c93248b7d90f632efc734b/64756/jpa-mechanism.png 1200w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;먼저, JPA는 Build 파일을 통해서 JPA 인터페이스를 구현할 &lt;strong&gt;구현체 클래스인&lt;/strong&gt; &lt;code class=&quot;language-text&quot;&gt;Persistence&lt;/code&gt; 생성한다.
+&lt;strong&gt;(JPA는 인터페이스이며 구현체로는 Hibernate, EclipseLink 등이 있음)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;그리고 생성한 &lt;code class=&quot;language-text&quot;&gt;Persistence&lt;/code&gt;로 &lt;code class=&quot;language-text&quot;&gt;META-INF/Persistence.xml&lt;/code&gt;라는 설정파일의 정보를 읽어서 &lt;code class=&quot;language-text&quot;&gt;EntityManagerFactory&lt;/code&gt;라는 클래스를 생성한다.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;EntityManagerFactory&lt;/code&gt;는 필요할때 마다 &lt;code class=&quot;language-text&quot;&gt;EntityManager&lt;/code&gt; 라는 클래스를 생성한다. &lt;/p&gt;
+&lt;p&gt;개발자는 &lt;code class=&quot;language-text&quot;&gt;EntityManager&lt;/code&gt;를 통해서 DB에 접근하고 CRUD 작업을 수행한다.&lt;/p&gt;
+&lt;p&gt;위와 같은 과정을 통해 JPA를 사용 할 수 있다.&lt;/p&gt;
+&lt;p&gt;그렇다면, &lt;code class=&quot;language-text&quot;&gt;Persistence.xml&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;EntityManagerFactory&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;EntityManager&lt;/code&gt;란 무엇일까?
+아래에서 자세히 살펴보자.&lt;/p&gt;
+&lt;h3&gt;Persistence.xml란?&lt;/h3&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;Persistence.xml&lt;/code&gt;은 JPA가 엑세스하려는 데이터베이스들에 대해 필요한 설정정보 들을 기술해둔 파일이다.
+JPA는 이 파일의 설정정보를 바탕으로 접근할 DB의 정보를 가져 올 수 있다.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;Persistence.xml&lt;/code&gt; 파일에 대해 아래 그림과 함께 자세히 살펴보자.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&amp;lt;persistence version=&quot;2.2&quot;
+ 	xmlns=&quot;http://xmlns.jcp.org/xml/ns/persistence&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xsi:schemaLocation=&quot;http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd&quot;&gt;
+	&amp;lt;persistence-unit name=&quot;hello&quot;&gt;
+ 		&amp;lt;properties&gt;
+ 			&amp;lt;!-- 필수 속성 --&gt;
+ 			&amp;lt;property name=&quot;javax.persistence.jdbc.driver&quot; value=&quot;org.h2.Driver&quot;/&gt;
+ 			&amp;lt;property name=&quot;javax.persistence.jdbc.user&quot; value=&quot;sa&quot;/&gt;
+ 			&amp;lt;property name=&quot;javax.persistence.jdbc.password&quot; value=&quot;&quot;/&gt;
+			&amp;lt;property name=&quot;javax.persistence.jdbc.url&quot; value=&quot;jdbc:h2:tcp://localhost/~/test&quot;/&gt;
+ 			&amp;lt;property name=&quot;hibernate.dialect&quot; value=&quot;org.hibernate.dialect.H2Dialect&quot;/&gt;
+
+ 			&amp;lt;!-- 옵션 --&gt;
+ 			&amp;lt;property name=&quot;hibernate.show_sql&quot; value=&quot;true&quot;/&gt;
+ 			&amp;lt;property name=&quot;hibernate.format_sql&quot; value=&quot;true&quot;/&gt;
+ 			&amp;lt;property name=&quot;hibernate.use_sql_comments&quot; value=&quot;true&quot;/&gt;
+ 			&amp;lt;!--&amp;lt;property name=&quot;hibernate.hbm2ddl.auto&quot; value=&quot;create&quot; /&gt;--&gt;
+ 		&amp;lt;/properties&gt;
+	&amp;lt;/persistence-unit&gt;
+&amp;lt;/persistence&gt; &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;첫번째로 &lt;code class=&quot;language-text&quot;&gt;&amp;lt;persistence version=&quot;2.2&quot; ...&gt;&lt;/code&gt;태그는 사용할 JPA의 버전과 버전에 대한 Persistence.XML 문서형식 링크를 담고 있다.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;&amp;lt;persistence-unit name=&quot;hello&quot;&gt;&lt;/code&gt;태그는 하나의 지속성 단위를 의미한다. 서술적으로 표현하면, &lt;code class=&quot;language-text&quot;&gt;hello&lt;/code&gt;라는 이름을 가지는 &lt;code class=&quot;language-text&quot;&gt;EntityManagerFactory&lt;/code&gt;를 하위 설정에 따라 만들것이라는 의미이다. &lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;&amp;lt;properties&gt;&lt;/code&gt;는 &lt;code class=&quot;language-text&quot;&gt;&amp;lt;persistence-unit&gt;&lt;/code&gt;이 엑세스할 DB의 정보와 추가적인 옵션 정보들을 담는다.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;&amp;lt;property&gt;&lt;/code&gt;는 옵션 정보를 하나씩 설정하는 부분이다.
+위 그림과 같이 &lt;code class=&quot;language-text&quot;&gt;필수 속성&lt;/code&gt; 부분은 엑세스할 DB에 대한 정보를 담는다.&lt;/p&gt;
+&lt;p&gt;추가로 &lt;code class=&quot;language-text&quot;&gt;옵션&lt;/code&gt; 부분을 하나씩 살펴보자.
+&lt;code class=&quot;language-text&quot;&gt;hibernate.show_sql&lt;/code&gt;는 DB에 날리는 쿼리문을 확인 할것인지에 대한 설정이다.
+&lt;code class=&quot;language-text&quot;&gt;hibernate.format_sql&lt;/code&gt;는 보여지는 쿼리문을 포맷팅하는 설정이다.
+&lt;code class=&quot;language-text&quot;&gt;hibernate.use_sql_comments&lt;/code&gt;는 추가적인 &lt;code class=&quot;language-text&quot;&gt;/* */&lt;/code&gt; 주석을 쿼리문에 보여주는 설정이다.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;hibernate.hbm2ddl.auto&lt;/code&gt; 는 데이터베이스 스키마 자동생성에 대한 설정이다.
+&lt;code class=&quot;language-text&quot;&gt;hibernate.hbm2ddl.auto&lt;/code&gt;가 가지는 옵션은 아래와 같다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;create: 기존 테이블 삭제 후 다시 생성 (DROP + CREATE)
+create-drop: create와 같으나 종료시점에 테이블 DROP
+update: 변경된 부분만 반영 (운영 DB에 사용하면 안됌)
+validate: entity와 table이 정상 매핑되었는지만 확인
+none: 사용하지 않음&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h4&gt;&lt;strong&gt;주의점❗&lt;/strong&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;create, create-drop, update는 운영 DB에 사용하면 안된다.&lt;br&gt;
+create, create-drop은 운영 DB의 데이터를 전체 삭제 시키기 때문이다.
+update는 아직 알아볼필요가있음&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;이제 설정파일을 통해 생성하는 &lt;code class=&quot;language-text&quot;&gt;EntityManagerFactory&lt;/code&gt;를 살펴보자.&lt;/p&gt;
+&lt;h3&gt;EntityManagerFactory란?&lt;/h3&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;EntityManagerFactory&lt;/code&gt;는 &lt;code class=&quot;language-text&quot;&gt;EntityManager&lt;/code&gt;(Entity를 관리하고 DB 관련작업을 수행 함)을 생성하는 일을한다.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;💡 &lt;code class=&quot;language-text&quot;&gt;Entity&lt;/code&gt; 는 DB 테이블에 대응하는 하나의 객체를 의미한다.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;우리는 &lt;code class=&quot;language-text&quot;&gt;Persistence.xml&lt;/code&gt; 설정정보를 통해서 &lt;code class=&quot;language-text&quot;&gt;EntityManagerFactory&lt;/code&gt;를 생성할수 있다.&lt;/p&gt;
+&lt;p&gt;아래의 예시코드로 살펴보자.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;JpaMain&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; args&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token class-name&quot;&gt;EntityManagerFactory&lt;/span&gt; emf &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; 
+        			&lt;span class=&quot;token class-name&quot;&gt;Persistence&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;createEntityManagerFactory&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;hello&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token comment&quot;&gt;// 파라미터로 Persistence.xml에 설정한 persistence-unit의 name 속성값을 넣는다.&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;전 장에서 설정했던 &lt;code class=&quot;language-text&quot;&gt;Persistence.xml&lt;/code&gt; 파일을 통해
+우리는 &lt;code class=&quot;language-text&quot;&gt;hello&lt;/code&gt;라는 이름을 가진 &lt;code class=&quot;language-text&quot;&gt;&amp;lt;persistence-unit&gt;&lt;/code&gt;이 어떤 DB에 엑세스 할 것인지에 대한 정보를 설정했었다.&lt;/p&gt;
+&lt;p&gt;위 코드가 바로 &lt;code class=&quot;language-text&quot;&gt;Persistence.xml&lt;/code&gt;에 작성한 Persistence Unit(지속성 단위)을 바탕으로 &lt;code class=&quot;language-text&quot;&gt;EntityManagerFactory&lt;/code&gt;를 생성하는 코드이다.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;EntityManagerFactory&lt;/code&gt;를 통해서 우리는 DB 관련 작업을 실제로 수행할 &lt;code class=&quot;language-text&quot;&gt;EntityManager&lt;/code&gt;를 생성 할 수 있다.&lt;/p&gt;
+&lt;h4&gt;🔎&lt;code class=&quot;language-text&quot;&gt;EntityManagerFactory&lt;/code&gt;가 가지는 특징&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;1. 엔티티 매니저 팩토리는 하나의 데이터베이스에 하나만 생성한다. (생성 비용이 비싸기 때문)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2. 엔티티 매니저 팩토리는 여러 스레드가 동시에 접근해도 안전하다.&lt;/strong&gt;&lt;/p&gt;
+&lt;h3&gt;EntityManager란?&lt;/h3&gt;
+&lt;p&gt;엔티티 매니저는 특정 작업을 위해 데이터베이스에 액세스 하는 역할을 한다.
+또한 엔티티를 데이터베이스에 CRUD 할 수 있다.
+즉, 엔티티와 관련된 모든 일을 처리하기에 이름 그대로 엔티티를 관리하는 관리자다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;JpaMain&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; args&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token class-name&quot;&gt;EntityManagerFactory&lt;/span&gt; emf &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; 
+        			&lt;span class=&quot;token class-name&quot;&gt;Persistence&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;createEntityManagerFactory&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;hello&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token comment&quot;&gt;// 파라미터로 Persistence.xml에 설정한 persistence-unit의 name 속성값을 넣는다.&lt;/span&gt;
+        
+        &lt;span class=&quot;token class-name&quot;&gt;EntityManager&lt;/span&gt; em &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; emf&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;createEntityManager&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;위와 같이 &lt;code class=&quot;language-text&quot;&gt;EntityManagerFactory&lt;/code&gt;를 통해서 &lt;code class=&quot;language-text&quot;&gt;EntityManager&lt;/code&gt;를 생성 할 수 있다.&lt;/p&gt;
+&lt;h4&gt;🔎&lt;code class=&quot;language-text&quot;&gt;EntityManager&lt;/code&gt;가 가지는 특징&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;1. 엔티티 매니저는 DB connection과 밀접한 관계가 있기 때문에, 스레드 간에 공유하거나 재사용하면 안된다.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;2. 엔티티 매니저의 CRUD 작업은 트랜잭션 단위로 처리 해야한다.&lt;/strong&gt;&lt;/p&gt;
+&lt;h4&gt;&lt;strong&gt;주의점❗&lt;/strong&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;strong&gt;EntityManager의 작업은 트랜잭션 단위로 진행되어야한다.
+왜냐하면, CRUD 작업을 수행하다가 중간에 문제가 발생하는 경우 트랜잭션 이전의 상태로 돌아가야 하기 때문이다.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;마지막으로 코드를 통해 &lt;code class=&quot;language-text&quot;&gt;EntityManagerFactory&lt;/code&gt; 생성부터 DB에 엔티티의 데이터를 저장하는 과정을 살펴보자.&lt;/p&gt;
+&lt;h3&gt;JPA의 구동과정&lt;/h3&gt;
+&lt;p&gt;JAVA 코드상에서 &lt;code class=&quot;language-text&quot;&gt;JPA&lt;/code&gt;를 통해 데이터를 DB에 저장하는 과정은 아래와 같다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;JpaMain&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; args&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token class-name&quot;&gt;EntityManagerFactory&lt;/span&gt; emf &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; 
+        			&lt;span class=&quot;token class-name&quot;&gt;Persistence&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;createEntityManagerFactory&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;hello&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; 
+                    &lt;span class=&quot;token comment&quot;&gt;// 엔티티 매니저 팩토리 생성&lt;/span&gt;
+        &lt;span class=&quot;token class-name&quot;&gt;EntityManager&lt;/span&gt; em &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; emf&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;createEntityManager&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 엔티티 매니저 생성&lt;/span&gt;
+        
+        &lt;span class=&quot;token class-name&quot;&gt;EntityTransaction&lt;/span&gt; tx &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; em&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;getTransaction&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 트랜잭션 생성&lt;/span&gt;
+        tx&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;begin&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 트랜잭션 시작&lt;/span&gt;
+
+        &lt;span class=&quot;token keyword&quot;&gt;try&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        	&lt;span class=&quot;token class-name&quot;&gt;Member&lt;/span&gt; member &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Member&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 멤버 엔티티 생성&lt;/span&gt;
+            member&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;setId&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;100L&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+            member&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;setName&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;JPA&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+            
+            em&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;persist&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;member&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 멤버 엔티티 데이터를 저장&lt;/span&gt;
+        
+            tx&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;commit&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 트랜잭션 커밋&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;catch&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;Exception&lt;/span&gt; e&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            tx&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;rollback&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 트랜잭션 롤백&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;finally&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            em&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 엔티티 매니저 연결 종료&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+        emf&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;close&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ol&gt;
+&lt;li&gt;Persistence.xml 설정파일의 Persistence Unit을 통해 엔티티 매니저 팩토리를 생성한다.&lt;/li&gt;
+&lt;li&gt;엔티티 매니저 팩토리로 엔티티 매니저를 생성한다. &lt;/li&gt;
+&lt;li&gt;엔티티 매니저에 대한 트랜잭션을 생성한다.&lt;/li&gt;
+&lt;li&gt;트랜잭션을 시작한다.&lt;/li&gt;
+&lt;li&gt;DB에 저장할 멤버 엔티티를 생성한다.&lt;/li&gt;
+&lt;li&gt;em.persist(member)를 통해 엔티티 데이터를 저장한다.&lt;/li&gt;
+&lt;li&gt;트랜잭션을 커밋한다.&lt;/li&gt;
+&lt;li&gt;엔티티 매니저를 닫는다.&lt;/li&gt;
+&lt;li&gt;엔티티 매니저 팩토리를 닫는다.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;위와 같은 과정을 통해 DB에 데이터를 저장 할 수 있다.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;em.persist()&lt;/code&gt; 메서드는 파라미터로 들어온 엔티티에 대한 insert 쿼리문을 JPA가 작성하여 DB에 엔티티의 데이터를 저장하는 메서드이다.&lt;/p&gt;
+&lt;p&gt;얼핏 보면, &lt;code class=&quot;language-text&quot;&gt;em.persist(member)&lt;/code&gt;를 실행할때 데이터가 바로 DB에 저장 될 것 같다.&lt;/p&gt;
+&lt;p&gt;하지만 실제로는 &lt;code class=&quot;language-text&quot;&gt;Member&lt;/code&gt; 엔티티가 &lt;code class=&quot;language-text&quot;&gt;EntityManager&lt;/code&gt;의 영속 컨텍스트라는 공간에 저장되고 트랜잭션이 커밋되는 시점에 DB에 &lt;code class=&quot;language-text&quot;&gt;Member&lt;/code&gt; 엔티티에 대한 insert 쿼리문이 날라간다.&lt;/p&gt;
+&lt;p&gt;왜 바로, DB에 데이터를 저장하지 않고 영속 컨텍스트에 데이터를 저장할까? 다음 포스팅에서 알아보자.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[쉘 스크립트와 함께하는 달록의 스프링부트 어플리케이션 배포 자동화]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 후디가 작성했습니다. 웹서비스 개발팀은 새롭게 개발한 서비스의 기능을 어떻게 사용자에게 전달할까요? 새로운 기능이 메인 브랜치에 병합될 때 마다 EC2 인스턴스에 접속하여 브랜치를 Pull…]]></description><link>https://dallog.github.io/deploy-automation-with-shell-script/</link><guid isPermaLink="false">https://dallog.github.io/deploy-automation-with-shell-script/</guid><pubDate>Tue, 19 Jul 2022 01:45:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
 &lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/devHudi&quot;&gt;후디&lt;/a&gt;가 작성했습니다.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;웹서비스 개발팀은 새롭게 개발한 서비스의 기능을 어떻게 사용자에게 전달할까요? 새로운 기능이 메인 브랜치에 병합될 때 마다 EC2 인스턴스에 접속하여 브랜치를 Pull 하고, 프로젝트를 빌드하고, 현재 동작중인 어플리케이션의 프로세스를 종료하고, 새롭게 빌드된 어플리케이션의 프로세스를 띄우는 과정...&lt;/p&gt;

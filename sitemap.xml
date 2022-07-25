@@ -9,11 +9,13 @@
 <url> <loc>https://dallog.github.io/data-jpa-slice-page/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/data-jpa-auditing/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/deploy-automation-with-shell-script/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://dallog.github.io/mechanism-of-jpa/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/install-jenkins-with-docker-on-ec2/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/separated-interface/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/continuous-deploy-with-jenkins-1-backend/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/continuous-deploy-with-jenkins-2-frontend/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/series/달록팀-CI/CD-이야기</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://dallog.github.io/series/JPA-시리즈</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/search/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/series/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
