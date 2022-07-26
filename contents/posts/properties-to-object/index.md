@@ -69,14 +69,13 @@ spring:
 @ConfigurationProperties(prefix = "spring.datasource")
 public class DataSourceProperties implements BeanClassLoaderAware, InitializingBean {
 	
-  private ClassLoader classLoader;
-
-	private boolean generateUniqueName = true;
+    private ClassLoader classLoader;
+    private boolean generateUniqueName = true;
 	private String name;
 	private Class<? extends DataSource> type;
 	private String driverClassName;
 	private String url;
-  ...
+    ...
 }
 ```
 
