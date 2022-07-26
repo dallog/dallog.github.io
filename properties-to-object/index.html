@@ -199,14 +199,13 @@ data-styled.g66[id="Footer__HiddenWrapper-sc-zqxmks-9"]{content:"iyImhS,iqspNU,"
 <div class="gatsby-highlight" data-language="java"><pre class="language-java"><code class="language-java"><span class="token annotation punctuation">@ConfigurationProperties</span><span class="token punctuation">(</span>prefix <span class="token operator">=</span> <span class="token string">"spring.datasource"</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DataSourceProperties</span> <span class="token keyword">implements</span> <span class="token class-name">BeanClassLoaderAware</span><span class="token punctuation">,</span> <span class="token class-name">InitializingBean</span> <span class="token punctuation">{</span>
 	
-  <span class="token keyword">private</span> <span class="token class-name">ClassLoader</span> classLoader<span class="token punctuation">;</span>
-
-	<span class="token keyword">private</span> <span class="token keyword">boolean</span> generateUniqueName <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">ClassLoader</span> classLoader<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">boolean</span> generateUniqueName <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
 	<span class="token keyword">private</span> <span class="token class-name">String</span> name<span class="token punctuation">;</span>
 	<span class="token keyword">private</span> <span class="token class-name">Class</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">DataSource</span><span class="token punctuation">></span></span> type<span class="token punctuation">;</span>
 	<span class="token keyword">private</span> <span class="token class-name">String</span> driverClassName<span class="token punctuation">;</span>
 	<span class="token keyword">private</span> <span class="token class-name">String</span> url<span class="token punctuation">;</span>
-  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
 <span class="token punctuation">}</span></code></pre></div>
 <p>위 <code class="language-text">DataSourceProperties</code>는 우리가 <code class="language-text">application.yml</code>에 작성한 설정 정보를 기반으로 객체로 추출하고 있다. 이것은 Spring Boot의 자동설정으로 <code class="language-text">DataSource</code>가 빈으로 주입되는 시점에 설정 정보를 활용하여 생성된다. </p>
 <p>간단히 디버깅을 진행해보면 Bean이 주입되는 시점에 아래와 같이 <code class="language-text">application.yml</code>에 명시한 값들을 추출한 <code class="language-text">DataSourceProperties</code>를 기반으로 생성하고 있다.</p>
