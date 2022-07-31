@@ -1,4 +1,135 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Sat, 30 Jul 2022 09:35:12 GMT</lastBuildDate><item><title><![CDATA[NGINX 란?]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 '리버'가 작성했습니다. 글을 쓰게 된 계기 우테코 레벨3 프로젝트를 진행하면서, HTTPS 통신을 적용하기 위해 NGINX에 대한 이해가 필요했다.
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 31 Jul 2022 08:12:54 GMT</lastBuildDate><item><title><![CDATA[SSL을 통한 HTTPS통신 과정]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 '리버'가 작성했습니다. 글을 쓰게 된 계기 우아한테크코스 레벨3 프로젝트를 진행하면서 클라이언트와 서버의 통신에 SSL 인증서를 적용하여 HTTPS 통신을 하도록 하였다.
+HTTPS…]]></description><link>https://dallog.github.io/ssl_protocol/</link><guid isPermaLink="false">https://dallog.github.io/ssl_protocol/</guid><pubDate>Sun, 31 Jul 2022 16:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;이 글은 우테코 달록팀 크루 &apos;&lt;a href=&quot;https://github.com/gudonghee2000&quot;&gt;리버&lt;/a&gt;&apos;가 작성했습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;글을 쓰게 된 계기&lt;/h2&gt;
+&lt;p&gt;우아한테크코스 레벨3 프로젝트를 진행하면서 클라이언트와 서버의 통신에 SSL 인증서를 적용하여 HTTPS 통신을 하도록 하였다.
+HTTPS의 통신과정에 대한 이해를 공유하기 위해 글을 작성하고자 한다.&lt;/p&gt;
+&lt;h2&gt;HTTPS&lt;/h2&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;HTTPS&lt;/code&gt;는 SSL(Secure Sokect Layer) 위에 &lt;code class=&quot;language-text&quot;&gt;HTTP&lt;/code&gt;를 얹어서 보안이 보장된 통신을 하고자하는 프로토콜이다.&lt;/p&gt;
+&lt;h2&gt;SSL 인증서&lt;/h2&gt;
+&lt;p&gt;클라이언트와 웹 서버간의 통신을 제3자가 보증해주는 전자문서이다.
+클라이언트가 서버에 접속한 직후에 서버는 클라이언트에게 &lt;code class=&quot;language-text&quot;&gt;SLL 인증서&lt;/code&gt;를 전달한다.
+클라이언트는 신뢰 할 수 있는 인증서인지 검증한 후 서버와 통신을 진행한다.
+(밑에서 자세히 설명)&lt;/p&gt;
+&lt;h2&gt;SSL 인증서 사용이유&lt;/h2&gt;
+&lt;p&gt;왜 HTTP 통신에 굳이 SSL 인증 과정을 붙혓을까? 이유는 다음과 같다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;통신 내용이 악의적인 목적을 가진 사람에게 노출되는 것 을 막을 수 있다.&lt;/li&gt;
+&lt;li&gt;클라이언트가 접속하는 서버가 신뢰할 수 있는 서버인지 판단 할 수 있다.&lt;/li&gt;
+&lt;li&gt;통신 내용의 악의적인 변경을 방지 할 수 있다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;SSL 통신과정은 꽤나 복잡하다.
+그래서 SSL 프로토콜을 이해하려면 우선 &lt;code class=&quot;language-text&quot;&gt;암호화/복호화&lt;/code&gt;와 &lt;code class=&quot;language-text&quot;&gt;키(대칭키, 공개키)&lt;/code&gt;에 대해 이해할 필요가 있다.&lt;/p&gt;
+&lt;h2&gt;암호화, 복호화, 키&lt;/h2&gt;
+&lt;p&gt;어떤 정보를 외부에 노출시키지 않기 위해 변형하는 것을 &lt;code class=&quot;language-text&quot;&gt;암호화&lt;/code&gt; 라고한다.
+반대로 암호화된 데이터를 원본으로 복원하는것을 &lt;code class=&quot;language-text&quot;&gt;복호화&lt;/code&gt;라고 한다.
+암호화와 복호화에서 데이터 변형을 위해 사용하는것을 &lt;code class=&quot;language-text&quot;&gt;키&lt;/code&gt;라고 한다.&lt;/p&gt;
+&lt;p&gt;이렇게 키를 사용하여 &lt;code class=&quot;language-text&quot;&gt;암호화/복호화&lt;/code&gt; 하는 방식에는 &lt;code class=&quot;language-text&quot;&gt;대칭키 방식&lt;/code&gt;과 &lt;code class=&quot;language-text&quot;&gt;공개키 방식&lt;/code&gt;이 있다.
+두 방식 모두 &lt;code class=&quot;language-text&quot;&gt;SSL 통신&lt;/code&gt;에 사용되기 때문에 이해할 필요가 있다.&lt;/p&gt;
+&lt;h2&gt;대칭키 방식&lt;/h2&gt;
+&lt;p&gt;대칭키는 동일한 키로 &lt;code class=&quot;language-text&quot;&gt;암호화&lt;/code&gt;와 &lt;code class=&quot;language-text&quot;&gt;복호화&lt;/code&gt;를 같이 할 수 잇는 방식의 암호화 기법을 의미한다.
+&lt;code class=&quot;language-text&quot;&gt;암호화&lt;/code&gt;와 &lt;code class=&quot;language-text&quot;&gt;복호화&lt;/code&gt;를 위해 양쪽이 같은 키를 가져야 한다는 점에서 이 키를 &lt;code class=&quot;language-text&quot;&gt;대칭키&lt;/code&gt;라고 한다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://velog.velcdn.com/images/gudonghee2000/post/01b1f9b4-66ed-46d6-87d4-b18948611b80/image.JPG&quot;&gt;&lt;/p&gt;
+&lt;p&gt;전쟁상황을 가정해서 살펴보자. &lt;code class=&quot;language-text&quot;&gt;A진영&lt;/code&gt;과 &lt;code class=&quot;language-text&quot;&gt;B진영&lt;/code&gt;이 전쟁 중일 때, 적군에게 정보를 노출하지 않으려면 &lt;code class=&quot;language-text&quot;&gt;서로 같은 키(대칭키)&lt;/code&gt;를 가지고 정보를 암호화 해서 전달 할 수 있을 것이다.&lt;/p&gt;
+&lt;p&gt;그런데, &lt;code class=&quot;language-text&quot;&gt;대칭키&lt;/code&gt;는 하나의 큰 단점을 가진다. 바로 &lt;code class=&quot;language-text&quot;&gt;대칭키&lt;/code&gt;를 &lt;code class=&quot;language-text&quot;&gt;A진영&lt;/code&gt;에서 &lt;code class=&quot;language-text&quot;&gt;B진영&lt;/code&gt; 또는 &lt;code class=&quot;language-text&quot;&gt;B진영&lt;/code&gt;에서 &lt;code class=&quot;language-text&quot;&gt;A진영&lt;/code&gt;으로 전달 할 때,
+&lt;code class=&quot;language-text&quot;&gt;대칭키&lt;/code&gt;가 탈취 된다면 적군도 정보를 복호화 할 수 있다는 것이다.&lt;/p&gt;
+&lt;p&gt;이런 배경에서 나온 암호화 방식이 &lt;code class=&quot;language-text&quot;&gt;공개키 방식&lt;/code&gt;이다.&lt;/p&gt;
+&lt;h2&gt;공개키 방식&lt;/h2&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;공개키&lt;/code&gt;는 키가 두개가 있다.
+A키로 암호화 하면 B키로 복호화 할 수 있고 B키로 암호화 하면 A키로 복호화 하는 방식이다.&lt;/p&gt;
+&lt;p&gt;이 방식에 착안해서 두개의 키 중 하나를 공개키, 하나를 비공개 키로 지정한다. &lt;/p&gt;
+&lt;p&gt;그림을 통해 자세히 살펴보자.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://velog.velcdn.com/images/gudonghee2000/post/58d5be37-7ee5-4d8f-aacb-8ea66c23ecda/image.JPG&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;A진영&lt;/code&gt;은 &lt;code class=&quot;language-text&quot;&gt;공개키&lt;/code&gt;를 &lt;code class=&quot;language-text&quot;&gt;B진영&lt;/code&gt;에게 전달한다.
+그리고 &lt;code class=&quot;language-text&quot;&gt;B진영&lt;/code&gt;은 &lt;code class=&quot;language-text&quot;&gt;A진영&lt;/code&gt;의 &lt;code class=&quot;language-text&quot;&gt;공개키&lt;/code&gt;를 통해 정보를 암호화 한 후 &lt;code class=&quot;language-text&quot;&gt;A진영&lt;/code&gt;에 전달한다.
+&lt;code class=&quot;language-text&quot;&gt;A진영&lt;/code&gt;은 &lt;code class=&quot;language-text&quot;&gt;비공개키&lt;/code&gt;를 통해 전달 받은 정보를 복호화한다.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;A진영&lt;/code&gt;의 공개키가 탈취되거나 &lt;code class=&quot;language-text&quot;&gt;B진영&lt;/code&gt;이 전달한 정보가 탈취되어도 &lt;code class=&quot;language-text&quot;&gt;비공개키&lt;/code&gt;가 없으면 복호화가 불가능 하기 때문에 &lt;code class=&quot;language-text&quot;&gt;대칭키 방식&lt;/code&gt;의 단점을 극복 할 수 있다.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;공개키 방식&lt;/code&gt;은 이렇게 응용 할 수 있다.
+&lt;code class=&quot;language-text&quot;&gt;A진영&lt;/code&gt;이 &lt;code class=&quot;language-text&quot;&gt;비공개키&lt;/code&gt;를 이용해서 정보를 암호화 한 후에 공개키와 함께 암호화된 정보를 &lt;code class=&quot;language-text&quot;&gt;B진영&lt;/code&gt;에 전달한다.&lt;/p&gt;
+&lt;p&gt;그런데, 이런 응용방식은 중간에 &lt;code class=&quot;language-text&quot;&gt;공개키&lt;/code&gt;와 &lt;code class=&quot;language-text&quot;&gt;암호화된 정보&lt;/code&gt;를 탈취 당하면 적군에게 정보를 노출 당할 수 있는 문제를 가져온다.&lt;/p&gt;
+&lt;p&gt;그런데 &lt;code class=&quot;language-text&quot;&gt;SSL 통신&lt;/code&gt;에서는 이런 응용방식을 사용한다. 그 이유가 무엇일까?&lt;/p&gt;
+&lt;h2&gt;SSL 통신이 공개키 응용방식을 사용하는 이유&lt;/h2&gt;
+&lt;p&gt;그 이유는 &lt;code class=&quot;language-text&quot;&gt;공개키 응용방식&lt;/code&gt;이 데이터 보호 목적이 아니기 때문이다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://velog.velcdn.com/images/gudonghee2000/post/bdfe5ab8-c202-4d3a-bd6a-34b1e46b37c3/image.JPG&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;A진영&lt;/code&gt;이 전달한 정보를 &lt;code class=&quot;language-text&quot;&gt;A진영의 공개키&lt;/code&gt;로 복호화 할 수 있다면, 정보가 &lt;code class=&quot;language-text&quot;&gt;A진영&lt;/code&gt;이 전달한 정보임을 신뢰 할 수 있다.&lt;/p&gt;
+&lt;p&gt;즉, 공개키가 정보를 전달한 사람의 신원을 보장해주는 것이다. 이것을 전자 서명이라고 하고 &lt;code class=&quot;language-text&quot;&gt;SSL 통신&lt;/code&gt;에서 서버의 신원 확인을 위해 사용한다.&lt;/p&gt;
+&lt;h2&gt;SSL 용어 정리&lt;/h2&gt;
+&lt;p&gt;이제 SSL 통신에 사용되는 &lt;code class=&quot;language-text&quot;&gt;대칭키 방식&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;공개키 방식&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;공개키 응용방식&lt;/code&gt;을 살펴보았으니 SSL을 통한 통신에 대해 자세히 살펴보자.
+우선, SSL과 관련된 용어를 정리해보자.&lt;/p&gt;
+&lt;h3&gt;CA&lt;/h3&gt;
+&lt;p&gt;SSL 인증서의 역할은 클라이언트가 접속한 서버가 클라이언트가 의도한 서버가 맞는지를 보장하는 역할을 한다.
+이 역할을 하는 민간기업들이 있는데 이런 기업들을 &lt;code class=&quot;language-text&quot;&gt;CA(Certificate authority)&lt;/code&gt; 라고한다.&lt;/p&gt;
+&lt;h3&gt;SSL 인증서 내용&lt;/h3&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;SSL 인증서&lt;/code&gt;에는 다음과 같은 정보가 포함되어 있다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;서비스의 정보 (인증서를 발급한 CA, 서비스의 도메인 등등)&lt;/li&gt;
+&lt;li&gt;서버 측 공개키 (공개키의 내용, 공개키의 암호화 방법)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;SSL 통신 과정&lt;/h2&gt;
+&lt;p&gt;이제 &lt;code class=&quot;language-text&quot;&gt;키를 사용한 3가지 통신 방법&lt;/code&gt;을 살펴보았으니 SSL 통신과정을 이해해보자.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;SSL 통신과정&lt;/code&gt;에서 가장 이상적인 방법은 &lt;code class=&quot;language-text&quot;&gt;공개키 방식&lt;/code&gt;이다.(공개키 응용방식 아님)
+&lt;img src=&quot;https://velog.velcdn.com/images/gudonghee2000/post/b528a5c7-9515-4a8b-a4d8-f1341abf57d2/image.JPG&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;클라이언트&lt;/code&gt;와 &lt;code class=&quot;language-text&quot;&gt;서버&lt;/code&gt;는 각각의 &lt;code class=&quot;language-text&quot;&gt;비공개키, 공개키&lt;/code&gt;를 가지고
+자신의 &lt;code class=&quot;language-text&quot;&gt;공개키&lt;/code&gt;를 서로에게 전달한다. 이때, &lt;code class=&quot;language-text&quot;&gt;공개키&lt;/code&gt;는 탈취되어도 &lt;code class=&quot;language-text&quot;&gt;비공개키&lt;/code&gt;가 없으면 복호화가 불가능하기 때문에 보안에 취약점이 없다.&lt;/p&gt;
+&lt;p&gt;그리고, &lt;code class=&quot;language-text&quot;&gt;클라이언트&lt;/code&gt;는 &lt;code class=&quot;language-text&quot;&gt;서버&lt;/code&gt;의 &lt;code class=&quot;language-text&quot;&gt;공개키&lt;/code&gt;로 정보를 암호화 해서 전달하고 &lt;code class=&quot;language-text&quot;&gt;서버&lt;/code&gt;는 전달 받은 정보를 자신의 &lt;code class=&quot;language-text&quot;&gt;비공개키(서버 비공개키)&lt;/code&gt;로 복호화한 뒤 정보를 처리한다.&lt;/p&gt;
+&lt;p&gt;마지막으로 &lt;code class=&quot;language-text&quot;&gt;서버&lt;/code&gt;는 &lt;code class=&quot;language-text&quot;&gt;클라이언트의 공개키&lt;/code&gt;로 응답해줄 정보를 암호화해서 다시 클라이언트에게 전달한다.&lt;/p&gt;
+&lt;p&gt;그런데, &lt;code class=&quot;language-text&quot;&gt;공개키 방식&lt;/code&gt;은 컴퓨팅 파워를 많이 쓴다고한다.(컴퓨팅 파워를 많이쓰는 정확한 이유는 모름) 그래서 성능측면에서 비효율적이다.&lt;/p&gt;
+&lt;p&gt;결론적으로, &lt;code class=&quot;language-text&quot;&gt;SSL 통신&lt;/code&gt;은 &lt;code class=&quot;language-text&quot;&gt;공개키 방식 + 대칭키 방식&lt;/code&gt;을 사용하여 보안과성능 두가지 측면을 보장한다.&lt;/p&gt;
+&lt;p&gt;이제 SSL 통신과정을 천천히 자세하게 살펴보자.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;HandShake -&gt; 통신 -&gt; 통신종료&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;간단하게, SSL 통신은 위 세가지 과정으로 이루어진다.
+순서대로 하나씩 살펴보자.&lt;/p&gt;
+&lt;h3&gt;HandShake(악수)&lt;/h3&gt;
+&lt;p&gt;SSL 통신은 데이터를 주고 받기전에 &lt;code class=&quot;language-text&quot;&gt;어떻게 데이터를 암호화 할지&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;믿을 만한 서버인지&lt;/code&gt; 등에 대해 이 과정에서 확인한다.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;클라이언트가 서버에 접속한다. 이 단계를 &lt;code class=&quot;language-text&quot;&gt;Client Hello&lt;/code&gt;라고 한다. 이 단계에서 주고 받는 정보는 아래와 같다.&lt;/li&gt;
+&lt;li&gt;클라이언트 측에서 생성한 &lt;code class=&quot;language-text&quot;&gt;랜덤 데이터&lt;/code&gt; (밑에서 설명)&lt;/li&gt;
+&lt;li&gt;클라이언트가 지원하는 암호화 방식들 =&gt; 클라이언트가 가능한 암호화 방식을 서버에 알려주기 위함&lt;/li&gt;
+&lt;li&gt;서버는 &lt;code class=&quot;language-text&quot;&gt;Client Hello&lt;/code&gt;에 대한 응답으로 &lt;code class=&quot;language-text&quot;&gt;Server Hello&lt;/code&gt;를 하게 된다. 이 단계에서 주고 받는 정보는 아래와 같다.&lt;/li&gt;
+&lt;li&gt;서버 측에서 생성한 랜덤 데이터 (밑에서 설명)&lt;/li&gt;
+&lt;li&gt;서버가 선택한 클라이언트의 암호화 방식 =&gt; 선택한 암호화 방식을 클라이언트에게 알려주기 위함&lt;/li&gt;
+&lt;li&gt;인증서&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;클라이언트&lt;/code&gt;는 &lt;code class=&quot;language-text&quot;&gt;서버의 인증서&lt;/code&gt;가 &lt;code class=&quot;language-text&quot;&gt;CA&lt;/code&gt;에 의해 발급된 것인지 확인한다.
+이때, &lt;code class=&quot;language-text&quot;&gt;클라이언트&lt;/code&gt;에 내장된 &lt;code class=&quot;language-text&quot;&gt;CA리스트와 CA의 공개키&lt;/code&gt;를 사용해서 인증서를 복호화 한다. &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;  💡 참고
+위에서 말한 공개키 응용방식의 활용
+그리고, 클라이언트(브라우저)는 CA 종류와 CA의 공개키가 내장되있음&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;  성공적으로 인증서가 복호화 됬다면, &lt;code class=&quot;language-text&quot;&gt;서버&lt;/code&gt;가 전달한 인증서가 &lt;code class=&quot;language-text&quot;&gt;CA의 개인키&lt;/code&gt;로 암호화된 문서임이 보증된 것이다.
+**  즉, 올바른 서버임을 신뢰 할수 있게된다.**&lt;/p&gt;
+&lt;p&gt;  서버를 신뢰할수 있으므로 클라이언트는 &lt;code class=&quot;language-text&quot;&gt;서버가 생성한 랜덤 데이터&lt;/code&gt;와 &lt;code class=&quot;language-text&quot;&gt;클라이언트가 생성한 랜덤 데이터&lt;/code&gt;를 조합하여 &lt;code class=&quot;language-text&quot;&gt;pre master secret&lt;/code&gt;이라는 키를 생성한다. &lt;/p&gt;
+&lt;p&gt; 이때, &lt;code class=&quot;language-text&quot;&gt;pre master secret&lt;/code&gt;키는 대칭키 방식으로 사용 할 것이다.
+클라이언트와 서버가 동일하게 가지고 데이터를 암호화/복호화 하는데 사용한다는 것이다.&lt;/p&gt;
+&lt;p&gt; 그런데 대칭키 방식의 단점에서 살펴봤듯이 &lt;code class=&quot;language-text&quot;&gt;pre master secret&lt;/code&gt;를 그대로 서버에 전달하면 중간에 탈취당해 악용될수 있다.&lt;/p&gt;
+&lt;p&gt; 이때, 사용하는 방법이 &lt;code class=&quot;language-text&quot;&gt;공개키 방식&lt;/code&gt;이다.
+&lt;code class=&quot;language-text&quot;&gt;서버의 공개키(서버가 전달해준 인증서 내부에 들어있었음)&lt;/code&gt;로 &lt;code class=&quot;language-text&quot;&gt;pre master secret&lt;/code&gt;를 암호화해서 &lt;code class=&quot;language-text&quot;&gt;서버&lt;/code&gt;로 전송한다.&lt;/p&gt;
+&lt;ol start=&quot;4&quot;&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;서버&lt;/code&gt;는 자신의 비공개키를 통해 &lt;code class=&quot;language-text&quot;&gt;pre master secret&lt;/code&gt;를 복호화한다.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt; 이를 통해, 클라이언트와 서버는 안전하게 같은 &lt;code class=&quot;language-text&quot;&gt;pre master secret&lt;/code&gt;를 가진다.
+서버와 클라이언트는 일련의 과정을 통해 &lt;code class=&quot;language-text&quot;&gt;pre master secret&lt;/code&gt;을 &lt;code class=&quot;language-text&quot;&gt;master secret&lt;/code&gt;라는 &lt;code class=&quot;language-text&quot;&gt;session key&lt;/code&gt;를 생성한다.
+&lt;code class=&quot;language-text&quot;&gt;master secret&lt;/code&gt;은 실제로 클라이언트와 서버가 주고받는 데이터를 &lt;code class=&quot;language-text&quot;&gt;암호화/복호화&lt;/code&gt; 하는데 사용한다.&lt;/p&gt;
+&lt;ol start=&quot;5&quot;&gt;
+&lt;li&gt;클라이언트와 서버는 &lt;code class=&quot;language-text&quot;&gt;HandShake&lt;/code&gt;가 종료됬음을 서로에게 알린다.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;통신&lt;/h3&gt;
+&lt;p&gt;이제 &lt;code class=&quot;language-text&quot;&gt;master secret&lt;/code&gt;을 통해 &lt;code class=&quot;language-text&quot;&gt;클라이언트&lt;/code&gt;와 &lt;code class=&quot;language-text&quot;&gt;서버&lt;/code&gt;는 데이터를 &lt;code class=&quot;language-text&quot;&gt;암호화/복호화&lt;/code&gt;하면서 주고 받는다. &lt;/p&gt;
+&lt;h3&gt;통신종료&lt;/h3&gt;
+&lt;p&gt;데이터의 전송이 끝나면 SSL 통신이 끝났음을 서로에게 알려준다.
+그리고 사용한 대칭키인 &lt;code class=&quot;language-text&quot;&gt;master secret&lt;/code&gt;은 폐기한다.&lt;/p&gt;
+&lt;h2&gt;마치면서&lt;/h2&gt;
+&lt;p&gt;이상 SSL통신에 대해서 자세하게 살펴보았다.
+SSL 통신은 &lt;code class=&quot;language-text&quot;&gt;공개키 방식&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;대칭키 방식&lt;/code&gt;을 합쳐서 사용하는 만큼 꽤나 복잡하다.
+작성한 글이 많은 크루들에게 HTTPS와 SSL 통신에 대한 이해에 도움이 되었으면 좋겠다.&lt;/p&gt;
+&lt;h2&gt;참조&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://opentutorials.org/course/228/4894&quot;&gt;https://opentutorials.org/course/228/4894&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[NGINX 란?]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 '리버'가 작성했습니다. 글을 쓰게 된 계기 우테코 레벨3 프로젝트를 진행하면서, HTTPS 통신을 적용하기 위해 NGINX에 대한 이해가 필요했다.
 그래서 NGINX…]]></description><link>https://dallog.github.io/what_is_nginx/</link><guid isPermaLink="false">https://dallog.github.io/what_is_nginx/</guid><pubDate>Sat, 30 Jul 2022 16:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
 &lt;p&gt;이 글은 우테코 달록팀 크루 &apos;&lt;a href=&quot;https://github.com/gudonghee2000&quot;&gt;리버&lt;/a&gt;&apos;가 작성했습니다.&lt;/p&gt;
 &lt;/blockquote&gt;
