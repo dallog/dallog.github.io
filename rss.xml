@@ -1,6 +1,249 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 01 Aug 2022 01:28:29 GMT</lastBuildDate><item><title><![CDATA[통합 테스트와 슬라이스 테스트]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 '매트'가 작성했습니다. @SpringBootTest…]]></description><link>https://dallog.github.io/integration-test-slice-test/</link><guid isPermaLink="false">https://dallog.github.io/integration-test-slice-test/</guid><pubDate>Mon, 01 Aug 2022 09:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 01 Aug 2022 02:00:23 GMT</lastBuildDate><item><title><![CDATA[컴포넌트 분리 기준]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 나인이 작성했습니다. UI가 비슷하면 재사용 초반에 개발을 진행할 때 은 대부분 UI였습니다. "UI…]]></description><link>https://dallog.github.io/seperate-components/</link><guid isPermaLink="false">https://dallog.github.io/seperate-components/</guid><pubDate>Mon, 01 Aug 2022 11:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/jhy979&quot;&gt;나인&lt;/a&gt;이 작성했습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;UI가 비슷하면 재사용&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;초반에 개발을 진행할 때 &lt;code class=&quot;language-text&quot;&gt;재사용의 기준, 컴포넌트의 분리 기준&lt;/code&gt;은 대부분 UI였습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&quot;UI가 비슷하면 분명 재사용될 것이니 이 부분들을 묶어서 컴포넌트화하자!&quot;&lt;/p&gt;
+&lt;p&gt;다음은 달록의 카테고리 목록을 조회하는 페이지입니다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://velog.velcdn.com/images/jhy979/post/efeb82b3-fc46-4acc-b9d3-2df795c0fe51/image.png&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;BE 공식일정 카테고리&lt;/li&gt;
+&lt;li&gt;알록달록 팀 회의 카테고리&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;두 카테고리가 매우 흡사하게 생겼죠? 비슷하게 생겼으니 하나의 컴포넌트로 취급하여 사용했습니다. (CategoryItem)&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;tsx&quot;&gt;&lt;pre class=&quot;language-tsx&quot;&gt;&lt;code class=&quot;language-tsx&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;CategoryItem&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; category&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; subscriptionId &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; CategoryItemProps&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token comment&quot;&gt;// ... 생략&lt;/span&gt;
+  
+  &lt;span class=&quot;token comment&quot;&gt;// ⚠️구독을 위한 react query&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; mutate&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; postSubscription &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token generic-function&quot;&gt;&lt;span class=&quot;token function&quot;&gt;useMutation&lt;/span&gt;&lt;span class=&quot;token generic class-name&quot;&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;
+    AxiosResponse&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;Pick&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;SubscriptionType&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;color&apos;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    AxiosError&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    Pick&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;SubscriptionType&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;color&apos;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token builtin&quot;&gt;unknown&lt;/span&gt;
+  &lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; subscriptionApi&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;accessToken&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; category&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;id&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; body&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token function-variable function&quot;&gt;onSuccess&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      queryClient&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;invalidateQueries&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;CACHE_KEY&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;SUBSCRIPTIONS&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;token comment&quot;&gt;// ⚠️구독 해제를 위한 react query&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; mutate&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; deleteSubscription &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;useMutation&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; subscriptionApi&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;delete&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;accessToken&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; subscriptionId&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;token function-variable function&quot;&gt;onSuccess&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        queryClient&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;invalidateQueries&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;CACHE_KEY&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;SUBSCRIPTIONS&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;token comment&quot;&gt;// ⚠️구독 해제 로직 &lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;token function-variable function&quot;&gt;unsubscribe&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;window&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;confirm&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;CONFIRM_MESSAGE&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;UNSUBSCRIBE&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;token function&quot;&gt;deleteSubscription&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;token comment&quot;&gt;// ⚠️구독 버튼을 눌렀을 때 구독 여부에 따라 수행해야할 로직 변경&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;token function-variable function&quot;&gt;handleClickSubscribeButton&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    subscriptionId &lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;unsubscribe&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;postSubscription&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;body&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;div&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;css&lt;/span&gt;&lt;span class=&quot;token script language-javascript&quot;&gt;&lt;span class=&quot;token script-punctuation punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;categoryItem&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;theme&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;span&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;css&lt;/span&gt;&lt;span class=&quot;token script language-javascript&quot;&gt;&lt;span class=&quot;token script-punctuation punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;item&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;category&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;createdAt&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;T&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;span&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;span&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;css&lt;/span&gt;&lt;span class=&quot;token script language-javascript&quot;&gt;&lt;span class=&quot;token script-punctuation punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;item&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;category&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;name&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;span&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;div&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;css&lt;/span&gt;&lt;span class=&quot;token script language-javascript&quot;&gt;&lt;span class=&quot;token script-punctuation punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;item&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt;
+        // ⚠️구독 여부에 따른 버튼 스타일링 변경
+        &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;SubscribeButton&lt;/span&gt;&lt;/span&gt;
+          &lt;span class=&quot;token attr-name&quot;&gt;isSubscribing&lt;/span&gt;&lt;span class=&quot;token script language-javascript&quot;&gt;&lt;span class=&quot;token script-punctuation punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;subscriptionId &lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
+          &lt;span class=&quot;token attr-name&quot;&gt;handleClickSubscribeButton&lt;/span&gt;&lt;span class=&quot;token script language-javascript&quot;&gt;&lt;span class=&quot;token script-punctuation punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;handleClickSubscribeButton&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;SubscribeButton&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;div&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;div&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token keyword&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;default&lt;/span&gt; CategoryItem&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;구독 여부에 따라 버튼 스타일링만 다르게 하였고 실제로 큰 문제없이 의도한대로 렌더링되었습니다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2&gt;하지만.. 문제 발생&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;문제는 API를 연동했을 때 발생했습니다. (부끄럽게도 컴포넌트에 많은 고민과 설계 없이 구현한 대가를 치룬 것이죠.)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;https://velog.velcdn.com/images/jhy979/post/ebd07538-e6d0-48cf-a43c-e04562ba3b65/image.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;BE 공식일정은 이미 구독중인 상태여서 버튼을 누르면 &lt;code class=&quot;language-text&quot;&gt;구독해제&lt;/code&gt; api가 실행되어야합니다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://velog.velcdn.com/images/jhy979/post/236b2064-2dba-4e75-8130-f4074fe20732/image.png&quot;&gt;
+알록달록 팀 회의는 버튼을 누르면 &lt;code class=&quot;language-text&quot;&gt;구독&lt;/code&gt; api가 실행되어야합니다.&lt;/p&gt;
+&lt;p&gt;😢 문제는 바로 두 카테고리의 &lt;code class=&quot;language-text&quot;&gt;데이터 스키마가 다르다는 점&lt;/code&gt;이였습니다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;구독 api&lt;/code&gt;는 구독을 위한 &lt;code class=&quot;language-text&quot;&gt;카테고리 id&lt;/code&gt;가 필요합니다. (애초에 구독을 안했기 때문에 구독 id가 존재할 수 없습니다.)&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;구독 해제 api&lt;/code&gt;에서는 카테고리 id가 아닌 구독으로 새롭게 발급된 &lt;code class=&quot;language-text&quot;&gt;구독 id&lt;/code&gt;가 필요합니다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;구독 여부와 관계없이 하나의 컴포넌트로(CategoryItem) 묶었을 때에는 위 2가지 케이스로 인해 &lt;code class=&quot;language-text&quot;&gt;구독 id&lt;/code&gt;에서 문제가 발생합니다. &lt;/p&gt;
+&lt;p&gt;하나의 컴포넌트로 묶었기 때문에 구독id가 존재하든 존재하지 않든 subscriptionId라는 필드가 반드시 존재해야합니다.&lt;/p&gt;
+&lt;p&gt;😱 요리조리 머리를 굴려 &lt;code class=&quot;language-text&quot;&gt;구독하지 않았을 때에는 구독 id를 -1로 할당했습니다.&lt;/code&gt;
+(아마 위의 코드를 읽으시면서 subscriptionId &gt; 0인 경우 구독 중이라고 판단하는 로직을 어색하게 느끼셨을 겁니다.)&lt;/p&gt;
+&lt;p&gt;물론 실제 DB에서 구독 id에 -1이 할당되는 경우는 없기 때문에 큰 문제는 아닐 수 있습니다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2&gt;새로운 컴포넌트의 분리기준: 데이터 스키마, 모델&lt;/h2&gt;
+&lt;p&gt;하지만 태초에 &quot;이런 컴포넌트 설계가 맞을까?&quot; 라는 생각이 들었고 팀 회의를 통해 컴포넌트의 분리 기준을 &lt;code class=&quot;language-text&quot;&gt;✨데이터 스키마와 모델✨&lt;/code&gt;에 초점을 맞추는 방향으로 바꾸었습니다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;즉, 구독 중인 카테고리와 구독하지 않은 카테고리는 구독id의 존재 여부가 다르기 때문에 데이터 스키마가 다르다고 말할 수 있겠습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;따라서, 구독 중인 카테고리 컴포넌트와 구독하지 않은 카테고리 컴포넌트 2가지 컴포넌트로 분리하였습니다.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;실제 코드를 볼까요?&lt;/p&gt;
+&lt;h3&gt;👇 구독하지 않은 컴포넌트 (UnsubscribedCategoryItem)&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;https://velog.velcdn.com/images/jhy979/post/236b2064-2dba-4e75-8130-f4074fe20732/image.png&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;구독 id가 없습니다.&lt;/li&gt;
+&lt;li&gt;구독 react query가 있습니다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;tsx&quot;&gt;&lt;pre class=&quot;language-tsx&quot;&gt;&lt;code class=&quot;language-tsx&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;// ⚠️subscriptionId를 아예 받지 않음&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;UnsubscribedCategoryItem&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; category &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; UnsubscribedCategoryItemProps&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token comment&quot;&gt;// ... 생략&lt;/span&gt;
+
+  &lt;span class=&quot;token comment&quot;&gt;// ⚠️구독을 위한 react query&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; mutate &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token generic-function&quot;&gt;&lt;span class=&quot;token function&quot;&gt;useMutation&lt;/span&gt;&lt;span class=&quot;token generic class-name&quot;&gt;&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;
+    AxiosResponse&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;Pick&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;SubscriptionType&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;color&apos;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    AxiosError&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    Pick&lt;span class=&quot;token operator&quot;&gt;&amp;lt;&lt;/span&gt;SubscriptionType&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;color&apos;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token builtin&quot;&gt;unknown&lt;/span&gt;
+  &lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; subscriptionApi&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;post&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;accessToken&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; category&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;id&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; body&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token function-variable function&quot;&gt;onSuccess&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      queryClient&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;invalidateQueries&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;CACHE_KEY&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;SUBSCRIPTIONS&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;token comment&quot;&gt;// ⚠️오직 한 가지 일만 담당하는 핸들러 함수&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;token function-variable function&quot;&gt;handleClickSubscribeButton&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token function&quot;&gt;mutate&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;body&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;div&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;css&lt;/span&gt;&lt;span class=&quot;token script language-javascript&quot;&gt;&lt;span class=&quot;token script-punctuation punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;categoryItem&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;span&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;css&lt;/span&gt;&lt;span class=&quot;token script language-javascript&quot;&gt;&lt;span class=&quot;token script-punctuation punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;item&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;category&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;createdAt&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;T&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;span&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;span&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;css&lt;/span&gt;&lt;span class=&quot;token script language-javascript&quot;&gt;&lt;span class=&quot;token script-punctuation punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;item&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;category&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;name&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;span&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;div&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;css&lt;/span&gt;&lt;span class=&quot;token script language-javascript&quot;&gt;&lt;span class=&quot;token script-punctuation punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;item&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;Button&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;cssProp&lt;/span&gt;&lt;span class=&quot;token script language-javascript&quot;&gt;&lt;span class=&quot;token script-punctuation punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;subscribeButton&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;theme&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;onClick&lt;/span&gt;&lt;span class=&quot;token script language-javascript&quot;&gt;&lt;span class=&quot;token script-punctuation punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;handleClickSubscribeButton&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt;
+          구독
+        &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;Button&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;div&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;div&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;hr&gt;
+&lt;h3&gt;👇 구독중인 컴포넌트 (SubscribedCategoryItem)&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;https://velog.velcdn.com/images/jhy979/post/ebd07538-e6d0-48cf-a43c-e04562ba3b65/image.png&quot;&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;구독 id가 있습니다.&lt;/li&gt;
+&lt;li&gt;구독 해제 react query가 있습니다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;tsx&quot;&gt;&lt;pre class=&quot;language-tsx&quot;&gt;&lt;code class=&quot;language-tsx&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;SubscribedCategoryItem&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; category&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; subscriptionId &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; SubscribedCategoryItemProps&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token comment&quot;&gt;// ... 생략&lt;/span&gt;
+  
+  &lt;span class=&quot;token comment&quot;&gt;// ⚠️구독 해제를 위한 react query&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; mutate &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;useMutation&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; subscriptionApi&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;delete&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;accessToken&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; subscriptionId&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token function-variable function&quot;&gt;onSuccess&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      queryClient&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;invalidateQueries&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;CACHE_KEY&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;SUBSCRIPTIONS&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;token comment&quot;&gt;// ⚠️오직 한 가지 일만하는 핸들러 함수&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;token function-variable function&quot;&gt;handleClickUnsubscribeButton&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;window&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;confirm&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;CONFIRM_MESSAGE&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;UNSUBSCRIBE&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;token function&quot;&gt;mutate&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;div&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;css&lt;/span&gt;&lt;span class=&quot;token script language-javascript&quot;&gt;&lt;span class=&quot;token script-punctuation punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;categoryItem&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;span&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;css&lt;/span&gt;&lt;span class=&quot;token script language-javascript&quot;&gt;&lt;span class=&quot;token script-punctuation punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;item&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;category&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;createdAt&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;split&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;T&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;span&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;span&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;css&lt;/span&gt;&lt;span class=&quot;token script language-javascript&quot;&gt;&lt;span class=&quot;token script-punctuation punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;item&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;category&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;name&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;span&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;div&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;css&lt;/span&gt;&lt;span class=&quot;token script language-javascript&quot;&gt;&lt;span class=&quot;token script-punctuation punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;item&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt;
+        &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;Button&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;cssProp&lt;/span&gt;&lt;span class=&quot;token script language-javascript&quot;&gt;&lt;span class=&quot;token script-punctuation punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;unsubscribeButton&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;theme&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;onClick&lt;/span&gt;&lt;span class=&quot;token script language-javascript&quot;&gt;&lt;span class=&quot;token script-punctuation punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;handleClickUnsubscribeButton&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt;
+          구독중
+        &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;Button&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt;
+      &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;div&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;div&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;hr&gt;
+&lt;h3&gt;마무리&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;어떤가요?&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;💪 subscriptionId가 필요하지 않은 경우에는 애초에 props로 들어가지 않기 때문에 &lt;code class=&quot;language-text&quot;&gt;subscriotionId가 -1이 되는 경우가 없습니다.&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;또한 react query와 관련된 로직들은 어떠한가요? &lt;/p&gt;
+&lt;p&gt;💪 관심사 분리가 적절히 이루어져 각 컴포넌트에서 알맞게 호출되고 있습니다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;UI를 기준으로 컴포넌트를 나누는 것도 좋지만 먼저 데이터 스키마에 따라 컴포넌트를 분리하는 것을 먼저 고려해보면 더 좋을 것이라고 이번 리팩토링을 통해 느끼게 되었습니다.&lt;/p&gt;
+&lt;/blockquote&gt;</content:encoded></item><item><title><![CDATA[React-Query에서의 데이터 최신화 (Query Invalidation)]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 나인이 작성했습니다. React-Query의 캐싱개념은 stale과 cacheTime을 통해 이루어집니다. Stale 사전적 의미로 '신선하지 않은' 입니다. react query는 기본적으로 캐싱된 데이터를 stale…]]></description><link>https://dallog.github.io/query-invalidation/</link><guid isPermaLink="false">https://dallog.github.io/query-invalidation/</guid><pubDate>Mon, 01 Aug 2022 10:15:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/jhy979&quot;&gt;나인&lt;/a&gt;이 작성했습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;React-Query의 캐싱개념은 stale과 cacheTime을 통해 이루어집니다.&lt;/p&gt;
+&lt;h2&gt;Stale&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;사전적 의미로 &apos;신선하지 않은&apos; 입니다. react query는 기본적으로 캐싱된 데이터를 stale하다고 생각합니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;react query에서는 stale time의 default이 0입니다. (즉, 캐싱이 되지 않는다고 볼 수 있겠죠?)&lt;/p&gt;
+&lt;h3&gt;staleTime&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;데이터가 fresh한 상태에서 stale한 상태로 변하는 시간입니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;fresh 상태일때는 쿼리 인스턴스가 새롭게 mount 되어도 fetch가 일어나지 않습니다. &lt;/li&gt;
+&lt;li&gt;데이터가 fetch 되고 나서 staleTime이 지나지 않았다면 unmount 후 mount 되어도 fetch가 일어나지 않습니다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;cacheTime&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;데이터가 inactive 상태일 때 캐싱된 상태로 남아있는 시간입니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;쿼리 인스턴스가 unmount 되면 데이터는 inactive 상태로 변경되며, 캐시는 cacheTime만큼 유지됩니다.&lt;/li&gt;
+&lt;li&gt;cacheTime은 staleTime과 관계없이, 무조건 &lt;code class=&quot;language-text&quot;&gt;inactive된 시점&lt;/code&gt;을 기준으로 캐싱을 결정합니다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2&gt;달록에서의 데이터 최신화&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;달록은 일정, 카테고리, 구독 등의 작업으로 인해 데이터의 변화가 잦은 어플리케이션입니다. 따라서 저희 팀은 staleTime을 지정해주지 않았습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;그렇다면 stale한 데이터는 늘 최신화가 필요할 것입니다.&lt;/p&gt;
+&lt;p&gt;그래서 저는 매번 새로운 데이터가 필요할 때마다 &lt;code class=&quot;language-text&quot;&gt;useQuery의 refetch&lt;/code&gt;를 강제적으로 실행시켜주는 방식을 생각했었습니다.&lt;/p&gt;
+&lt;p&gt;예를 들면 일정을 추가(post)한 후에 일정을 다시 조회(get)하는 경우가 있을겁니다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://velog.velcdn.com/images/jhy979/post/287f66a2-8b7e-49c8-b623-c05a491db600/image.png&quot;&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;tsx&quot;&gt;&lt;pre class=&quot;language-tsx&quot;&gt;&lt;code class=&quot;language-tsx&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;// refetch 함수를 부모로 부터 주입 받아야 합니다.&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;ScheduleAddModal&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; closeModal&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; refetch &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; ScheduleAddModalProps&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;token function-variable function&quot;&gt;onSuccessPostSchedule&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token function&quot;&gt;refetch&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;😢 하지만 이 방식이 우아하지는 않더라구요. &lt;/p&gt;
+&lt;p&gt;만약 부모와 자식 간의 props전달이 아니라 조부모와 자식 간의 props 전달이라면 어떨까요? 벌써 머리가 아파옵니다. (props hell)&lt;/p&gt;
+&lt;h2&gt;Query Invalidation 도입&lt;/h2&gt;
+&lt;p&gt;🤔 다른 방법이 있을텐데.. 어떤 방법이 있을까? 고민하며 공식문서를 읽던 도중 &lt;code class=&quot;language-text&quot;&gt;Query Invalidation&lt;/code&gt;을 발견하게 되었습니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;tsx&quot;&gt;&lt;pre class=&quot;language-tsx&quot;&gt;&lt;code class=&quot;language-tsx&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;// Invalidate every query in the cache&lt;/span&gt;
+queryClient&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;invalidateQueries&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;// Invalidate every query with a key that starts with `todos`&lt;/span&gt;
+queryClient&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;invalidateQueries&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;todos&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The QueryClient has an invalidateQueries method that lets you intelligently mark queries as stale and potentially refetch them too!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;❗ 캐싱키로 관련된 stale 쿼리들을 체크하고 refetch할 수 있는 메서드가 존재했습니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;tsx&quot;&gt;&lt;pre class=&quot;language-tsx&quot;&gt;&lt;code class=&quot;language-tsx&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;ScheduleAddModal&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; closeModal &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; ScheduleAddModalProps&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; queryClient &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;useQueryClient&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;token function-variable function&quot;&gt;onSuccessPostSchedule&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token comment&quot;&gt;// 일정 post 성공 시 데이터 최신화를 invalidateQueries메서드를 통해 수행합니다.&lt;/span&gt;
+    queryClient&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;invalidateQueries&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;CACHE_KEY&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;SCHEDULES&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;💪 이로써 useQuery의 refetch함수를 넘겨줄 필요없이 어디서든 캐싱키로 fresh한 데이터를 보장할 수 있게 되었습니다.&lt;/p&gt;
+&lt;h4&gt;참고자료&lt;/h4&gt;
+&lt;p&gt;&lt;a href=&quot;https://tanstack.com/query/v4/docs/guides/query-invalidation&quot;&gt;https://tanstack.com/query/v4/docs/guides/query-invalidation&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[통합 테스트와 슬라이스 테스트]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 '매트'가 작성했습니다. 통합 테스트와 슬라이스 테스트 @SpringBootTest…]]></description><link>https://dallog.github.io/integration-test-slice-test/</link><guid isPermaLink="false">https://dallog.github.io/integration-test-slice-test/</guid><pubDate>Mon, 01 Aug 2022 09:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
 &lt;p&gt;이 글은 우테코 달록팀 크루 &apos;&lt;a href=&quot;https://github.com/hyeonic&quot;&gt;매트&lt;/a&gt;&apos;가 작성했습니다.&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;h1&gt;통합 테스트와 슬라이스 테스트&lt;/h1&gt;
 &lt;h2&gt;@SpringBootTest&lt;/h2&gt;
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;@SpringBootTest&lt;/code&gt; 애노테이션을 사용하면 우리 애플리케이션에서 사용하고 있는 모든 빈을 등록한 뒤 간편하게 테스트를 진행한다. 하지만 모든 빈을 등록하기 때문에 아래와 같은 단점을 가질 수 있다.&lt;/p&gt;
 &lt;ul&gt;
@@ -480,7 +723,7 @@ Nginx에서의 Conneciton 형성, Connection 제거, 새로운 요청 처리를 
   &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;member 객체&apos; title=&apos;member 객체&apos; src=&apos;/static/dcb6e569607bb8e161a8d5b0fc9a001f/ca1dc/debug1.png&apos; srcset=&apos;/static/dcb6e569607bb8e161a8d5b0fc9a001f/e7570/debug1.png 170w,
 /static/dcb6e569607bb8e161a8d5b0fc9a001f/f46e7/debug1.png 340w,
 /static/dcb6e569607bb8e161a8d5b0fc9a001f/ca1dc/debug1.png 680w,
-/static/dcb6e569607bb8e161a8d5b0fc9a001f/08990/debug1.png 1010w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/dcb6e569607bb8e161a8d5b0fc9a001f/08990/debug1.png 1010w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;
     &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;member 객체&lt;/figcaption&gt;
@@ -493,7 +736,7 @@ Nginx에서의 Conneciton 형성, Connection 제거, 새로운 요청 처리를 
   &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;필드가 변경된 member 객체&apos; title=&apos;필드가 변경된 member 객체&apos; src=&apos;/static/2fb95a1ec531ee3668aeec9ea95f76b0/ca1dc/debug2.png&apos; srcset=&apos;/static/2fb95a1ec531ee3668aeec9ea95f76b0/e7570/debug2.png 170w,
 /static/2fb95a1ec531ee3668aeec9ea95f76b0/f46e7/debug2.png 340w,
 /static/2fb95a1ec531ee3668aeec9ea95f76b0/ca1dc/debug2.png 680w,
-/static/2fb95a1ec531ee3668aeec9ea95f76b0/1263b/debug2.png 1000w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/2fb95a1ec531ee3668aeec9ea95f76b0/1263b/debug2.png 1000w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;
     &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;필드가 변경된 member 객체&lt;/figcaption&gt;
@@ -511,7 +754,7 @@ Nginx에서의 Conneciton 형성, Connection 제거, 새로운 요청 처리를 
 /static/1e3d82342c6106de7875c7eccdba5905/f46e7/img1.png 340w,
 /static/1e3d82342c6106de7875c7eccdba5905/ca1dc/img1.png 680w,
 /static/1e3d82342c6106de7875c7eccdba5905/02d09/img1.png 1020w,
-/static/1e3d82342c6106de7875c7eccdba5905/1b198/img1.png 1120w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/1e3d82342c6106de7875c7eccdba5905/1b198/img1.png 1120w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;테스트 실행 전 MEMBER와 CREATOR는 id를 가지지 않은 상태이다. 영속성 컨텍스트도 비어있다.&lt;/p&gt;
@@ -522,7 +765,7 @@ Nginx에서의 Conneciton 형성, Connection 제거, 새로운 요청 처리를 
   &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;img2&apos; title=&apos;img2&apos; src=&apos;/static/426794044d48de3123daaa8a0ab7439b/ca1dc/img2.png&apos; srcset=&apos;/static/426794044d48de3123daaa8a0ab7439b/e7570/img2.png 170w,
 /static/426794044d48de3123daaa8a0ab7439b/f46e7/img2.png 340w,
 /static/426794044d48de3123daaa8a0ab7439b/ca1dc/img2.png 680w,
-/static/426794044d48de3123daaa8a0ab7439b/65dc2/img2.png 954w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/426794044d48de3123daaa8a0ab7439b/65dc2/img2.png 954w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;그럼 상수 MEMBER의 id 값이 1로 바뀌게 된다. 이후 다른 테스트에서는 CREATOR가 저장된다. 이 때 각각의 테스트는 격리되어 있으므로 영속성 컨텍스트는 빈 상태이다. 따라서 CREATOR의 id도 1로 저장된다.&lt;/p&gt;
@@ -532,7 +775,7 @@ Nginx에서의 Conneciton 형성, Connection 제거, 새로운 요청 처리를 
   &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;img3&apos; title=&apos;img3&apos; src=&apos;/static/fe0781b8ad1359d3e25de8952645dc16/ca1dc/img3.png&apos; srcset=&apos;/static/fe0781b8ad1359d3e25de8952645dc16/e7570/img3.png 170w,
 /static/fe0781b8ad1359d3e25de8952645dc16/f46e7/img3.png 340w,
 /static/fe0781b8ad1359d3e25de8952645dc16/ca1dc/img3.png 680w,
-/static/fe0781b8ad1359d3e25de8952645dc16/ef0cc/img3.png 962w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/fe0781b8ad1359d3e25de8952645dc16/ef0cc/img3.png 962w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;이렇게 상수 MEMBER와 CREATOR의 id가 모두 1로 바뀌었다. 디버깅을 해보니 실제로 상수의 id 값이 모두 1로 바뀐 것을 볼 수 있다.&lt;/p&gt;
@@ -541,7 +784,7 @@ Nginx에서의 Conneciton 형성, Connection 제거, 새로운 요청 처리를 
     &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 65.29411764705883%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAANCAYAAACpUE5eAAAACXBIWXMAAAsTAAALEwEAmpwYAAAB1klEQVQ4y5VT2XKcMBDcX/PGC4sOkEAgiWNvO+vj/187MwJTcVxOKg9Tw6Wenu5mkyuDwTu8RY+p9ahqB9O01Nt0LbTB417gR16k/q/aPGQCYyhwixWMcVC1hWosKldDmgqZFNiJr4DfDdhsc0kMBV56i+cuEkuHoa1RNQbSaei2hLAqAfxe3zJkwDHMgE8E+BYiRlpZmBLKlSiMJoYSu0IiEwoZdT64zfZfigetDJ+jSQxvPkCZGmXdJC2Nm7Xk6uKA4XBCaRvsFQ3TVep7qSFKkwaShjJp+LM3ePU9bp1PgAxgFzDrOtRtl/p4OsP3I+J0wOF8SQP66YjpdEFNZze5qpLLr7HD3Uf0BMLsPoCYIU8vmBGVJnY8UFY2MdW2TjU/M9g8FpoYVrgFYmXoA46Nm1flj3gN1ibpRP1hl6+a8fVay7N15TutPDaeplUoG2JCJWqNghzOtVpd3C2m/N1lLwlwjs17jLhSwDVlkGMjEqD8xOi/YnMPAZY1saQRBZx1EeQml0nm+OTsn3HZLvlcAZ/oT7mTy9dPLnerwwzEsTlernBkXtMFtHTPnd+x88rYGTC0gkyZc3imw2pxkEE/HOfSNIhB29AvmTwiDFO65+hYAv4F4sn084OChegAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
   &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;debug3&apos; title=&apos;debug3&apos; src=&apos;/static/3ff3d4f78422a9ad12390ae2d13ddceb/ca2ce/debug3.png&apos; srcset=&apos;/static/3ff3d4f78422a9ad12390ae2d13ddceb/e7570/debug3.png 170w,
 /static/3ff3d4f78422a9ad12390ae2d13ddceb/f46e7/debug3.png 340w,
-/static/3ff3d4f78422a9ad12390ae2d13ddceb/ca2ce/debug3.png 491w&apos; sizes=&apos;(max-width: 491px) 100vw, 491px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/3ff3d4f78422a9ad12390ae2d13ddceb/ca2ce/debug3.png 491w&apos; sizes=&apos;(max-width: 491px) 100vw, 491px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;이 상태에서 처음 봤던 테스트 코드로 돌아가보자.&lt;/p&gt;
@@ -570,7 +813,7 @@ Nginx에서의 Conneciton 형성, Connection 제거, 새로운 요청 처리를 
   &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;img4&apos; title=&apos;img4&apos; src=&apos;/static/9f2e3b2b9edcf5bcdccdfa2d633f28df/ca1dc/img4.png&apos; srcset=&apos;/static/9f2e3b2b9edcf5bcdccdfa2d633f28df/e7570/img4.png 170w,
 /static/9f2e3b2b9edcf5bcdccdfa2d633f28df/f46e7/img4.png 340w,
 /static/9f2e3b2b9edcf5bcdccdfa2d633f28df/ca1dc/img4.png 680w,
-/static/9f2e3b2b9edcf5bcdccdfa2d633f28df/d7258/img4.png 966w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/9f2e3b2b9edcf5bcdccdfa2d633f28df/d7258/img4.png 966w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;CREATOR를 저장하려고 하는데 저장된 MEMBER의 id도 1이고, CREATOR의 id도 1이다. CREATOR를 저장할 때 영속성 컨텍스트에 같은 id를 가진 entity가 있으므로 CREATOR를 새롭게 저장하지 않고, 기존의 id가 1번인 entity를 수정하게 된다.&lt;/p&gt;
@@ -580,7 +823,7 @@ Nginx에서의 Conneciton 형성, Connection 제거, 새로운 요청 처리를 
   &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;img5&apos; title=&apos;img5&apos; src=&apos;/static/0fc51556a4deff29f98d6be398f1bef4/ca1dc/img5.png&apos; srcset=&apos;/static/0fc51556a4deff29f98d6be398f1bef4/e7570/img5.png 170w,
 /static/0fc51556a4deff29f98d6be398f1bef4/f46e7/img5.png 340w,
 /static/0fc51556a4deff29f98d6be398f1bef4/ca1dc/img5.png 680w,
-/static/0fc51556a4deff29f98d6be398f1bef4/ed282/img5.png 964w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/0fc51556a4deff29f98d6be398f1bef4/ed282/img5.png 964w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;기존의 값이 수정되니 id가 1번인, MEMBER를 저장한 member instance의 값까지 변경되는 것이다.&lt;/p&gt;
@@ -655,7 +898,7 @@ Nginx에서의 Conneciton 형성, Connection 제거, 새로운 요청 처리를 
 /static/dba28d9d177e6ad40d96eb7c5dd3623d/f46e7/debug-1.png 340w,
 /static/dba28d9d177e6ad40d96eb7c5dd3623d/ca1dc/debug-1.png 680w,
 /static/dba28d9d177e6ad40d96eb7c5dd3623d/02d09/debug-1.png 1020w,
-/static/dba28d9d177e6ad40d96eb7c5dd3623d/8bee4/debug-1.png 1130w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/dba28d9d177e6ad40d96eb7c5dd3623d/8bee4/debug-1.png 1130w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;&lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 582px; margin-bottom: 16px;&apos;&gt;
@@ -663,7 +906,7 @@ Nginx에서의 Conneciton 형성, Connection 제거, 새로운 요청 처리를 
     &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 7.647058823529412%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAACCAYAAABYBvyLAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAQklEQVQI13WKxxEAIAgELcwEOIb+C0IwfdTHzkUDmVihlhjrVCg0/Eb3k2ULCWe/fqrDC6a0ylGMB2CnxBv7ya++A2Z3RsV3NtINAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
   &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;debug 2&apos; title=&apos;debug 2&apos; src=&apos;/static/3206413c52066864f6bf338e4a3e2fd6/0b5a5/debug-2.png&apos; srcset=&apos;/static/3206413c52066864f6bf338e4a3e2fd6/e7570/debug-2.png 170w,
 /static/3206413c52066864f6bf338e4a3e2fd6/f46e7/debug-2.png 340w,
-/static/3206413c52066864f6bf338e4a3e2fd6/0b5a5/debug-2.png 582w&apos; sizes=&apos;(max-width: 582px) 100vw, 582px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/3206413c52066864f6bf338e4a3e2fd6/0b5a5/debug-2.png 582w&apos; sizes=&apos;(max-width: 582px) 100vw, 582px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;정리하면 우리는 Spring Boot를 사용하며 자연스럽게 &lt;code class=&quot;language-text&quot;&gt;@ConfigurationProperties&lt;/code&gt;를 활용하여 만든 객체를 사용하고 있는 것이다.&lt;/p&gt;
@@ -791,7 +1034,7 @@ Nginx에서의 Conneciton 형성, Connection 제거, 새로운 요청 처리를 
 /static/d2b4c0c198f8d46b6e00d12cfb0f88eb/f46e7/compare.png 340w,
 /static/d2b4c0c198f8d46b6e00d12cfb0f88eb/ca1dc/compare.png 680w,
 /static/d2b4c0c198f8d46b6e00d12cfb0f88eb/02d09/compare.png 1020w,
-/static/d2b4c0c198f8d46b6e00d12cfb0f88eb/90694/compare.png 1318w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/d2b4c0c198f8d46b6e00d12cfb0f88eb/90694/compare.png 1318w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;Swagger는 API 문서의 작성을 위해 프로덕션 코드에 추가적인 코드를 작성해야한다.
@@ -820,7 +1063,7 @@ Nginx에서의 Conneciton 형성, Connection 제거, 새로운 요청 처리를 
       &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/f94923887173d0bfee01596d1d760923/fedc7/first.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
     &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 99.41176470588235%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAIAAAAC64paAAAACXBIWXMAAAsTAAALEwEAmpwYAAACAUlEQVQ4y41Te2/aMBDnO3WQ2EkIAUp5JPbd2U7KQ4D2UFtoh9iq/dd99p1TdV3V0SBdTnGkn3+Py7X0rEc42UL6RKGByKC0OtLTjL83VosfKAYLlR0xXqKoUBid6ElfT88Dq2lKepTrq98Q7lGQCeeu7TBSTfwv4KJPangA+RkkYeR0gnl6LrPRA9TDXxDeMpiE1bGaZOcyG33Jyhl8g8zMzmVFojIBFt0GsJ6lWPRRDY8gv3LaKEuISoy4myLFvMdFeQ9OelYDgtETdvYmVDaoDNOGXBwb90XVnrvO+xRar4dpCjD+AvEjCVDSgrC1CofCkYT/5fcKZlWoL7cqfQRZ2rSykQNRMhL9LWyNJw8nmWtyNctGV8nPw2GzIlO0vXkSXJzftTci4CTY82fFOHm4+7ZeFkYHRiWuFm+BK+II/nXeeucky8fxj91uu1IlXpQQe1oTlhTW5AHm3QbwYb/brLSFtoWYmUsfm2fm+bEE+BCcfN/drpeKwQZiW4Ofb3HEKcb4MfNx72U7uuCErE5KL5uTl6UJSiMawPf7m/VCk+o4vySRq6dtdMQqOEKYNjDfbZbs+RMzOx47/2f1tCqSvHDwsjBvwIp7Xqd9/7BdaYcMrjeEV8U8Zy6vbUBF+hacZ5BnVd71Y5ym67kpaURKko5JJVQkyJ3f/TH++6v+AeD8X7vWRAwgAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
   &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;first&apos; title=&apos;first&apos; src=&apos;/static/f94923887173d0bfee01596d1d760923/fedc7/first.png&apos; srcset=&apos;/static/f94923887173d0bfee01596d1d760923/e7570/first.png 170w,
-/static/f94923887173d0bfee01596d1d760923/fedc7/first.png 311w&apos; sizes=&apos;(max-width: 311px) 100vw, 311px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/f94923887173d0bfee01596d1d760923/fedc7/first.png 311w&apos; sizes=&apos;(max-width: 311px) 100vw, 311px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;❗❗ gradle은 build/generated-snippets에 스니펫이 생성된다.&lt;/em&gt;&lt;/p&gt;
@@ -829,7 +1072,7 @@ Nginx에서의 Conneciton 형성, Connection 제거, 새로운 요청 처리를 
       &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/14846100df54ad09c5367e8df4aaecb2/527f2/second.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
     &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 41.76470588235294%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAICAIAAAB2/0i6AAAACXBIWXMAAAsTAAALEwEAmpwYAAABIUlEQVQY042OS0vDQBSFs7TWtQvBx6a0SGla+zDznjszSSbpNI1NSYVWxQeoG///0qEFUcEifKt7zse5gQBNhASTFNVq8/KWueKmqrNZgbmgEv6CScCUBxQMEYqrOJsv67vnNHc6zYSO/XE/ERUBIn5BMzD5vFrdP8V2SqXxwf9kzL2MOXgfYvv4/uHKZV6U/qNrKhCDfTKhjPllqTygk8S61fqhXNbKpNnUmcTuol9wqRATwRjxPobBliHVI2bSxcYu1totIC9ZOguR/Cr8IOLBeYgP2vyow5sdfthmjRYJTkdn4zyuXy8ucasve0N90pWNNmtuOzsaHX7cJcEwYj0EYSQHRE+kVfNbpKaxq7QtR0RNqJ5QdYXB74e+9p2IfwKrT3TYBiaq6gAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
   &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;second&apos; title=&apos;second&apos; src=&apos;/static/14846100df54ad09c5367e8df4aaecb2/527f2/second.png&apos; srcset=&apos;/static/14846100df54ad09c5367e8df4aaecb2/e7570/second.png 170w,
-/static/14846100df54ad09c5367e8df4aaecb2/527f2/second.png 339w&apos; sizes=&apos;(max-width: 339px) 100vw, 339px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/14846100df54ad09c5367e8df4aaecb2/527f2/second.png 339w&apos; sizes=&apos;(max-width: 339px) 100vw, 339px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/li&gt;
 &lt;li&gt;스니펫을 이용해서 &lt;code class=&quot;language-text&quot;&gt;src/docs/asciidoc&lt;/code&gt; 하위에 adoc 파일을 생성했다면, &lt;code class=&quot;language-text&quot;&gt;./gradlew build&lt;/code&gt; 명령어를 통해 빌드를 해준다.
@@ -838,7 +1081,7 @@ Nginx에서의 Conneciton 형성, Connection 제거, 새로운 요청 처리를 
     &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 62.94117647058823%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAANCAIAAAAmMtkJAAAACXBIWXMAAAsTAAALEwEAmpwYAAABiklEQVQoz42S207CQBCGfQoE1HjlhUbbIniAdruz3S203R63hVYMiDHRKInvf+m0Em48pMmfzR7+LzM7MwdjAoQJ5nrqYRVE6dQPQcxM6vwn4GOLXg9vDvBgOy735Pp1G0QJAX5v0bbwxGYoDI5YuX7JyuUsqIPjZQuY1CaEqePOH5+SeSXjDJNvB9s72AauNm/R87YqqzBVmLwFvBWMwg0Av8uW4+WrlBFW4c60f4//EzYpx8x9tYir1dSTrh9iC4BPW8IOcVyZqPVj4UcJ/vz789jLP2GCrYKdCGWUcS8Inz8+ZazCJAviNMpyyl182tvQY5IG7mj2oUb36qIM1tXZUOZXIC9G4vxWnA1ZT6OdK3rYCDcnmjVEGG97+k59A/q46vRoIAa50IVjjBztFi5HcGwAOvt6bejq9NRoYJvxWk0+mMyEEALifbspFkVeVJEq0qKMEqXyYr4oVTFPsgz9pg1NwagzbkqFQ6qqVZyXQZjMPEGFoHxaTx6OAKtfUdh5i4lJM8IIfwEBQsLymO4IDwAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
   &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;third&apos; title=&apos;third&apos; src=&apos;/static/a7bf9f7dfb5ce4935434e295f7a8b010/8e4bf/third.png&apos; srcset=&apos;/static/a7bf9f7dfb5ce4935434e295f7a8b010/e7570/third.png 170w,
 /static/a7bf9f7dfb5ce4935434e295f7a8b010/f46e7/third.png 340w,
-/static/a7bf9f7dfb5ce4935434e295f7a8b010/8e4bf/third.png 353w&apos; sizes=&apos;(max-width: 353px) 100vw, 353px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/a7bf9f7dfb5ce4935434e295f7a8b010/8e4bf/third.png 353w&apos; sizes=&apos;(max-width: 353px) 100vw, 353px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;
 빌드가 완료되면 위와 같이 &lt;code class=&quot;language-text&quot;&gt;resources - static - docs&lt;/code&gt; 하위에 HTML 문서가 생성된다.&lt;/li&gt;
@@ -854,7 +1097,7 @@ Nginx에서의 Conneciton 형성, Connection 제거, 새로운 요청 처리를 
     &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 48.23529411764706%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAIAAAA7N+mxAAAACXBIWXMAAAsTAAALEwEAmpwYAAABIklEQVQoz32RS0/DMBCE85s4NH6ksdOEtHb8WDtxogKFQ6VKcGsPSBz55yylKpe00lxs+fPMzmZVJdq20Wr98vzUaWksaVpR19V9IZXnNPOqjLDegfz2DynSAeWWTlfQyVsKRlolFjnJnBa+k9HVA7SnQPeR98BG4PgC72cFRholckoRLvEc7ApcewS2h2IINAUWrLgPLzA2xnD6F8bwX0AOkfmeRiudWnld3YXJxdmfh4l+8wHLU6TekwnQn3sj5uGNIIRlVpXX2+iaN1cePN9OjykWKVAMD7ecCT3D5hIPV6VUpc1qd+zTWI5AtikfA5t1zgn9bzv49hPYIbA+sjSRsacJO+8E6NvOfzMDmtvm3RWvgKvig+MD/uKWMNfZtbAfFm+qS78dXqMAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
   &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;four&apos; title=&apos;four&apos; src=&apos;/static/1c4dd4c620257df717630f3974410098/3a2f8/four.png&apos; srcset=&apos;/static/1c4dd4c620257df717630f3974410098/e7570/four.png 170w,
 /static/1c4dd4c620257df717630f3974410098/f46e7/four.png 340w,
-/static/1c4dd4c620257df717630f3974410098/3a2f8/four.png 352w&apos; sizes=&apos;(max-width: 352px) 100vw, 352px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/1c4dd4c620257df717630f3974410098/3a2f8/four.png 352w&apos; sizes=&apos;(max-width: 352px) 100vw, 352px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;h3&gt;아이디어&lt;/h3&gt;
@@ -867,17 +1110,17 @@ Nginx에서의 Conneciton 형성, Connection 제거, 새로운 요청 처리를 
 /static/761a34bf571d990e90fd93be1543a239/ca1dc/five.png 680w,
 /static/761a34bf571d990e90fd93be1543a239/02d09/five.png 1020w,
 /static/761a34bf571d990e90fd93be1543a239/9d567/five.png 1360w,
-/static/761a34bf571d990e90fd93be1543a239/867ee/five.png 1586w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/761a34bf571d990e90fd93be1543a239/867ee/five.png 1586w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;
 AsciiDoc 플러그인을 설치하면 위와같이, 인텔리제이 상에서도 REST API 문서를 실시간으로 확인할수 있다.  (✔설치 추천)&lt;/p&gt;
 &lt;h2&gt;Rest Docs 사용을 위한 빌드파일 설정&lt;/h2&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;plugins &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-    id &apos;org&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;asciidoctor&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;jvm&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;convert&apos; version &lt;span class=&quot;token char&quot;&gt;&apos;3.3.2&apos;&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 1&lt;/span&gt;
+    id &lt;span class=&quot;token string&quot;&gt;&apos;org.asciidoctor.jvm.convert&apos;&lt;/span&gt; version &lt;span class=&quot;token string&quot;&gt;&apos;3.3.2&apos;&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 1&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
 
 ext &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-    snippetsDir &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&apos;build&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;generated&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;snippets&apos;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 2&lt;/span&gt;
+    snippetsDir &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;build/generated-snippets&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 2&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
 
 test &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; 
@@ -890,14 +1133,14 @@ configurations &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
 
 asciidoctor &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 4&lt;/span&gt;
-    configurations &apos;asciidoctorExtensions&apos; 
+    configurations &lt;span class=&quot;token string&quot;&gt;&apos;asciidoctorExtensions&apos;&lt;/span&gt; 
     inputs&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;dir snippetsDir 
     dependsOn test
 &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
 
 dependencies &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-    testImplementation &apos;org&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;springframework&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;restdocs&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt;spring&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;restdocs&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;mockmvc&apos; &lt;span class=&quot;token comment&quot;&gt;// 5&lt;/span&gt;
-    asciidoctorExtensions &apos;org&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;springframework&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;restdocs&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt;spring&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;restdocs&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;asciidoctor&apos; &lt;span class=&quot;token comment&quot;&gt;// 6&lt;/span&gt;
+    testImplementation &lt;span class=&quot;token string&quot;&gt;&apos;org.springframework.restdocs:spring-restdocs-mockmvc&apos;&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 5&lt;/span&gt;
+    asciidoctorExtensions &lt;span class=&quot;token string&quot;&gt;&apos;org.springframework.restdocs:spring-restdocs-asciidoctor&apos;&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 6&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
 
 task &lt;span class=&quot;token function&quot;&gt;copyDocument&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;type&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Copy&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 7&lt;/span&gt;
@@ -955,7 +1198,7 @@ dependsOn test로 문서가 작성되기 전에 테스트가 실행되도록 한
 /static/339d06cdbd29be2a7151137a00024a12/f46e7/six.png 340w,
 /static/339d06cdbd29be2a7151137a00024a12/ca1dc/six.png 680w,
 /static/339d06cdbd29be2a7151137a00024a12/02d09/six.png 1020w,
-/static/339d06cdbd29be2a7151137a00024a12/7a863/six.png 1139w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/339d06cdbd29be2a7151137a00024a12/7a863/six.png 1139w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;
 위 메서드들은 메서드 체이닝을 지원하기 때문에, 아래와 같이 요청 데이터를 연결해서 작성하면된다.&lt;/p&gt;
@@ -994,7 +1237,7 @@ ResultMatcher는 다음의 MockMvcResultMatchers가 가지는 static 메서드�
 /static/c2f972798e14e46166995818bb7fdcd2/f46e7/seven.png 340w,
 /static/c2f972798e14e46166995818bb7fdcd2/ca1dc/seven.png 680w,
 /static/c2f972798e14e46166995818bb7fdcd2/02d09/seven.png 1020w,
-/static/c2f972798e14e46166995818bb7fdcd2/7a863/seven.png 1139w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/c2f972798e14e46166995818bb7fdcd2/7a863/seven.png 1139w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;아래의 예시를 살펴보자.&lt;/p&gt;
@@ -1056,7 +1299,7 @@ MockMvcResultHandlers는 다양한 ResultHandler를 제공하지만 print()를 �
 &lt;li&gt;target/generated-snippets dir 생성하고 테스트 코드를 통해 snippets를 추가해주는 애노테이션이다.&lt;/li&gt;
 &lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;ScheduleService&lt;/code&gt;를 mocking을 하기위해서 &lt;code class=&quot;language-text&quot;&gt;@MockBean&lt;/code&gt; 을 선언한다.&lt;/li&gt;
 &lt;li&gt;mocking을 통해 &lt;code class=&quot;language-text&quot;&gt;ScheduleService&lt;/code&gt; 를 통해 받을 응답값을 설정한다.&lt;/li&gt;
-&lt;li&gt;test 수행시 &lt;code class=&quot;language-text&quot;&gt;andDo(document(&quot;xxx&quot;))&lt;/code&gt;를 통해서 &lt;code class=&quot;language-text&quot;&gt;./build/generated-snippets&lt;/code&gt; 하위에 문서가 작성된다.&lt;/li&gt;
+&lt;li&gt;test 수행시 &lt;code class=&quot;language-text&quot;&gt;andDo(document(&amp;quot;xxx&amp;quot;))&lt;/code&gt;를 통해서 &lt;code class=&quot;language-text&quot;&gt;./build/generated-snippets&lt;/code&gt; 하위에 문서가 작성된다.&lt;/li&gt;
 &lt;/ol&gt;
 &lt;hr&gt;
 &lt;h2&gt;끝내면서&lt;/h2&gt;
@@ -1078,7 +1321,7 @@ MockMvcResultHandlers는 다양한 ResultHandler를 제공하지만 print()를 �
 /static/a03ffcc3f1c93248b7d90f632efc734b/f46e7/jpa-mechanism.png 340w,
 /static/a03ffcc3f1c93248b7d90f632efc734b/ca1dc/jpa-mechanism.png 680w,
 /static/a03ffcc3f1c93248b7d90f632efc734b/02d09/jpa-mechanism.png 1020w,
-/static/a03ffcc3f1c93248b7d90f632efc734b/64756/jpa-mechanism.png 1200w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/a03ffcc3f1c93248b7d90f632efc734b/64756/jpa-mechanism.png 1200w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;먼저, JPA는 Build 파일을 통해서 JPA 인터페이스를 구현할 &lt;strong&gt;구현체 클래스인&lt;/strong&gt; &lt;code class=&quot;language-text&quot;&gt;Persistence&lt;/code&gt; 생성한다.
@@ -1093,31 +1336,31 @@ MockMvcResultHandlers는 다양한 ResultHandler를 제공하지만 print()를 �
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;Persistence.xml&lt;/code&gt;은 JPA가 엑세스하려는 데이터베이스들에 대해 필요한 설정정보 들을 기술해둔 파일이다.
 JPA는 이 파일의 설정정보를 바탕으로 접근할 DB의 정보를 가져 올 수 있다.&lt;/p&gt;
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;Persistence.xml&lt;/code&gt; 파일에 대해 아래 그림과 함께 자세히 살펴보자.&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;&amp;lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&amp;lt;persistence version=&quot;2.2&quot;
- 	xmlns=&quot;http://xmlns.jcp.org/xml/ns/persistence&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-    xsi:schemaLocation=&quot;http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd&quot;&gt;
-	&amp;lt;persistence-unit name=&quot;hello&quot;&gt;
- 		&amp;lt;properties&gt;
- 			&amp;lt;!-- 필수 속성 --&gt;
- 			&amp;lt;property name=&quot;javax.persistence.jdbc.driver&quot; value=&quot;org.h2.Driver&quot;/&gt;
- 			&amp;lt;property name=&quot;javax.persistence.jdbc.user&quot; value=&quot;sa&quot;/&gt;
- 			&amp;lt;property name=&quot;javax.persistence.jdbc.password&quot; value=&quot;&quot;/&gt;
-			&amp;lt;property name=&quot;javax.persistence.jdbc.url&quot; value=&quot;jdbc:h2:tcp://localhost/~/test&quot;/&gt;
- 			&amp;lt;property name=&quot;hibernate.dialect&quot; value=&quot;org.hibernate.dialect.H2Dialect&quot;/&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+&amp;lt;persistence version=&amp;quot;2.2&amp;quot;
+ 	xmlns=&amp;quot;http://xmlns.jcp.org/xml/ns/persistence&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;
+    xsi:schemaLocation=&amp;quot;http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd&amp;quot;&amp;gt;
+	&amp;lt;persistence-unit name=&amp;quot;hello&amp;quot;&amp;gt;
+ 		&amp;lt;properties&amp;gt;
+ 			&amp;lt;!-- 필수 속성 --&amp;gt;
+ 			&amp;lt;property name=&amp;quot;javax.persistence.jdbc.driver&amp;quot; value=&amp;quot;org.h2.Driver&amp;quot;/&amp;gt;
+ 			&amp;lt;property name=&amp;quot;javax.persistence.jdbc.user&amp;quot; value=&amp;quot;sa&amp;quot;/&amp;gt;
+ 			&amp;lt;property name=&amp;quot;javax.persistence.jdbc.password&amp;quot; value=&amp;quot;&amp;quot;/&amp;gt;
+			&amp;lt;property name=&amp;quot;javax.persistence.jdbc.url&amp;quot; value=&amp;quot;jdbc:h2:tcp://localhost/~/test&amp;quot;/&amp;gt;
+ 			&amp;lt;property name=&amp;quot;hibernate.dialect&amp;quot; value=&amp;quot;org.hibernate.dialect.H2Dialect&amp;quot;/&amp;gt;
 
- 			&amp;lt;!-- 옵션 --&gt;
- 			&amp;lt;property name=&quot;hibernate.show_sql&quot; value=&quot;true&quot;/&gt;
- 			&amp;lt;property name=&quot;hibernate.format_sql&quot; value=&quot;true&quot;/&gt;
- 			&amp;lt;property name=&quot;hibernate.use_sql_comments&quot; value=&quot;true&quot;/&gt;
- 			&amp;lt;!--&amp;lt;property name=&quot;hibernate.hbm2ddl.auto&quot; value=&quot;create&quot; /&gt;--&gt;
- 		&amp;lt;/properties&gt;
-	&amp;lt;/persistence-unit&gt;
-&amp;lt;/persistence&gt; &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;첫번째로 &lt;code class=&quot;language-text&quot;&gt;&amp;lt;persistence version=&quot;2.2&quot; ...&gt;&lt;/code&gt;태그는 사용할 JPA의 버전과 버전에 대한 Persistence.XML 문서형식 링크를 담고 있다.&lt;/p&gt;
-&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;&amp;lt;persistence-unit name=&quot;hello&quot;&gt;&lt;/code&gt;태그는 하나의 지속성 단위를 의미한다. 서술적으로 표현하면, &lt;code class=&quot;language-text&quot;&gt;hello&lt;/code&gt;라는 이름을 가지는 &lt;code class=&quot;language-text&quot;&gt;EntityManagerFactory&lt;/code&gt;를 하위 설정에 따라 만들것이라는 의미이다. &lt;/p&gt;
-&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;&amp;lt;properties&gt;&lt;/code&gt;는 &lt;code class=&quot;language-text&quot;&gt;&amp;lt;persistence-unit&gt;&lt;/code&gt;이 엑세스할 DB의 정보와 추가적인 옵션 정보들을 담는다.&lt;/p&gt;
-&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;&amp;lt;property&gt;&lt;/code&gt;는 옵션 정보를 하나씩 설정하는 부분이다.
+ 			&amp;lt;!-- 옵션 --&amp;gt;
+ 			&amp;lt;property name=&amp;quot;hibernate.show_sql&amp;quot; value=&amp;quot;true&amp;quot;/&amp;gt;
+ 			&amp;lt;property name=&amp;quot;hibernate.format_sql&amp;quot; value=&amp;quot;true&amp;quot;/&amp;gt;
+ 			&amp;lt;property name=&amp;quot;hibernate.use_sql_comments&amp;quot; value=&amp;quot;true&amp;quot;/&amp;gt;
+ 			&amp;lt;!--&amp;lt;property name=&amp;quot;hibernate.hbm2ddl.auto&amp;quot; value=&amp;quot;create&amp;quot; /&amp;gt;--&amp;gt;
+ 		&amp;lt;/properties&amp;gt;
+	&amp;lt;/persistence-unit&amp;gt;
+&amp;lt;/persistence&amp;gt; &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;첫번째로 &lt;code class=&quot;language-text&quot;&gt;&amp;lt;persistence version=&amp;quot;2.2&amp;quot; ...&amp;gt;&lt;/code&gt;태그는 사용할 JPA의 버전과 버전에 대한 Persistence.XML 문서형식 링크를 담고 있다.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;&amp;lt;persistence-unit name=&amp;quot;hello&amp;quot;&amp;gt;&lt;/code&gt;태그는 하나의 지속성 단위를 의미한다. 서술적으로 표현하면, &lt;code class=&quot;language-text&quot;&gt;hello&lt;/code&gt;라는 이름을 가지는 &lt;code class=&quot;language-text&quot;&gt;EntityManagerFactory&lt;/code&gt;를 하위 설정에 따라 만들것이라는 의미이다. &lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;&amp;lt;properties&amp;gt;&lt;/code&gt;는 &lt;code class=&quot;language-text&quot;&gt;&amp;lt;persistence-unit&amp;gt;&lt;/code&gt;이 엑세스할 DB의 정보와 추가적인 옵션 정보들을 담는다.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;&amp;lt;property&amp;gt;&lt;/code&gt;는 옵션 정보를 하나씩 설정하는 부분이다.
 위 그림과 같이 &lt;code class=&quot;language-text&quot;&gt;필수 속성&lt;/code&gt; 부분은 엑세스할 DB에 대한 정보를 담는다.&lt;/p&gt;
 &lt;p&gt;추가로 &lt;code class=&quot;language-text&quot;&gt;옵션&lt;/code&gt; 부분을 하나씩 살펴보자.
 &lt;code class=&quot;language-text&quot;&gt;hibernate.show_sql&lt;/code&gt;는 DB에 날리는 쿼리문을 확인 할것인지에 대한 설정이다.
@@ -1150,7 +1393,7 @@ update는 아직 알아볼필요가있음&lt;/strong&gt;&lt;/p&gt;
     &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;전 장에서 설정했던 &lt;code class=&quot;language-text&quot;&gt;Persistence.xml&lt;/code&gt; 파일을 통해
-우리는 &lt;code class=&quot;language-text&quot;&gt;hello&lt;/code&gt;라는 이름을 가진 &lt;code class=&quot;language-text&quot;&gt;&amp;lt;persistence-unit&gt;&lt;/code&gt;이 어떤 DB에 엑세스 할 것인지에 대한 정보를 설정했었다.&lt;/p&gt;
+우리는 &lt;code class=&quot;language-text&quot;&gt;hello&lt;/code&gt;라는 이름을 가진 &lt;code class=&quot;language-text&quot;&gt;&amp;lt;persistence-unit&amp;gt;&lt;/code&gt;이 어떤 DB에 엑세스 할 것인지에 대한 정보를 설정했었다.&lt;/p&gt;
 &lt;p&gt;위 코드가 바로 &lt;code class=&quot;language-text&quot;&gt;Persistence.xml&lt;/code&gt;에 작성한 Persistence Unit(지속성 단위)을 바탕으로 &lt;code class=&quot;language-text&quot;&gt;EntityManagerFactory&lt;/code&gt;를 생성하는 코드이다.&lt;/p&gt;
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;EntityManagerFactory&lt;/code&gt;를 통해서 우리는 DB 관련 작업을 실제로 수행할 &lt;code class=&quot;language-text&quot;&gt;EntityManager&lt;/code&gt;를 생성 할 수 있다.&lt;/p&gt;
 &lt;h4&gt;🔎&lt;code class=&quot;language-text&quot;&gt;EntityManagerFactory&lt;/code&gt;가 가지는 특징&lt;/h4&gt;
@@ -1237,7 +1480,7 @@ update는 아직 알아볼필요가있음&lt;/strong&gt;&lt;/p&gt;
 /static/91e04a38c950370c6add24f7154e184c/ca1dc/fe.png 680w,
 /static/91e04a38c950370c6add24f7154e184c/02d09/fe.png 1020w,
 /static/91e04a38c950370c6add24f7154e184c/9d567/fe.png 1360w,
-/static/91e04a38c950370c6add24f7154e184c/42d3e/fe.png 2314w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/91e04a38c950370c6add24f7154e184c/42d3e/fe.png 2314w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;
     &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;프론트엔드 지속적 배포 환경&lt;/figcaption&gt;
@@ -1314,13 +1557,13 @@ location / {
 &lt;h2&gt;트러블 슈팅&lt;/h2&gt;
 &lt;h3&gt;빌드 시 메모리 부족 문제&lt;/h3&gt;
 &lt;p&gt;리액트 프로젝트를 빌드할 때 아래와 같은 메모리 이슈를 마주하게 되었습니다.&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;&amp;lt;--- Last few GCs ---&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;&amp;lt;--- Last few GCs ---&amp;gt;
 
-[21854:0x147b3960]    21931 ms: Scavenge 456.7 (469.5) -&gt; 456.4 (470.7) MB, 3.2 / 0.0 ms  (average mu = 0.381, current mu = 0.228) allocation failure
-[21854:0x147b3960]    21939 ms: Scavenge 457.4 (470.7) -&gt; 457.2 (475.2) MB, 4.5 / 0.0 ms  (average mu = 0.381, current mu = 0.228) allocation failure
+[21854:0x147b3960]    21931 ms: Scavenge 456.7 (469.5) -&amp;gt; 456.4 (470.7) MB, 3.2 / 0.0 ms  (average mu = 0.381, current mu = 0.228) allocation failure
+[21854:0x147b3960]    21939 ms: Scavenge 457.4 (470.7) -&amp;gt; 457.2 (475.2) MB, 4.5 / 0.0 ms  (average mu = 0.381, current mu = 0.228) allocation failure
 
 
-&amp;lt;--- JS stacktrace ---&gt;
+&amp;lt;--- JS stacktrace ---&amp;gt;
 
 FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memory
  1: 0xaf9c78 node::Abort() [webpack]
@@ -1345,7 +1588,7 @@ FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memor
 /static/362ecaa69f58311f8c89b2bb692cde67/ca1dc/be.png 680w,
 /static/362ecaa69f58311f8c89b2bb692cde67/02d09/be.png 1020w,
 /static/362ecaa69f58311f8c89b2bb692cde67/9d567/be.png 1360w,
-/static/362ecaa69f58311f8c89b2bb692cde67/2bae1/be.png 2308w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/362ecaa69f58311f8c89b2bb692cde67/2bae1/be.png 2308w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;
     &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;백엔드 지속적 배포 환경&lt;/figcaption&gt;
@@ -1379,7 +1622,7 @@ FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memor
 /static/bb5fc7fc2233f7523c1e8c017a45a138/ca1dc/pipeline.png 680w,
 /static/bb5fc7fc2233f7523c1e8c017a45a138/02d09/pipeline.png 1020w,
 /static/bb5fc7fc2233f7523c1e8c017a45a138/9d567/pipeline.png 1360w,
-/static/bb5fc7fc2233f7523c1e8c017a45a138/973af/pipeline.png 1956w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/bb5fc7fc2233f7523c1e8c017a45a138/973af/pipeline.png 1956w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;젠킨스 메뉴에서 &apos;새로운 Item&apos;을 클릭하고, &apos;Pipeline&apos;을 선택하여 새로운 잡을 생성합니다.&lt;/p&gt;
@@ -1412,7 +1655,7 @@ FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memor
        &lt;span class=&quot;token function&quot;&gt;stage&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;Build&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
            steps &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
                &lt;span class=&quot;token function&quot;&gt;dir&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;backend&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
-                   sh &lt;span class=&quot;token interpolation-string&quot;&gt;&lt;span class=&quot;token string&quot;&gt;&quot;./gradlew bootJar&quot;&lt;/span&gt;&lt;/span&gt;
+                   sh &lt;span class=&quot;token string gstring&quot;&gt;&quot;./gradlew bootJar&quot;&lt;/span&gt;
                &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
            &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
@@ -1475,14 +1718,14 @@ FATAL ERROR: Reached heap limit Allocation failed - JavaScript heap out of memor
 &lt;h3&gt;Webhook 트리거 이슈&lt;/h3&gt;
 &lt;p&gt;처음 젠킨스를 설정할 때 아무리 Webhook 설정을 건드려봐도 빌드가 트리거되지 않는 이슈가 발생했었습니다.&lt;/p&gt;
 &lt;p&gt;먼저 위 파이프라인 스크립트의 Github 스테이지에서 사용된 &lt;code class=&quot;language-text&quot;&gt;git&lt;/code&gt; Directive를 명시적으로 사용해줘야합니다.&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;git branch: &apos;develop&apos;, url: &apos;https://github.com/woowacourse-teams/2022-dallog.git&apos;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;git branch: &amp;#39;develop&amp;#39;, url: &amp;#39;https://github.com/woowacourse-teams/2022-dallog.git&amp;#39;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;또한 최초로 &apos;지금 빌드&apos; 버튼을 클릭해야지 그 이후 Webhook 요청을 수신할 수 있게됩니다.&lt;/p&gt;
 &lt;h3&gt;SSH 자격 증명 이슈&lt;/h3&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;Host key verification failed.
 lost connection&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;젠킨스 서버에서 다른 인스턴스에 최초로 SSH 연결을 시도할 경우 젠킨스에서 위와 같은 에러가 발생할 수 있습니다. 다들 SSH로 최초 원격접속 시 아래와 같은 메시지를 본 적이 있을 것 입니다.&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;root@XXXXXXXX:/home# ssh -i key.pem ubuntu@192.168.XXX.XXX
-The authenticity of host &apos;192.168.XXX.XXX (192.168.XXX.XXX)&apos; can&apos;t be established.
+The authenticity of host &amp;#39;192.168.XXX.XXX (192.168.XXX.XXX)&amp;#39; can&amp;#39;t be established.
 ECDSA key fingerprint is SHA256:XXXXXXXXXXXXXXXX
 Are you sure you want to continue connecting (yes/no/[fingerprint])? yes&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;터미널에서 직접 접속할 때에는 yes 를 입력하면, 곧바로 접속될텐데요. 젠킨스 파이프라인에서는 불가능합니다. 따라서 미리 젠킨스 측의 &lt;code class=&quot;language-text&quot;&gt;known_hosts&lt;/code&gt; 에 원격지의 공개키를 등록해야합니다.&lt;/p&gt;
@@ -1674,8 +1917,8 @@ Are you sure you want to continue connecting (yes/no/[fingerprint])? yes&lt;/cod
     │       └── application.yml&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;결국 이러한 구조는 아래와 같이 &lt;code class=&quot;language-text&quot;&gt;domain&lt;/code&gt; 패키지에서 &lt;code class=&quot;language-text&quot;&gt;infrastructure&lt;/code&gt;에 의존하게 된다.&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;
-&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;token import&quot;&gt;&lt;span class=&quot;token namespace&quot;&gt;com&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;allog&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;dallog&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;infrastructure&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;dto&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;OAuthMember&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 의존성 발생!&lt;/span&gt;
-&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;token import&quot;&gt;&lt;span class=&quot;token namespace&quot;&gt;com&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;allog&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;dallog&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;infrastructure&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;oauth&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;client&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;OAuthClient&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 의존성 발생!&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;token namespace&quot;&gt;com&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;allog&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;dallog&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;infrastructure&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;dto&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;OAuthMember&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 의존성 발생!&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;token namespace&quot;&gt;com&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;allog&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;dallog&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;infrastructure&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;oauth&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;client&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;OAuthClient&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// 의존성 발생!&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;
 
 &lt;span class=&quot;token annotation punctuation&quot;&gt;@Transactional&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;readOnly &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
@@ -1718,7 +1961,7 @@ Are you sure you want to continue connecting (yes/no/[fingerprint])? yes&lt;/cod
     │       └── application.yml&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;자연스럽게 &lt;code class=&quot;language-text&quot;&gt;domain&lt;/code&gt; 내에 있던 &lt;code class=&quot;language-text&quot;&gt;infrastructure&lt;/code&gt; 패키지에 대한 의존성도 제거된다. 즉 외부 서버와의 통신을 위한 의존성이 완전히 분리된 것을 확인할 수 있다.&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;
-&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;token import&quot;&gt;&lt;span class=&quot;token namespace&quot;&gt;com&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;allog&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;dallog&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;auth&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;dto&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;OAuthMember&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// auth 패키지 내부를 의존&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;token namespace&quot;&gt;com&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;allog&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;dallog&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;auth&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;dto&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;OAuthMember&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;// auth 패키지 내부를 의존&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;
 &lt;span class=&quot;token annotation punctuation&quot;&gt;@Transactional&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;readOnly &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;token annotation punctuation&quot;&gt;@Service&lt;/span&gt;
@@ -1751,7 +1994,7 @@ Are you sure you want to continue connecting (yes/no/[fingerprint])? yes&lt;/cod
 /static/98a0df2f651f2d57bf0909634184ba03/ca1dc/google-trends.png 680w,
 /static/98a0df2f651f2d57bf0909634184ba03/02d09/google-trends.png 1020w,
 /static/98a0df2f651f2d57bf0909634184ba03/9d567/google-trends.png 1360w,
-/static/98a0df2f651f2d57bf0909634184ba03/b986c/google-trends.png 1846w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/98a0df2f651f2d57bf0909634184ba03/b986c/google-trends.png 1846w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;
     &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;유명한 CI/CD 도구들의 구글 트렌드 결과&lt;/figcaption&gt;
@@ -1792,7 +2035,7 @@ $ &lt;span class=&quot;token function&quot;&gt;curl&lt;/span&gt; -fsSL https://d
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;apt-get&lt;/span&gt; update
 $ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;apt-get&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt; docker-ce docker-ce-cli containerd.io docker-compose-plugin&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h4&gt;도커 설치 확인&lt;/h4&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;docker&lt;/span&gt; run hello-world
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; docker run hello-world
 
 Hello from Docker&lt;span class=&quot;token operator&quot;&gt;!&lt;/span&gt;
 This message shows that your installation appears to be working correctly.
@@ -1800,10 +2043,10 @@ This message shows that your installation appears to be working correctly.
 &lt;p&gt;위 명령을 실행하여 위와 같이 &lt;code class=&quot;language-text&quot;&gt;Hello from Docker!&lt;/code&gt; 메시지가 출력되면 성공적으로 도커 설치가 완료된 것 입니다. 다음 단계로 넘어가볼까요? 🤗&lt;/p&gt;
 &lt;h2&gt;젠킨스 컨테이너 실행&lt;/h2&gt;
 &lt;h3&gt;젠킨스 이미지 다운로드&lt;/h3&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;docker&lt;/span&gt; pull jenkins/jenkins:lts&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ docker pull jenkins/jenkins:lts&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;위 명령을 통해 Jenkins LTS(Long Term Support) 버전의 이미지를 다운로드 받습니다.&lt;/p&gt;
 &lt;h3&gt;젠킨스 컨테이너 띄우기&lt;/h3&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;docker&lt;/span&gt; run -d -p &lt;span class=&quot;token number&quot;&gt;8080&lt;/span&gt;:8080 -v /jenkins:/var/jenkins_home --name jenkins -u root jenkins/jenkins:lts&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; docker run -d -p &lt;span class=&quot;token number&quot;&gt;8080&lt;/span&gt;:8080 -v /jenkins:/var/jenkins_home --name jenkins -u root jenkins/jenkins:lts&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;위 명령을 통해 다운로드 받은 젠킨스 이미지를 컨테이너로 띄울 수 있습니다. 사용된 각 옵션을 간단히 알아볼까요?&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;-d&lt;/strong&gt; : 컨테이너를 &lt;strong&gt;데몬&lt;/strong&gt;으로 띄웁니다.&lt;/li&gt;
@@ -1814,7 +2057,7 @@ This message shows that your installation appears to be working correctly.
 &lt;/ul&gt;
 &lt;h3&gt;docker-compose 사용하기&lt;/h3&gt;
 &lt;p&gt;하지만 위와 같은 명령어를 모두 외우고 있다가, 도커 컨테이너를 실행할 때 마다 입력하게 된다면 굉장히 번거롭겠죠. 따라서 도커는 docker-compose 라는 것을 지원합니다. 도커 컴포즈는 여러 컨테이너의 실행을 한번에 관리할 수 있게 도와주는 도커의 도구입니다. 하지만 저희와 같이 하나의 컨테이너만 필요한 상황에서도 유용하게 사용할 수 있죠.&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;apt&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;docker-compose&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;apt&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt; docker-compose&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;위 명령을 이용하여 &lt;code class=&quot;language-text&quot;&gt;docker-compose&lt;/code&gt; 를 설치합니다.&lt;/p&gt;
 &lt;p&gt;그리고 도커를 실행할 경로에 &lt;code class=&quot;language-text&quot;&gt;docker-compose.yml&lt;/code&gt; 이란 파일을 만들고, 아래의 내용을 작성해줍니다.&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;yaml&quot;&gt;&lt;pre class=&quot;language-yaml&quot;&gt;&lt;code class=&quot;language-yaml&quot;&gt;&lt;span class=&quot;token key atrule&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;3&quot;&lt;/span&gt;
@@ -1827,7 +2070,7 @@ This message shows that your installation appears to be working correctly.
     &lt;span class=&quot;token key atrule&quot;&gt;ports&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
       &lt;span class=&quot;token punctuation&quot;&gt;-&lt;/span&gt; 8080&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;8080&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;생성한 &lt;code class=&quot;language-text&quot;&gt;docker-compose.yml&lt;/code&gt; 이 존재하는 경로에서 아래의 명령을 실행하면 복잡한 명령 없이도 도커 컨테이너를 실행할 수 있습니다.&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;docker-compose&lt;/span&gt; up -d&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; docker-compose up -d&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;blockquote&gt;
 &lt;p&gt;-d 옵션은 컨테이너가 데몬으로 실행됨을 의미합니다.&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -1841,10 +2084,10 @@ This message shows that your installation appears to be working correctly.
 /static/960b1726cd3b94778b3a7bf6dba2b159/ca1dc/unlock-jenkins.png 680w,
 /static/960b1726cd3b94778b3a7bf6dba2b159/02d09/unlock-jenkins.png 1020w,
 /static/960b1726cd3b94778b3a7bf6dba2b159/9d567/unlock-jenkins.png 1360w,
-/static/960b1726cd3b94778b3a7bf6dba2b159/7c958/unlock-jenkins.png 2026w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/960b1726cd3b94778b3a7bf6dba2b159/7c958/unlock-jenkins.png 2026w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;docker&lt;/span&gt; logs jenkins&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; docker logs jenkins&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;위 명령을 사용하면, &lt;code class=&quot;language-text&quot;&gt;jenkins&lt;/code&gt; 컨테이너에 출력된 로그를 확인할 수 있습니다. 젠킨스를 최초로 설치하고 실행하면 사진에서 요구하는 initial admin password를 출력해주는데요, 로그를 확인해봅시다.&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;*************************************************************
 *************************************************************
@@ -1865,7 +2108,7 @@ This may also be found at: /var/jenkins_home/secrets/initialAdminPassword
 *************************************************************&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;위에서 표시된 &lt;code class=&quot;language-text&quot;&gt;XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&lt;/code&gt; 를 웹사이트에 넣어주시면 됩니다.&lt;/p&gt;
 &lt;p&gt;혹은 아래의 명령으로 &lt;code class=&quot;language-text&quot;&gt;jenkins&lt;/code&gt; 컨테이너 내부에 직접 접속하여, &lt;code class=&quot;language-text&quot;&gt;/var/jenkins_home/secrets/initialAdminPassword&lt;/code&gt; 파일의 내용을 조회하는 방법도 있습니다.&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;docker&lt;/span&gt; &lt;span class=&quot;token builtin class-name&quot;&gt;exec&lt;/span&gt; -it jenkins /bin/bash
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;shell&quot;&gt;&lt;pre class=&quot;language-shell&quot;&gt;&lt;code class=&quot;language-shell&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; docker &lt;span class=&quot;token builtin class-name&quot;&gt;exec&lt;/span&gt; -it jenkins /bin/bash
 $ &lt;span class=&quot;token function&quot;&gt;cat&lt;/span&gt; /var/jenkins_home/secrets/initialAdminPassword&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;&lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; margin-bottom: 16px;&apos;&gt;
       &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/34033c88d26a34735801aa2c4d16bf9a/d9349/customize-jenkins.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
@@ -1875,11 +2118,11 @@ $ &lt;span class=&quot;token function&quot;&gt;cat&lt;/span&gt; /var/jenkins_hom
 /static/34033c88d26a34735801aa2c4d16bf9a/ca1dc/customize-jenkins.png 680w,
 /static/34033c88d26a34735801aa2c4d16bf9a/02d09/customize-jenkins.png 1020w,
 /static/34033c88d26a34735801aa2c4d16bf9a/9d567/customize-jenkins.png 1360w,
-/static/34033c88d26a34735801aa2c4d16bf9a/d9349/customize-jenkins.png 2040w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/34033c88d26a34735801aa2c4d16bf9a/d9349/customize-jenkins.png 2040w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;그 다음 위 화면에서 Install suggested plugins를 클릭하여 추천되는 플러그인을 설치합니다. 그 이후 요구되는 여러 정보의 입력을 끝 마쳐주세요.&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;System.setProperty(&apos;org.apache.commons.jelly.tags.fmt.timeZone&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;System.setProperty(&amp;#39;org.apache.commons.jelly.tags.fmt.timeZone&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;이후 대시보드에서 &lt;strong&gt;Jenkins 관리 &gt; Script Console&lt;/strong&gt; 에서 위의 스크립트를 입력하여 타임존을 서울로 설정하기만 하면, 젠킨스 기본 설정이 완료됩니다! 🎉&lt;/p&gt;
 &lt;h2&gt;마치며&lt;/h2&gt;
 &lt;p&gt;다음 포스팅에서는 달록이 젠킨스를 이용하여 어떻게 배포 자동화 프로세스를 구축하였는지 작성해보도록 하겠습니다. 많은 기대 부탁드립니다 🙏&lt;/p&gt;</content:encoded></item><item><title><![CDATA[쉘 스크립트와 함께하는 달록의 스프링부트 어플리케이션 배포 자동화]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 후디가 작성했습니다. 웹서비스 개발팀은 새롭게 개발한 서비스의 기능을 어떻게 사용자에게 전달할까요? 새로운 기능이 메인 브랜치에 병합될 때 마다 EC2 인스턴스에 접속하여 브랜치를 Pull…]]></description><link>https://dallog.github.io/deploy-automation-with-shell-script/</link><guid isPermaLink="false">https://dallog.github.io/deploy-automation-with-shell-script/</guid><pubDate>Tue, 19 Jul 2022 01:45:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
@@ -2058,7 +2301,7 @@ $ &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt
 
     &lt;span class=&quot;token comment&quot;&gt;// ...&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;유저에 대한 정보는 SecurityContext&apos;s Authentication 인스턴스로부터 가져온다. 이 값을 커스텀하고 싶다면 &lt;code class=&quot;language-text&quot;&gt;AuditorAware&amp;lt;T&gt;&lt;/code&gt; 인터페이스를 구현해야 한다.&lt;/p&gt;
+&lt;p&gt;유저에 대한 정보는 SecurityContext&apos;s Authentication 인스턴스로부터 가져온다. 이 값을 커스텀하고 싶다면 &lt;code class=&quot;language-text&quot;&gt;AuditorAware&amp;lt;T&amp;gt;&lt;/code&gt; 인터페이스를 구현해야 한다.&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;AuditorAwareImpl&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;AuditorAware&lt;/span&gt;&lt;span class=&quot;token generics&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;String&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
 
     &lt;span class=&quot;token annotation punctuation&quot;&gt;@Override&lt;/span&gt;
@@ -2066,7 +2309,7 @@ $ &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt
         &lt;span class=&quot;token comment&quot;&gt;// your custom logic&lt;/span&gt;
     &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;이렇게 만든 &lt;code class=&quot;language-text&quot;&gt;AuditorAwareImpl&lt;/code&gt;를 사용하려면 Config 클래스에 &lt;code class=&quot;language-text&quot;&gt;AuditorAwareImpl&lt;/code&gt; 인스턴스로 초기화되는 &lt;code class=&quot;language-text&quot;&gt;AuditorAware&lt;/code&gt; 타입의 빈을 설정해주어야 한다. 그리고 &lt;code class=&quot;language-text&quot;&gt;@EnableJpaAuditing&lt;/code&gt; 어노테이션에 &lt;code class=&quot;language-text&quot;&gt;auditorAwareRef=&quot;auditorProvider&quot;&lt;/code&gt; 설정을 추가한다.&lt;/p&gt;
+&lt;p&gt;이렇게 만든 &lt;code class=&quot;language-text&quot;&gt;AuditorAwareImpl&lt;/code&gt;를 사용하려면 Config 클래스에 &lt;code class=&quot;language-text&quot;&gt;AuditorAwareImpl&lt;/code&gt; 인스턴스로 초기화되는 &lt;code class=&quot;language-text&quot;&gt;AuditorAware&lt;/code&gt; 타입의 빈을 설정해주어야 한다. 그리고 &lt;code class=&quot;language-text&quot;&gt;@EnableJpaAuditing&lt;/code&gt; 어노테이션에 &lt;code class=&quot;language-text&quot;&gt;auditorAwareRef=&amp;quot;auditorProvider&amp;quot;&lt;/code&gt; 설정을 추가한다.&lt;/p&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token annotation punctuation&quot;&gt;@Configuration&lt;/span&gt;
 &lt;span class=&quot;token annotation punctuation&quot;&gt;@EnableJpaAuditing&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;auditorAwareRef&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;auditorProvider&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
 &lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;JpaConfig&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
@@ -2110,7 +2353,7 @@ $ &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt
 /static/65d143925c3decfa2843ee7004381e24/f46e7/pagerequest.png 340w,
 /static/65d143925c3decfa2843ee7004381e24/ca1dc/pagerequest.png 680w,
 /static/65d143925c3decfa2843ee7004381e24/02d09/pagerequest.png 1020w,
-/static/65d143925c3decfa2843ee7004381e24/bbbf7/pagerequest.png 1280w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/65d143925c3decfa2843ee7004381e24/bbbf7/pagerequest.png 1280w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;
     &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;PageRequest static constructor&lt;/figcaption&gt;
@@ -2136,7 +2379,7 @@ $ &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt
   &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;slice&apos; title=&apos;slice&apos; src=&apos;/static/7d61658568e3566c020b6599fc453c07/ca1dc/slice.png&apos; srcset=&apos;/static/7d61658568e3566c020b6599fc453c07/e7570/slice.png 170w,
 /static/7d61658568e3566c020b6599fc453c07/f46e7/slice.png 340w,
 /static/7d61658568e3566c020b6599fc453c07/ca1dc/slice.png 680w,
-/static/7d61658568e3566c020b6599fc453c07/1745e/slice.png 814w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/7d61658568e3566c020b6599fc453c07/1745e/slice.png 814w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;
     &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;slice&lt;/figcaption&gt;
@@ -2150,7 +2393,7 @@ $ &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt
 /static/c73e01b98b8943bb49f9769041dd52bd/f46e7/slice_methods.png 340w,
 /static/c73e01b98b8943bb49f9769041dd52bd/ca1dc/slice_methods.png 680w,
 /static/c73e01b98b8943bb49f9769041dd52bd/02d09/slice_methods.png 1020w,
-/static/c73e01b98b8943bb49f9769041dd52bd/bbbf7/slice_methods.png 1280w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/c73e01b98b8943bb49f9769041dd52bd/bbbf7/slice_methods.png 1280w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;
     &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;slice methods&lt;/figcaption&gt;
@@ -2164,7 +2407,7 @@ $ &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt
   &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;page&apos; title=&apos;page&apos; src=&apos;/static/cdcdbc9212162f613deb93dccec679af/ca1dc/page.png&apos; srcset=&apos;/static/cdcdbc9212162f613deb93dccec679af/e7570/page.png 170w,
 /static/cdcdbc9212162f613deb93dccec679af/f46e7/page.png 340w,
 /static/cdcdbc9212162f613deb93dccec679af/ca1dc/page.png 680w,
-/static/cdcdbc9212162f613deb93dccec679af/911ab/page.png 710w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/cdcdbc9212162f613deb93dccec679af/911ab/page.png 710w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;
     &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;page&lt;/figcaption&gt;
@@ -2179,7 +2422,7 @@ $ &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt
 /static/8e015d06af588554f4e07efaca3105ae/f46e7/page_methods.png 340w,
 /static/8e015d06af588554f4e07efaca3105ae/ca1dc/page_methods.png 680w,
 /static/8e015d06af588554f4e07efaca3105ae/02d09/page_methods.png 1020w,
-/static/8e015d06af588554f4e07efaca3105ae/bbbf7/page_methods.png 1280w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/8e015d06af588554f4e07efaca3105ae/bbbf7/page_methods.png 1280w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;
     &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;page methods&lt;/figcaption&gt;
@@ -2467,11 +2710,11 @@ $ &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt
 &lt;p&gt;useIntersect 커스텀훅을 잘 만들었으니 이제 이 커스텀훅을 무한 스크롤에 사용해 봅시다.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;https://velog.velcdn.com/images/jhy979/post/4643727c-852d-4f23-ab4f-44ce79e2e3b2/image.gif&quot;&gt;&lt;/p&gt;
 &lt;p&gt;다음은 카테고리 목록을 계속 불러와 리스트를 보여주는 컴포넌트입니다.&lt;/p&gt;
-&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;tsx&quot;&gt;&lt;pre class=&quot;language-tsx&quot;&gt;&lt;code class=&quot;language-tsx&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;CategoryList&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;tsx&quot;&gt;&lt;pre class=&quot;language-tsx&quot;&gt;&lt;code class=&quot;language-tsx&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;CategoryList&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
   categoryList&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
   getMoreCategories&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
   hasNextPage&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
-&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; CategoryListProps&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; CategoryListProps&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
   &lt;span class=&quot;token comment&quot;&gt;// useIntersect 커스텀훅의 인자로 (교차 시) 실행할 함수를 넣어줍시다.&lt;/span&gt;
   &lt;span class=&quot;token keyword&quot;&gt;const&lt;/span&gt; ref &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;useIntersect&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
     hasNextPage &lt;span class=&quot;token operator&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;getMoreCategories&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
@@ -2483,7 +2726,7 @@ $ &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt
         &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;span&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt; 생성 날짜 &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;span&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt;
         &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;span&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt; 카테고리 이름 &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;span&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt;
       &lt;/span&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;/&lt;/span&gt;div&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt;
-      &lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;categoryList&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;category&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+      &lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;categoryList&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;map&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token parameter&quot;&gt;category&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
         &lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token tag&quot;&gt;&lt;span class=&quot;token punctuation&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;CategoryItem&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;token script language-javascript&quot;&gt;&lt;span class=&quot;token script-punctuation punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;category&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;id&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token attr-name&quot;&gt;category&lt;/span&gt;&lt;span class=&quot;token script language-javascript&quot;&gt;&lt;span class=&quot;token script-punctuation punctuation&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;category&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;/&gt;&lt;/span&gt;&lt;/span&gt;
       &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token plain-text&quot;&gt;
       // 페이지 하단까지 내리면 이 친구가 등장하여 옵저버에게 감지될 거예요.
@@ -2507,7 +2750,7 @@ $ &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt
 /static/8eeec1db0a8e2a1451b02f210499e2bb/ca1dc/git-repository.png 680w,
 /static/8eeec1db0a8e2a1451b02f210499e2bb/02d09/git-repository.png 1020w,
 /static/8eeec1db0a8e2a1451b02f210499e2bb/9d567/git-repository.png 1360w,
-/static/8eeec1db0a8e2a1451b02f210499e2bb/bf9c5/git-repository.png 1489w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/8eeec1db0a8e2a1451b02f210499e2bb/bf9c5/git-repository.png 1489w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;h3&gt;Upstream Remote Repository&lt;/h3&gt;
@@ -2518,7 +2761,7 @@ $ &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt
       &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/3841b2e403417a99e067872ce9c8cf0f/7223d/new-organization.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
     &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 97.05882352941177%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAATCAYAAACQjC21AAAACXBIWXMAAAsTAAALEwEAmpwYAAACpklEQVQ4y51USWtTYRR9f0EQW1tNbabmNUnTqqW0otm4UKwLd4ILF8WFIIiiuBNcuOtCUAT3op0dqCC4FnFjBzsl0qRtkjZtEmyb4Y3p8d4vzfPRUCF+cPLN5917zv0iOX0h1A25E063F842P1w0dskhAd6T3HIQ9aEDTq8Mz/nr8HSF0erxodXrJ7TD5QtAcvk6ICBzH4SnPYS2QBe8/s4a8Dqf6+k9h/DAIDzdl9Dd04u+8EV0912A3HEG0sELDpcPDSecaHS4anC8xY2jTS0IdPWgv/8KGpodkENncfnqNUo/AF/wNKTGk3SZ0ESHjxxrxo2bA3j3YRJDI+MYHp3A0Gilr2JkbAJvR8YI43j9ZhjvP05iLZHE85evcIpSl+7efwjGvQePcOv2HXz99h3cTNNEve3xk6eQDi6aZhmqquLn3DymZ2axupbAwuISfkxNi7W5+QUsRaJivVwuwzAM0Wu6Lu5LPDEZFJFCRIx62t7enpVRsViCxAtVaJouwJuJZJKQwkY6bWFldQ3JVEqsJ0i3bC5nERqGSVEalZTthCqBx9lsDvH4CtbXN5DJZmmeRYzm/CEm535za8si5N8M3TmUsJ5WNXDw2YtaQhaXhZ4lA9gETpN7NoINY82rqN7jMbdPn7/UaqiqmvVVVdOESb+3t2lP+6cpHERJ0f6WjSDUKxEyGQteKBQEkaKowsHd3V1CHjna297ZQT5fsAg5yvV0plI2onQoHY5G3Xc5Eo2K+mPxOe2p6RksLkWEMSzBciwuxnYdi0Xl8JT/pw45IMkuskJkTMp6sAnLsRjSm5v0VhMi0kj0l3ghdiPthCVFOZiyZkXItcd1xvXImvGY/wRYx8NKRxDaQ7c/P52i1EX16/swYNA+Z1AsKSjZQaaxcXzuD5wW37umFKGoAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
   &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;new organization&apos; title=&apos;new organization&apos; src=&apos;/static/3841b2e403417a99e067872ce9c8cf0f/7223d/new-organization.png&apos; srcset=&apos;/static/3841b2e403417a99e067872ce9c8cf0f/e7570/new-organization.png 170w,
-/static/3841b2e403417a99e067872ce9c8cf0f/7223d/new-organization.png 219w&apos; sizes=&apos;(max-width: 219px) 100vw, 219px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/3841b2e403417a99e067872ce9c8cf0f/7223d/new-organization.png 219w&apos; sizes=&apos;(max-width: 219px) 100vw, 219px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;다양한 기능을 제공하는 Team과 Enterprice는 월마다 일정 금액을 사용해야 한다. 하지만 간단한 프로젝트 진행을 위해 생성하였기 때문에 Free만 사용하여도 충분한 실습과 프로젝트를 진행할 수 있다.&lt;/p&gt;
@@ -2529,7 +2772,7 @@ $ &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt
 /static/fa26164ec13e89c5c184f602a91f9336/f46e7/fare.png 340w,
 /static/fa26164ec13e89c5c184f602a91f9336/ca1dc/fare.png 680w,
 /static/fa26164ec13e89c5c184f602a91f9336/02d09/fare.png 1020w,
-/static/fa26164ec13e89c5c184f602a91f9336/094ea/fare.png 1047w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/fa26164ec13e89c5c184f602a91f9336/094ea/fare.png 1047w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;organization을 생성하게 되면 소속된 repository를 생성할 수 있다. 이것을 &lt;code class=&quot;language-text&quot;&gt;Upstream Remote Repository&lt;/code&gt;로 적용한다.&lt;/p&gt;
@@ -2552,7 +2795,7 @@ $ &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt
 /static/029f0c1db58db7df780f7cda860d2092/f46e7/git-flow-dev.png 340w,
 /static/029f0c1db58db7df780f7cda860d2092/ca1dc/git-flow-dev.png 680w,
 /static/029f0c1db58db7df780f7cda860d2092/02d09/git-flow-dev.png 1020w,
-/static/029f0c1db58db7df780f7cda860d2092/3b5a6/git-flow-dev.png 1302w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/029f0c1db58db7df780f7cda860d2092/3b5a6/git-flow-dev.png 1302w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;main&lt;/code&gt;과 &lt;code class=&quot;language-text&quot;&gt;develop&lt;/code&gt; 브랜치이다. 두 브랜치는 항시 운영되어야 하는 브랜치이다. &lt;code class=&quot;language-text&quot;&gt;develop&lt;/code&gt;는 개발을 위한 브랜치이고, &lt;code class=&quot;language-text&quot;&gt;main&lt;/code&gt;은 제품으로 출시될 수 있는 브랜치 이기 때문에 &lt;code class=&quot;language-text&quot;&gt;항시 배포 가능한 상태&lt;/code&gt;이어야 한다.&lt;/p&gt;
@@ -2564,7 +2807,7 @@ $ &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt
 /static/606d65acf7592c436f92357df92671ec/f46e7/git-flow-feature.png 340w,
 /static/606d65acf7592c436f92357df92671ec/ca1dc/git-flow-feature.png 680w,
 /static/606d65acf7592c436f92357df92671ec/02d09/git-flow-feature.png 1020w,
-/static/606d65acf7592c436f92357df92671ec/2d324/git-flow-feature.png 1306w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/606d65acf7592c436f92357df92671ec/2d324/git-flow-feature.png 1306w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;feature&lt;/code&gt; 브랜치는 단위 기능을 개발하는 브랜치이다. 기능 개발이 완료되면 &lt;code class=&quot;language-text&quot;&gt;develop&lt;/code&gt; 브랜치와 &lt;code class=&quot;language-text&quot;&gt;merge&lt;/code&gt; 된다.&lt;/p&gt;
@@ -2577,7 +2820,7 @@ $ &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt
 /static/d39d89a765f3fefdebaac1e1b20b596c/f46e7/git-flow-release.png 340w,
 /static/d39d89a765f3fefdebaac1e1b20b596c/ca1dc/git-flow-release.png 680w,
 /static/d39d89a765f3fefdebaac1e1b20b596c/02d09/git-flow-release.png 1020w,
-/static/d39d89a765f3fefdebaac1e1b20b596c/2d324/git-flow-release.png 1306w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/d39d89a765f3fefdebaac1e1b20b596c/2d324/git-flow-release.png 1306w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;release&lt;/code&gt; 브랜치는 배포를 하기 전에 충분한 검증을 위해 생성하는 브랜치이다. 배포 가능한 상태가 되면 &lt;code class=&quot;language-text&quot;&gt;main&lt;/code&gt; 브랜치로 &lt;code class=&quot;language-text&quot;&gt;merge&lt;/code&gt; 작업을 거친다. 또한 &lt;code class=&quot;language-text&quot;&gt;develop&lt;/code&gt;에도 반영사항을 모두 &lt;code class=&quot;language-text&quot;&gt;merge&lt;/code&gt; 시켜야 한다.&lt;/p&gt;
@@ -2588,7 +2831,7 @@ $ &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt
 /static/b976091578d645e47743411f76cedbe7/f46e7/git-flow-hotfix.png 340w,
 /static/b976091578d645e47743411f76cedbe7/ca1dc/git-flow-hotfix.png 680w,
 /static/b976091578d645e47743411f76cedbe7/02d09/git-flow-hotfix.png 1020w,
-/static/b976091578d645e47743411f76cedbe7/919e0/git-flow-hotfix.png 1308w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/b976091578d645e47743411f76cedbe7/919e0/git-flow-hotfix.png 1308w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;hotifx&lt;/code&gt; 브랜치는 배포 중 버그가 생겨 긴급하게 수정해야 하는 브랜치이다. 배포 이후에 이루어지는 브랜치이고, 반영 사항을 &lt;code class=&quot;language-text&quot;&gt;main&lt;/code&gt;과 &lt;code class=&quot;language-text&quot;&gt;develop&lt;/code&gt;에 모두 적용 시켜야 한다.&lt;/p&gt;
@@ -2600,7 +2843,7 @@ $ &lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt
     &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 38.82352941176471%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAICAYAAAD5nd/tAAAACXBIWXMAAAsTAAALEwEAmpwYAAABZUlEQVQoz41Su07EMBDMh9HBV0CF+AY6JDpEi6iAjg4BNQU1xRU0dIjHvfK6PO+SOE5iO8Ou7wJ0YGlk7Xp3dmYTp+0UBnRKI18V8PwQQRhhVVSQskEtJUQtsYhTRATOCVFDNq3NhYsIFb3XdQ2HSX4TlpVAnGS2sLRNjW1kpPkSSZrbHA9p2g5LEpCkGQ2kHJE6A9GAIdam/84xGTdrYyy4Zsjxu9LGxm2n4bjBArOpi8lsDiFbUlhbW7O5C59sN9QcZzk8qhtPpgijxJJE5GLu+kjojYliUun6AVm2dnmSgrKKSKFVuVFK05Uym1tvan4w5JRexw7+cUxv0BlFd/9nreN6Ptnz7D4qIayt9/EEopB4TcbYudvH9v0+9h4OsXWzi4PHI0Rk/+3jE0VZrQea9SD+M5x8uQKDbTb8JWknSZahlR2CIsbp6BInowucPV/j+OkcVy+30FRblKVdC59+o5zjL5LYYBNviXhlAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
   &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;fork&apos; title=&apos;fork&apos; src=&apos;/static/c8b7617c7dae9763e031856313f8a9f1/39d25/fork.png&apos; srcset=&apos;/static/c8b7617c7dae9763e031856313f8a9f1/e7570/fork.png 170w,
 /static/c8b7617c7dae9763e031856313f8a9f1/f46e7/fork.png 340w,
-/static/c8b7617c7dae9763e031856313f8a9f1/39d25/fork.png 444w&apos; sizes=&apos;(max-width: 444px) 100vw, 444px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/c8b7617c7dae9763e031856313f8a9f1/39d25/fork.png 444w&apos; sizes=&apos;(max-width: 444px) 100vw, 444px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;Organization에 생성한 repository에 Fork를 누르면 손쉽게 할 수 있다. Fork로 생성된 repository를 기반으로 &lt;code class=&quot;language-text&quot;&gt;Local Repository&lt;/code&gt;를 생성해야 한다.&lt;/p&gt;
@@ -2628,7 +2871,7 @@ upstream        https://github.com/&lt;span class=&quot;token punctuation&quot;&
   &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;issue&apos; title=&apos;issue&apos; src=&apos;/static/3cd5ff0b5baab0356e4b04bb99b928e7/ca1dc/issue.png&apos; srcset=&apos;/static/3cd5ff0b5baab0356e4b04bb99b928e7/e7570/issue.png 170w,
 /static/3cd5ff0b5baab0356e4b04bb99b928e7/f46e7/issue.png 340w,
 /static/3cd5ff0b5baab0356e4b04bb99b928e7/ca1dc/issue.png 680w,
-/static/3cd5ff0b5baab0356e4b04bb99b928e7/2928f/issue.png 691w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/3cd5ff0b5baab0356e4b04bb99b928e7/2928f/issue.png 691w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;3번 번호가 부여된 이슈라고 가정한다. 해당 번호를 기반으로 &lt;code class=&quot;language-text&quot;&gt;local repository&lt;/code&gt;에서 feature 브랜치를 생성한다.&lt;/p&gt;
@@ -2645,7 +2888,7 @@ $ &lt;span class=&quot;token function&quot;&gt;git&lt;/span&gt; rebase upstream/
     &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 76.47058823529412%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAPCAYAAADkmO9VAAAACXBIWXMAAAsTAAALEwEAmpwYAAACU0lEQVQ4y42SS2/UMBSF839ZsaBdVKz4I+wQu1JALBC0dIkE005fM0M7VGIyeTuJ7bwfh3udmVCNVMDSJ9u5vueea8fqGx+1niKX18jSC+KS1pfQyQXNVyjUBlrzvsln6OsFEsqJ5ARCndHMfENd2bDa4ga/Fi+xnL9GaL8xCPcIweoQwjlC6r9D4g3E3ls08iO0+oDnp/vYO9nH/skeDk4P8Oz4Ka7cz7C62kWdTdEU10AzA7rFH9r5AH/fUs/QldcQ8jsxMTjxV9wHX6DyJay66eEHCVZrD0XVQukcQqTQWQmlNOJEYju6Dli7AfwwpvZa2JyjahzefsKT4xd4NXsPK8s1nGCNIIoRihgiThGnEgkhUkVopFIhJfG8rCB1NsRpL5KUYprc2ThbzeHIEFaU+JgvL6lqAtvx4HgBXD8k1xEViuEJRTFhUFlBggVCKhqR81AkBiEkZJqjItdWVlMbaQ8Rhej6fmyvaVuk7IRceEGILMvRU7zrevAxXveb80pr011Z1bBU1eM+KhH4HrI8Hw/XdYMwEoZgM7dUZBDtRnjPV8LxqiZBTkylxNpxTaVRsGnoPhMEYWTgu23o29ZlN7rtIbeC7JATuYLr+Sax3iRxIRbcuuT9rjsDC6qhZeOQ29D0ckVZmnszNC211w1OumFuaX4MjnMe51jchucHdPmJSX44+vGRejw+hhi7Y1GLNyG1Op8vqG0Pd8uf+HF7R671juhfJDdn2KkRtNcOJmdTrFY2bmYLTM6n9B8Gm0Pd+Iv8CyPY7rT5cLS7D/Af/Ab3t3oeprLDWAAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
   &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;upstream repository&apos; title=&apos;upstream repository&apos; src=&apos;/static/e9849d6835bbf7a8a51926d007cdbf71/2728a/upstream-repository.png&apos; srcset=&apos;/static/e9849d6835bbf7a8a51926d007cdbf71/e7570/upstream-repository.png 170w,
 /static/e9849d6835bbf7a8a51926d007cdbf71/f46e7/upstream-repository.png 340w,
-/static/e9849d6835bbf7a8a51926d007cdbf71/2728a/upstream-repository.png 655w&apos; sizes=&apos;(max-width: 655px) 100vw, 655px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/e9849d6835bbf7a8a51926d007cdbf71/2728a/upstream-repository.png 655w&apos; sizes=&apos;(max-width: 655px) 100vw, 655px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;이제 fork한 개인 원격 저장소를 살펴보면 새롭게 작성한 브랜치를 감지하고 pull request 작성을 위한 버튼이 생성된다.&lt;/p&gt;
@@ -2654,7 +2897,7 @@ $ &lt;span class=&quot;token function&quot;&gt;git&lt;/span&gt; rebase upstream/
     &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 102.94117647058825%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAVCAYAAABG1c6oAAAACXBIWXMAAAsTAAALEwEAmpwYAAAC8klEQVQ4y41VyW7UQBCdD+cjQEJCcOCAQAIkBAIhceCAuCUQksCQSSazrx7v7vZuzzxetTNkIshi6al686tyvepyq9cfoHPaRX8wxFn3HO3fHWPjJEFRlsjzAkVRXqBATpRclz1ZK6uq2SsrpMUaLa1jBGGESGmEkYLvB2YsUNzTcWys0tqMdZzQWQp5T6lmTSmFUKdYqQqtlBHESWag49TYSMWIdAM/iMx6XlRmLxQSEuaMqChrVNUGdb1FzQh52PFDjKcLjKZzY7u9IXqDMbr9IYbjGRaWg6XtYjSZ43wwwnAyg2V7UHRgBR6WgYsF4dJ5awOgqNbGc0TySCfwQwWXTmzXh7pYk7njBfD4kliZxykJQ89gGboImLLWu4+fsH/0C06QYTxzMFlFGFt8UVeIMsBPagQJHWabBumlDbgXpYDiuTCRsxSlf34Cy1rC8mJM5i7mjsLEEBZ8qW4gpHFFgn/hx6XZ84iQ8xYunjRNkWSZGYt622ez2ZhyEZUTipHwXMZzZszSkgoJiZhqVyyh1ma9Rk2Y3FGU+XKF6XxpEi/5SvOSjgpjr0MmFZDmJA+bCCUKSfS438MB83n4s43jdocKT42jLel1kH0tiq/sS0KJZmWvcHreR+esh8FoapQUlW+KcpfQtp2GcE1ClxGOzo6w9/0Qe99+kHDC4q1v/eRdwtUuodTekiFLpNtDu590lwj/EsonW7wJE4ohuZQk34XsxghdP2KEDqtdXzl4m8LXRijXbMaS8UP93wjvorK9S7hyPDaGpjksLPsOJDeUzZqFvS3QrRVIizK2uLRb5eMsvwLFm+MFwVWVTReRenQD2B67DeeOWM6lxcnccnz2xRyo+WUlUcGMazaJVOdN++IyPeTwwqYzm/vJVtRAmy6dsFVp+S1kJcbBAg8OnuHJ8Ws8OnqJx8evcO/rfbw9/UzCTUMY0enYYpS2ZdSSfCwWS/NLqOv1hdvGvZ14eNp+gxedD3h+8t7g4eFzfJnu4w/OaUSPxFrqmwAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
   &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;pull request&apos; title=&apos;pull request&apos; src=&apos;/static/ffb02f56c9c578a40db4a74046d8cf1e/ee2c8/pull-request.png&apos; srcset=&apos;/static/ffb02f56c9c578a40db4a74046d8cf1e/e7570/pull-request.png 170w,
 /static/ffb02f56c9c578a40db4a74046d8cf1e/f46e7/pull-request.png 340w,
-/static/ffb02f56c9c578a40db4a74046d8cf1e/ee2c8/pull-request.png 635w&apos; sizes=&apos;(max-width: 635px) 100vw, 635px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/ffb02f56c9c578a40db4a74046d8cf1e/ee2c8/pull-request.png 635w&apos; sizes=&apos;(max-width: 635px) 100vw, 635px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;feature/3-init-setting&lt;/code&gt; 브랜치를 develop에 merge하기 위한 pull request를 진행하는 예시이다. 작성한 코드를 리뷰해줄 팀원들을 선택하고, commit한 코드의 내용을 간단히 요약하여 작성한다. 이제 생성한 PR을 기반으로 &lt;code class=&quot;language-text&quot;&gt;코드리뷰&lt;/code&gt;를 진행한다. 변경 사항이 적용되면 develop에 반영하기 위해 merge한다.&lt;/p&gt;
@@ -2671,7 +2914,7 @@ $ &lt;span class=&quot;token function&quot;&gt;git&lt;/span&gt; rebase upstream/
   &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;force push&apos; title=&apos;force push&apos; src=&apos;/static/54509e71415c86f1358129aaad6fee13/ca1dc/force-push.png&apos; srcset=&apos;/static/54509e71415c86f1358129aaad6fee13/e7570/force-push.png 170w,
 /static/54509e71415c86f1358129aaad6fee13/f46e7/force-push.png 340w,
 /static/54509e71415c86f1358129aaad6fee13/ca1dc/force-push.png 680w,
-/static/54509e71415c86f1358129aaad6fee13/7bf1f/force-push.png 938w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/54509e71415c86f1358129aaad6fee13/7bf1f/force-push.png 938w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;만약 팀원 중 한명이 작업을 끝내서 PR이 merge된 상황이라고 가정하자. develop 브랜치의 커밋 베이스는 변경됬으며 이전에 작업을 진행하던 브랜치들은 시작점이 뒤로 밀려나게 된다.&lt;/p&gt;
@@ -2714,7 +2957,7 @@ $ &lt;span class=&quot;token function&quot;&gt;git&lt;/span&gt; rebase upstream/
 /static/01f66d512c9053274ff2f8a3d6731de4/ca1dc/intellij.png 680w,
 /static/01f66d512c9053274ff2f8a3d6731de4/02d09/intellij.png 1020w,
 /static/01f66d512c9053274ff2f8a3d6731de4/9d567/intellij.png 1360w,
-/static/01f66d512c9053274ff2f8a3d6731de4/9a26f/intellij.png 2176w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/01f66d512c9053274ff2f8a3d6731de4/9a26f/intellij.png 2176w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;
     &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;IntelliJ 설정 화면&lt;/figcaption&gt;
@@ -2771,7 +3014,7 @@ $ &lt;span class=&quot;token function&quot;&gt;git&lt;/span&gt; rebase upstream/
   &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;ERD&apos; title=&apos;ERD&apos; src=&apos;/static/059cb21d6371d7d2f19ee0d066e55808/ca1dc/erd.png&apos; srcset=&apos;/static/059cb21d6371d7d2f19ee0d066e55808/e7570/erd.png 170w,
 /static/059cb21d6371d7d2f19ee0d066e55808/f46e7/erd.png 340w,
 /static/059cb21d6371d7d2f19ee0d066e55808/ca1dc/erd.png 680w,
-/static/059cb21d6371d7d2f19ee0d066e55808/6a959/erd.png 699w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+/static/059cb21d6371d7d2f19ee0d066e55808/6a959/erd.png 699w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos;&gt;
   &lt;/a&gt;
     &lt;/span&gt;
     &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;ERD&lt;/figcaption&gt;
