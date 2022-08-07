@@ -1,4 +1,34 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 01 Aug 2022 03:58:51 GMT</lastBuildDate><item><title><![CDATA[컴포넌트 분리 기준]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 나인이 작성했습니다. UI가 비슷하면 재사용 초반에 개발을 진행할 때 은 대부분 UI였습니다. "UI…]]></description><link>https://dallog.github.io/seperate-components/</link><guid isPermaLink="false">https://dallog.github.io/seperate-components/</guid><pubDate>Mon, 01 Aug 2022 11:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 07 Aug 2022 07:16:27 GMT</lastBuildDate><item><title><![CDATA[젠킨스 파이프라인 스크립트 형상 관리]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 후디가 작성했습니다. 배경 최근 달록팀의 젠킨스 EC…]]></description><link>https://dallog.github.io/jenkins-pipeline-from-scm/</link><guid isPermaLink="false">https://dallog.github.io/jenkins-pipeline-from-scm/</guid><pubDate>Sun, 07 Aug 2022 16:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/devHudi&quot;&gt;후디&lt;/a&gt;가 작성했습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;배경&lt;/h2&gt;
+&lt;p&gt;최근 달록팀의 젠킨스 EC2 인스턴스가 문제가 생겼습니다. 여러 문제가 얽혀서 문제의 원인을 추적하고 해결하는 것 보다 인스턴스를 제거하고 새로 띄워 젠킨스를 다시 설치하는 것이 빠를 것 같았습니다. 다행히 젠킨스 설치 및 초기 세팅에 대한 문서화는 잘 되어 있어서 초기에 젠킨스를 설치한 제가 아니더라도 다른 크루가 쉽게 젠킨스를 셋업할 수 있었습니다.&lt;/p&gt;
+&lt;p&gt;하지만, 파이프라인 스크립트에 대한 문서는 꾸준히 갱신되지 않아 파이프라인 스크립트를 다시 작성해야하는 문제가 발생했습니다. 이런 배경에서 젠킨스 파이프라인 스크립트의 형상 관리를 고민하게 되었습니다.&lt;/p&gt;
+&lt;h2&gt;젠킨스에서의 형상관리&lt;/h2&gt;
+&lt;p&gt;흔히 SCM이라고 불리는 소프트웨어 형상 관리(Software Configuration Management)란 무엇일까요? 형상 관리는 소프트웨어의 변경 사항을 체계적으로 추적하고 통제하는 것을 의미합니다. 현재 가장 많이 사용되는 형상 관리 도구는 Git 입니다. 달록팀의 백엔드, 프론트엔드 코드도 모두 Git으로 형상 관리되고 있습니다.&lt;/p&gt;
+&lt;p&gt;그런데, 젠킨스 파이프라인을 형상관리하는 방법은 없을까요? 다행히도 젠킨스는 파이프라인 스크립트의 형상관리를 지원합니다. 형상관리를 함으로써 젠킨스 서버와 독립적으로 파이프라인 스크립트를 관리할 수 있습니다. 또한 젠킨스 파이프라인 스크립트도 버전관리 대상이 됨으로서 문제 발생 시 쉬운 롤백 등의 여러 이점을 가져갈 수 있습니다.&lt;/p&gt;
+&lt;p&gt;달록팀이 젠킨스 파이프라인 스크립트를 형상 관리한 방법에 대해 소개드리겠습니다.&lt;/p&gt;
+&lt;h3&gt;레포지토리에 파이프라인 스크립트 추가&lt;/h3&gt;
+&lt;p&gt;파이프라인 스크립트를 별도의 레포지토리에서 관리할 수도 있겠지만, 달록팀은 프로젝트와 같은 레포지토리에서 관리하도록 결정 하였습니다. 레포지토리의 제일 상위에 &lt;code class=&quot;language-text&quot;&gt;jenkins&lt;/code&gt; 라는 디렉토리를 만들고, 그 하위에 젠킨스 잡(job)별로 파일을 생성하고 파이프라인 스크립트를 작성합니다.&lt;/p&gt;
+&lt;p&gt;파일명은 &lt;code class=&quot;language-text&quot;&gt;OOO.jenkinsfile&lt;/code&gt; 으로 통일하였습니다. 예를 들어 백엔드 개발 서버에 대한 파이프라인 스크립트는 &lt;code class=&quot;language-text&quot;&gt;backend-dev.jenkinsfile&lt;/code&gt; 로 명명하였습니다. 파일에는 원래 젠킨스에서 돌아가고 있던 파이프라인 스크립트를 그대로 가져오면 됩니다.&lt;/p&gt;
+&lt;h3&gt;환경변수 설정&lt;/h3&gt;
+&lt;p&gt;그런데, 원래라면 젠킨스 파이프라인 스크립트가 외부에 노출되지 않았기 때문에 민감한 정보(서버의 IP정보 등)가 그대로 파이프라인 스크립트에 작성되어 있었습니다. 이런 민감한 정보가 외부로 노출되지 않도록 젠킨스의 환경변수로 분리하고, 파이프라인 스크립트에서는 민감한 정보를 젠킨스의 환경 변수에서 가져오도록 해야합니다.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Jenkins 관리 &gt; 시스템 설정 &gt; Global properties &gt; Enviroment variables&lt;/strong&gt; 에 민감한 정보를 환경변수로 등록합니다. 그리고 파이프라인 스크립트에서는 아래와 같이 환경변수의 이름을 명시하여 사용합니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;stage(&apos;Deploy&apos;) {
+    steps {
+        dir(&apos;backend/build/libs&apos;) {
+            sshagent(credentials: [&apos;key-dallog&apos;]) {
+                sh &quot;scp -o StrictHostKeyChecking=no backend-0.0.1-SNAPSHOT.jar ubuntu@${env.BACKEND_DEV_IP}:/home/ubuntu&quot;
+                sh &quot;ssh -o StrictHostKeyChecking=no ubuntu@${env.BACKEND_DEV_IP} &apos;sh run.sh&apos; &amp;amp;&quot;
+            }
+        }
+    }
+}&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;Pipeline script from SCM&lt;/h3&gt;
+&lt;p&gt;형상 관리를 진행할 파이프라인의 &lt;strong&gt;구성&lt;/strong&gt; 메뉴에 진입하고, &lt;strong&gt;Advanced Project Options &gt; Pipeline &gt; Definition&lt;/strong&gt; 에서 &lt;strong&gt;Pipeline script from SCM&lt;/strong&gt;을 선택합니다.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;SCM&lt;/strong&gt;에서 &lt;strong&gt;Git&lt;/strong&gt;을 선택하고, &lt;strong&gt;Repositories&lt;/strong&gt; 메뉴에 레포지토리 URL과 자격 증명(Credential), 브랜치 관련 설정을 해줍니다. 달록팀은 레포지토리를 퍼블릭으로 열어두었으므로 별도의 자격 증명 설정은 하지 않았습니다. &lt;strong&gt;Repository browser&lt;/strong&gt;는 자동으로 설정합니다.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Script Path&lt;/strong&gt; 에는 파이프라인 스크립트가 위치한 레포지토리의 경로를 명시하면 됩니다. 백엔드 개발 서버라면 &lt;code class=&quot;language-text&quot;&gt;jenkins/backend-dev.jenkinsfile&lt;/code&gt; 로 입력해두면 됩니다.&lt;/p&gt;
+&lt;p&gt;모든 세팅이 끝났습니다. 지금 빌드를 클릭해보면 정상적으로 Git에서 파이프라인 스크립트를 가져와 실행되는 모습을 확인할 수 있을 것 입니다.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[컴포넌트 분리 기준]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 나인이 작성했습니다. UI가 비슷하면 재사용 초반에 개발을 진행할 때 은 대부분 UI였습니다. "UI…]]></description><link>https://dallog.github.io/seperate-components/</link><guid isPermaLink="false">https://dallog.github.io/seperate-components/</guid><pubDate>Mon, 01 Aug 2022 11:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
 &lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/jhy979&quot;&gt;나인&lt;/a&gt;이 작성했습니다.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2&gt;UI가 비슷하면 재사용&lt;/h2&gt;
