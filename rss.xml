@@ -1,4 +1,77 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 07 Aug 2022 07:16:27 GMT</lastBuildDate><item><title><![CDATA[젠킨스 파이프라인 스크립트 형상 관리]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 후디가 작성했습니다. 배경 최근 달록팀의 젠킨스 EC…]]></description><link>https://dallog.github.io/jenkins-pipeline-from-scm/</link><guid isPermaLink="false">https://dallog.github.io/jenkins-pipeline-from-scm/</guid><pubDate>Sun, 07 Aug 2022 16:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 07 Aug 2022 14:42:08 GMT</lastBuildDate><item><title><![CDATA[달록 배포 총🔫정리 1 - 전체적인 구조 살펴보기]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 파랑가 작성했습니다. 전체적인 구조 배포 과정을 다루기 전에 전체적인 구조부터 살펴볼게요.  총 5개의 EC2를 사용하고 있습니다. 하나하나 살펴보겠습니다. 1. Jenkins…]]></description><link>https://dallog.github.io/deploy-full-course1/</link><guid isPermaLink="false">https://dallog.github.io/deploy-full-course1/</guid><pubDate>Sun, 07 Aug 2022 23:30:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/summerlunaa&quot;&gt;파랑&lt;/a&gt;가 작성했습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;전체적인 구조&lt;/h2&gt;
+&lt;p&gt;배포 과정을 다루기 전에 전체적인 구조부터 살펴볼게요.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; margin-bottom: 16px;&apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/8032293ed234f57ca5e6eed05803ca7e/52c6a/structure.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 64.70588235294117%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAANCAYAAACpUE5eAAAACXBIWXMAAAsTAAALEwEAmpwYAAABz0lEQVQ4y31Si47TMBDM/38CP8A/gEAcx+NUoT7Qcb2emsAJ7lravJw4TuLXsHbSkDaIlSxLs+vZnVkHOIW1sPgbxphRapSx3TH2HzmKYAzqMsHvDy/AWAyWp5B1ScmOuP65QjJ/iefDI3b7CHWVD4Rj0oHQQ0pgfvMKs/UWZZagEhxGS18o02ck4RXWhxW28Tdo2TWzF1MGI8XDNOvlCvPrd1BGQyk5KHWRVzF4w0izpnI9kX0+IREKzvAQPeL2/gFpcqRc7yU91kQUxUtExwWsrCYTursnNP2xMFLQYzeVhmk5vVF+epc3kiwgW3RbdrnevzPCYQJcLNJM8f/FiTToNrhARYazkoNlR1LX+qT4fgMeXSMvCuTJnhZRd3j4Hln4CayoUNDyZNucS+bRDGLzpmslSSJJclFsrtCEHztcKS/T43evIX7MkImEPI/JTzGVHDcpFrvP2CS31LEcNrgTeywJ36b3NCEffoLLrp7eIuVP5LkalhN45SSxJRLW5OC98f6hqlG3RY9XHrc9/iu9Qxh/xfbwBU2TXWyZOrgi14nGgPUPaXvOS92c466ecP9t3GR0W1WPJZ9WbrxMf0Yf1Vo9wf3d13slwz+2+ANsuPR1MeF4qQAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;structure&apos; title=&apos;structure&apos; src=&apos;/static/8032293ed234f57ca5e6eed05803ca7e/ca1dc/structure.png&apos; srcset=&apos;/static/8032293ed234f57ca5e6eed05803ca7e/e7570/structure.png 170w,
+/static/8032293ed234f57ca5e6eed05803ca7e/f46e7/structure.png 340w,
+/static/8032293ed234f57ca5e6eed05803ca7e/ca1dc/structure.png 680w,
+/static/8032293ed234f57ca5e6eed05803ca7e/02d09/structure.png 1020w,
+/static/8032293ed234f57ca5e6eed05803ca7e/9d567/structure.png 1360w,
+/static/8032293ed234f57ca5e6eed05803ca7e/52c6a/structure.png 1452w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;총 5개의 EC2를 사용하고 있습니다. 하나하나 살펴보겠습니다.&lt;/p&gt;
+&lt;h3&gt;1. Jenkins&lt;/h3&gt;
+&lt;p&gt;젠킨스를 위한 인스턴스입니다. 젠킨스는 설정이 필요한 부분이 많아 도커 위에 젠킨스를 띄워놓았습니다.&lt;/p&gt;
+&lt;h3&gt;2. FrontEnd&lt;/h3&gt;
+&lt;p&gt;프론트엔드 배포를 위한 인스턴스입니다. 여기선 Nginx가 정적 파일을 처리하는 역할을 합니다.&lt;/p&gt;
+&lt;h3&gt;3. BackEnd Dev&lt;/h3&gt;
+&lt;p&gt;실제 배포 전 테스트를 위한 백엔드 개발 서버입니다. 한 인스턴스 안에 Nginx와 Spring 함께 넣어두었습니다.&lt;/p&gt;
+&lt;h3&gt;4. Web Server&lt;/h3&gt;
+&lt;p&gt;리버스 프록시 역할을 하는 Nginx가 있습니다. 프론트엔드에서 받은 요청을 백엔드 서버로 전달합니다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;리버스 프록시란? &lt;a href=&quot;https://hudi.blog/forward-proxy-reverse-proxy/&quot;&gt;https://hudi.blog/forward-proxy-reverse-proxy/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;5. BackEnd Prod&lt;/h3&gt;
+&lt;p&gt;운영를 위한 백엔드 서버입니다. WS에서 받은 요청을 실제로 처리하여 응답을 전달합니다.&lt;/p&gt;
+&lt;h2&gt;CD 흐름&lt;/h2&gt;
+&lt;p&gt;&lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; margin-bottom: 16px;&apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/f1cfc5bba6abb2415f50f950868c1293/2637b/cd.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 61.76470588235294%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAMCAYAAABiDJ37AAAACXBIWXMAAAsTAAALEwEAmpwYAAACHElEQVQoz21TTY/TMBDtf+fMkSsnbkjckPgQEmIPXbUqVYFtl9LS7m6Tpm0Sx4kTJ/7IY+xku1RgyXFmxvPem5lkAFpta90BefgFtf4I1Uiw5ASraxf1MVOmEIu3yOMIPGXIsxTWGnT53R23Bp3RO45LfHjzAovggLoSKMscUnCcEoY02CAdvsTN3WdMH65wYL+JpfaZF4DuUVUVgiAESxOwusV0NMJq9hWKhBdZgs1mizhJYIyGbg2S4tgp09X/Aeu6Bs9zX0ZRcEynMwyH12A8R1MVGI0nRLiDkQJxGeJHeIVal4CW/wL+bXhwShKVRC7oFETCYiIRfdSAl3sw8YBKJgT4VPIjjlfYWkv9Kn2iU3mIQuphAVgFawyklKQwwM/FHLUokKcpMhrauffdZLx1Vtg0ClG0B+cc630GYy+EI6eWzOe3OB6P2N7dQ2pLU7bQWvuz7UEHrW0Rf3qO8u4aOYElhx2xRx6ETV6DT14RSQZ2CmGbwvvT9QT7d8+QkY+TUk73rVF9D92Ud9+gRexZLH2TrSq7fp62tFddRS6mJL0YWFlAhXNIVSDKNxcTH/QNwCqZY7z7gmV8Q4nlucmR2Hn/LBpDuEE8fsw0oE38HZP79xB1SoDyCbBVAoYmpkxDvdPe9n5n07vzKyrJOhV9aaIICHCGgC0RpItLhR7dlel+NReg3U2/B/f+7k5LJXv17j7F/SZCR+7WHwQGmxfHAA+rAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;cd&apos; title=&apos;cd&apos; src=&apos;/static/f1cfc5bba6abb2415f50f950868c1293/ca1dc/cd.png&apos; srcset=&apos;/static/f1cfc5bba6abb2415f50f950868c1293/e7570/cd.png 170w,
+/static/f1cfc5bba6abb2415f50f950868c1293/f46e7/cd.png 340w,
+/static/f1cfc5bba6abb2415f50f950868c1293/ca1dc/cd.png 680w,
+/static/f1cfc5bba6abb2415f50f950868c1293/02d09/cd.png 1020w,
+/static/f1cfc5bba6abb2415f50f950868c1293/2637b/cd.png 1356w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;CD 흐름은 위와 같습니다. github의 webhook이 merge를 감지하면 젠킨스에 알려줍니다. 흐름은 두 가지 케이스로 나뉩니다.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;dev 브랜치가 머지된 경우&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;프론트엔드 서버와 백엔드 dev 서버로 빌드된 파일을 보냅니다.&lt;/p&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;main 브랜치가 머지된 경우&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;프론트엔드 서버와 백엔드 prod 서버로 빌드된 파일을 보냅니다.&lt;/p&gt;
+&lt;h2&gt;도커를 제거한 이유&lt;/h2&gt;
+&lt;p&gt;배포 구조를 개편하면서 젠킨스를 제외한 모든 EC2 인스턴스에서 도커를 제거하였습니다. 도커를 제거한 이유는 크게 두 가지입니다.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;depth가 깊어지면서 관리 포인트가 늘어나고 설정을 수정하기가 과하게 복잡하고 힘들어진다.&lt;/li&gt;
+&lt;li&gt;도커 안에 Nginx를 띄우니 EC2가 무거워진다.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;도커를 통해 얻을 수 있는 장점보다 단점이 훨씬 뚜렷하여 도커를 제거하였습니다. 필요성을 느껴서 기술을 도입한 것이 아니라 남들 다 하니까, 별 생각 없이 기술을 도입했을 때의 문제점을 절실히 깨달은 순간이었습니다.😅 그래도 이번 기회로 도커를 직접 다뤄보고 장점과 단점을 몸소 느낄 수 있어서 좋았습니다.&lt;/p&gt;
+&lt;p&gt;젠킨스의 경우 설정이 복잡하여 도커를 사용하는 것이 오히려 장점이 더 크다고 느껴 도커를 빼지 않았습니다. 추후에 여력이 된다면 백엔드 배포 서버를 여러 개 띄우고 도커 이미지를 통해 동일한 설정으로 관리해보는 것도 좋을 것 같다는 생각이 들었습니다.&lt;/p&gt;
+&lt;h2&gt;백엔드 서버와 Web Server를 나눈 이유&lt;/h2&gt;
+&lt;p&gt;기존의 백엔드 서버를 개발 서버로 전환하고, 운영 서버를 새로 만들면서 백엔드 서버와 web server를 분리했습니다. 그 이유는 아래와 같습니다.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 379px; margin-bottom: 16px;&apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/d02189da957e4ec219b29ba3a8254383/0839d/ws.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 128.23529411764707%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAaCAYAAAC3g3x9AAAACXBIWXMAAAsTAAALEwEAmpwYAAAD2ElEQVRIx5VVW3PbVBDOKz+Bf9AZhl/Ab+Cdf8EMwyu88EAfmKEPUBjaZrh0OnTahAIJhU4ntCYlvZDiJEpiObYl2bJ8kWVZtu46Rx97jmQ3lEsczeysjnTO7re73+5ZwRJPnueFZgmQTBHHIcIoQRQLSaWOkxRi28pSBlkm9aRyBe7HF9D97TJaDRX68TNYmoJuU8g+WBqez6BTuQnj/deRqj+9tIH+sxAI7eUMilhk0CwGYhe8/PzI2MBO+26xhVPI4ehsgyJ/8xyyxEc4seS7Fzm4q34J1d594fQshIti8AKT1dGg16sI8wAj3yJ0m9jWv4cb2QjjCUBOVuYI/k/Ew0lpjZoM+VdtDT8Tuoq2jq3mTfxw/AUOrAeSAQuDKA+ewleEUX63bQd2v0NxzxBRvsLMX+z0kgmCRCAcvwhZHEsyhozlYLxANHfBGYOm66LchNABj33w0EMWusiCMX0TaypWSCG7G+/Bv/EmskEVrboCs7FP3DqE2TyAP+5Kg/2eBTcgVM9vYXrlDZiVT9A4+gOa8hCm+pjkCXRlG1kcYMX66h10P3gNbLAnsIBTHng6A88iIOgTU3xorZY0PLq/Cv3dVxErawV6Pu+gmM7NCtqw6RDMbv57mSlffVPH2J0Uy2BCkdQpBalcK4PH2O8/KpnASh7ymFrGg5N40LwmOrM2BoRslLhUtD7arfopBzFy2lvwcIT1w09RtR4WhVsYpNC8qYF17Q4uPv8Qnyuf4drRVdzS12C2VRwd7GEwGKLXH6BRU2Cbqgw3IAC73S1pMGYRmEiRNJgGyIlbuUwJk9648EbrdDZAs35IlefIiAFpNCUUDrZat2WX/HLyDTZr17BRuwqlVyl5mBKfEu+fXVLmcNhrwxm7xTexl7rBjccYBT2kxEch3RnlObAk6SnkEHkwoIFBmqq7EFqDDgmt6QahLkdCnpTkpMJkNCxEqCKHpIscigVBhejFUvKFLpA7IxtDd4akdg/h7bdg/r6KE+UpWgcVdIiDndoTet9GKnj4n4Ph9ICgnLaHE/R+vATj7VcQ/vk1MsHBiFKQpWARdU0wQi5bb97HL0me/72XPT+AcbiLrEkdERa8NKctaO5x6ZmfPWAX46vUht6AP3Pk+5R4+O3eR9gxNokdXOZ0qQF72qAztGDQPBRPTMWqElXEgC3akC0/sRdXAHUV0gkeaN/hfuMGcXAVd44u497JddT6O+TFOx/CnG41ccjyTRgTFVOagR61qDqqokdtK5ix9CW16GUa/TSKxAUDwWHJQ7EW3A2G57v1pF3qlrzkap4UwufcpcL8Bdglw3pbfyEUAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;ws&apos; title=&apos;ws&apos; src=&apos;/static/d02189da957e4ec219b29ba3a8254383/0839d/ws.png&apos; srcset=&apos;/static/d02189da957e4ec219b29ba3a8254383/e7570/ws.png 170w,
+/static/d02189da957e4ec219b29ba3a8254383/f46e7/ws.png 340w,
+/static/d02189da957e4ec219b29ba3a8254383/0839d/ws.png 379w&apos; sizes=&apos;(max-width: 379px) 100vw, 379px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Nginx 서버를 따로 두면서 리버스 프록시의 장점을 누릴 수 있다.&lt;/li&gt;
+&lt;li&gt;추후 백엔드 서버 확장에 유리하다.&lt;/li&gt;
+&lt;li&gt;여러 개의 백엔드 서버를 두더라도 https를 위한 ssl 인증서 발급 절차를 web server에서 한 번만 진행해도 된다.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;현재는 두 개를 나눈 장점을 100% 느낄 수 없지만 앞으로 백엔드 서버를 추가할 경우에 매우 편할 것으로 예상하고 있습니다.&lt;/p&gt;</content:encoded></item><item><title><![CDATA[젠킨스 파이프라인 스크립트 형상 관리]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 후디가 작성했습니다. 배경 최근 달록팀의 젠킨스 EC…]]></description><link>https://dallog.github.io/jenkins-pipeline-from-scm/</link><guid isPermaLink="false">https://dallog.github.io/jenkins-pipeline-from-scm/</guid><pubDate>Sun, 07 Aug 2022 16:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
 &lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/devHudi&quot;&gt;후디&lt;/a&gt;가 작성했습니다.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2&gt;배경&lt;/h2&gt;
