@@ -59,7 +59,7 @@ $ certbot --version # 버전 확인
 
 Certbot을 통해 SSL 인증서를 발급받는 방법은 여러가지가 있습니다. 그 중 몇 가지를 간단하게 살펴볼게요. 달록은 Nginx 방법을 사용했습니다.
 
-- `**Nginx**` (우리가 사용한 방법)
+- **`Nginx`** (우리가 사용한 방법)
     - 인증 및 설치를 위해 nginx 플러그인을 사용한다. nginx에 대한 인증서 취득 및 설치가 자동적으로 이루어진다.
 - `Webroot`
     - 기능이 동작하고 있는 로컬 웹 서버를 실행 중이라면 웹 서버를 중지하면 안 되는 경우가 있다. 그런 경우 webroot 방식을 사용할 수 있다.
@@ -230,9 +230,10 @@ $ certbot delete --cert-name {인증서 이름}
 
 <br>
  
-- reference
-  - [후디 블로그 - Nginx와 Let's Encrypt로 HTTPS 웹 서비스 배포하기 (feat. Certbot)](https://hudi.blog/https-with-nginx-and-lets-encrypt/)
-  - [2. Nginx 설치 부터 spring boot 기반 앱 배포 - Cerbot 인증서 발급과 SSL 적용](https://velog.io/@jihyunhillpark/2.-spring-boot-기반-앱-배포-Cerbot-인증서-발급과-SSL-적용)
-  - [4. SSL 인증서(letsencrypt) 발급](https://blog.naver.com/PostView.naver?blogId=kangdydtjs&logNo=222546308110&from=search&redirect=Log&widgetTypeCall=true&directAccess=false)
+#### reference
+
+[후디 블로그 - Nginx와 Let's Encrypt로 HTTPS 웹 서비스 배포하기 (feat. Certbot)](https://hudi.blog/https-with-nginx-and-lets-encrypt/)
+[2. Nginx 설치 부터 spring boot 기반 앱 배포 - Cerbot 인증서 발급과 SSL 적용](https://velog.io/@jihyunhillpark/2.-spring-boot-기반-앱-배포-Cerbot-인증서-발급과-SSL-적용)
+[4. SSL 인증서(letsencrypt) 발급](https://blog.naver.com/PostView.naver?blogId=kangdydtjs&logNo=222546308110&from=search&redirect=Log&widgetTypeCall=true&directAccess=false)
 
 #### Special Thanks To `승팡`
