@@ -8,7 +8,7 @@ tags:
 series: 달록 배포 총🔫정리
 ---
 
-> 이 글은 우테코 달록팀 크루 [파랑](https://github.com/summerlunaa)가]이 작성했습니다.
+> 이 글은 우테코 달록팀 크루 [파랑](https://github.com/summerlunaa)이 작성했습니다.
 
 ## 실제 배포 설정
 
