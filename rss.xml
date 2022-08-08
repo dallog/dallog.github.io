@@ -1,5 +1,197 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Sun, 07 Aug 2022 14:55:09 GMT</lastBuildDate><item><title><![CDATA[달록 배포 총🔫정리 2 - EC2와 DNS 설정하기]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 파랑가]이 작성했습니다. 실제 배포 설정 그럼 이제 실제로 어떤 과정을 통해 배포를 진행했는지 자세히 살펴보겠습니다. EC2 생성 EC2 → 인스턴스 → 인스턴스 시작 이름 및 태그 이름: ec2-dallog-XXXX…]]></description><link>https://dallog.github.io/deploy-full-course2/</link><guid isPermaLink="false">https://dallog.github.io/deploy-full-course2/</guid><pubDate>Sun, 07 Aug 2022 23:50:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
-&lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/summerlunaa&quot;&gt;파랑&lt;/a&gt;가]이 작성했습니다.&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 08 Aug 2022 10:29:52 GMT</lastBuildDate><item><title><![CDATA[달록 배포 총🔫정리 3 - SSL 인증서 발급과 NGINX 설정]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 파랑이 작성했습니다. NGINX 설치 NGINX란? 달록 기술블로그 - 리버의 NGINX 란? 설치 SSL 인증서 발급 (with Certbot) Let’s Encrypt 9…]]></description><link>https://dallog.github.io/deploy-full-course3/</link><guid isPermaLink="false">https://dallog.github.io/deploy-full-course3/</guid><pubDate>Mon, 08 Aug 2022 19:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/summerlunaa&quot;&gt;파랑&lt;/a&gt;이 작성했습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;NGINX 설치&lt;/h2&gt;
+&lt;h3&gt;NGINX란?&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://dallog.github.io/what_is_nginx/&quot;&gt;달록 기술블로그 - 리버의 NGINX 란?&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;설치&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;apt&lt;/span&gt; update &lt;span class=&quot;token comment&quot;&gt;# 운영체제에서 사용 가능한 패키지들과 그 버전에 대한 정보(리스트) 업데이트 &lt;/span&gt;
+$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;apt&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt; nginx -y &lt;span class=&quot;token comment&quot;&gt;# nginx 설치&lt;/span&gt;
+$ nginx -v &lt;span class=&quot;token comment&quot;&gt;# 설치한 nginx 버전 확인&lt;/span&gt;
+$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;service&lt;/span&gt; nginx status &lt;span class=&quot;token comment&quot;&gt;# nginx 상태 확인&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;SSL 인증서 발급 (with Certbot)&lt;/h2&gt;
+&lt;h3&gt;Let’s Encrypt&lt;/h3&gt;
+&lt;p&gt;90일짜리 단기 인증서를 무료로 발급해주는 곳입니다. 주기적으로 재발급 해줘야 합니다.&lt;/p&gt;
+&lt;h3&gt;Snapd 설치&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://snapcraft.io/docs/installing-snap-on-ubuntu&quot;&gt;snapcraft 공식문서 - Installing snap on Ubuntu&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;certbot은 snapd로 certbot을 설치하는 것을 권장하고 있습니다. 리눅스 통합 패키지 관리 툴인 snapd를 먼저 설치해봅시다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;apt&lt;/span&gt; update
+$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;apt&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt; snapd&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;Certbot 설치&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://certbot.eff.org/instructions?ws=apache&amp;#x26;os=centosrhel7&quot;&gt;certbot 공식 문서 - certbot 설치&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; snap &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt; core&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; 
+$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; snap &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt; --classic certbot &lt;span class=&quot;token comment&quot;&gt;# certbot 설치&lt;/span&gt;
+$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;ln&lt;/span&gt; -s /snap/bin/certbot /usr/bin/certbot &lt;span class=&quot;token comment&quot;&gt;# certbot 명령어를 사용하기 위해 심볼릭링크 걸기&lt;/span&gt;
+$ certbot --version &lt;span class=&quot;token comment&quot;&gt;# 버전 확인&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;SSL 인증서 발급 방법&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://eff-certbot.readthedocs.io/en/stable/using.html#apache&quot;&gt;certbot 공식 문서 - 인증서 발급 방법&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Certbot을 통해 SSL 인증서를 발급받는 방법은 여러가지가 있습니다. 그 중 몇 가지를 간단하게 살펴볼게요. 달록은 Nginx 방법을 사용했습니다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;**Nginx**&lt;/code&gt; (우리가 사용한 방법)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;인증 및 설치를 위해 nginx 플러그인을 사용한다. nginx에 대한 인증서 취득 및 설치가 자동적으로 이루어진다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;Webroot&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;기능이 동작하고 있는 로컬 웹 서버를 실행 중이라면 웹 서버를 중지하면 안 되는 경우가 있다. 그런 경우 webroot 방식을 사용할 수 있다.&lt;/li&gt;
+&lt;li&gt;웹의 디렉토리 내에 인증서의 유효성을 확인할 수 있는 임시 파일을 만들어 인증을 진행한다.&lt;/li&gt;
+&lt;li&gt;한 번에 하나의 도메인만 발급 가능하다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;Standalone&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;인증서 발급을 위해 기존의 웹 서버를 중지해야 한다.&lt;/li&gt;
+&lt;li&gt;인증을 위해 80 포트로 가상의 standalone 웹서버를 띄워 인증서를 발급한다.&lt;/li&gt;
+&lt;li&gt;한 번에 여러 도메인을 발급할 수 있다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;Manual&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;도메인의 유효성 검증을 직접 수행하는 경우 사용한다.&lt;/li&gt;
+&lt;li&gt;디렉토리에 특정 이름과 특정 내용을 가진 임시 파일을 만들어야 한다. webroot 방식과 비슷하지만 자동으로 진행되지 않는다.&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;도메인에 &lt;code class=&quot;language-text&quot;&gt;_acme-challenge&lt;/code&gt; 를 붙인 TXT DNS 레코드를 설정해주어야 한다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# 예시&lt;/span&gt;
+_acme-challenge.example.com. &lt;span class=&quot;token number&quot;&gt;300&lt;/span&gt; IN TXT &lt;span class=&quot;token string&quot;&gt;&quot;gfj9Xq...Rg85nM&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;인증서 발급하기&lt;/h3&gt;
+&lt;p&gt;그럼 이제 Nginx 방법을 사용해서 인증서를 발급받아 보겠습니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; certbot certonly --nginx -d &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;도메인 이름&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;certonly&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;자동으로 nginx 설정을 수정하지 않고 인증서만 발급받는 옵셥입니다. 자동으로 어떻게 설정되는지 확실히 알지 못하는 경우엔 certonly로 받는 것이 나을 수 있습니다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;—-nginx&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;nginx 방식을 활용하겠다는 의미입니다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Nginx 설정&lt;/h3&gt;
+&lt;p&gt;이제 nginx 설정을 위해서 설정 파일을 생성합니다. &lt;code class=&quot;language-text&quot;&gt;/etc/nginx/conf.d&lt;/code&gt; 디렉토리로 이동하여 &lt;code class=&quot;language-text&quot;&gt;default.conf&lt;/code&gt; 파일을 생성합니다. 꼭 sudo로 명령어를 입력해야 합니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;$ &lt;span class=&quot;token builtin class-name&quot;&gt;cd&lt;/span&gt; /etc/nginx/conf.d
+$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;vim&lt;/span&gt; default.conf&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;⚠️ 주의: &lt;code class=&quot;language-text&quot;&gt;sites-available&lt;/code&gt; 과 &lt;code class=&quot;language-text&quot;&gt;sites-enabled&lt;/code&gt; 는 더 이상 사용되지 않는 nginx 설정 방법입니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;sites-available&lt;/code&gt; 과 &lt;code class=&quot;language-text&quot;&gt;sites-enabled&lt;/code&gt; 두 디렉토리는 sym link로 연결되어 있습니다. 기존 방식은 &lt;code class=&quot;language-text&quot;&gt;sites-available&lt;/code&gt;에 여러 설정파일들을 때려 박은 다음에 &lt;code class=&quot;language-text&quot;&gt;sites-enabled&lt;/code&gt;에 원하는 설정을 선택적으로 동기화하는 방식입니다. 이는 비효율적인 방법이므로 더 이상 사용되지 않는다고 합니다.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;따라서 &lt;code class=&quot;language-text&quot;&gt;sites-available&lt;/code&gt; 에 기본 설정 파일이 있다면 제거해줍시다.&lt;/strong&gt;&lt;/p&gt;
+&lt;br&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;default.conf&lt;/code&gt; 파일을 생성했다면 아래와 같이 내용을 적어줍니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# dallog-frontend /etc/nginx/conf.d/default.conf&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;# 80 포트로 요청이 오는 경우 https가 적용된 url로 redirect 한다.&lt;/span&gt;
+server &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  listen &lt;span class=&quot;token number&quot;&gt;80&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  server_name dallog.me&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;token builtin class-name&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;301&lt;/span&gt; https://dallog.me&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;# 443 포트로 요청이 오는 경우&lt;/span&gt;
+server &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  listen &lt;span class=&quot;token number&quot;&gt;443&lt;/span&gt; ssl http2&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  server_name dallog.me&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+	&lt;span class=&quot;token comment&quot;&gt;# SSL 인증을 위한 pem key 위치를 설정한다.&lt;/span&gt;
+  ssl_certificate /etc/letsencrypt/live/dallog.me/fullchain.pem&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  ssl_certificate_key /etc/letsencrypt/live/dallog.me/privkey.pem&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+	&lt;span class=&quot;token comment&quot;&gt;# front의 경우 정적 페이지를 보여주기 위해 index.html 위치를 설정한다.&lt;/span&gt;
+  location / &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    root /usr/share/nginx/html&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    index index.html&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    try_files &lt;span class=&quot;token variable&quot;&gt;$uri&lt;/span&gt; &lt;span class=&quot;token variable&quot;&gt;$uri&lt;/span&gt;/ /index.html&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# dallog-ws /etc/nginx/conf.d/default.conf&lt;/span&gt;
+
+server &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  listen &lt;span class=&quot;token number&quot;&gt;80&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  server_name api.dallog.me&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+  &lt;span class=&quot;token builtin class-name&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;301&lt;/span&gt; https://api.dallog.me&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+server &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  listen &lt;span class=&quot;token number&quot;&gt;443&lt;/span&gt; ssl http2&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  server_name api.dallog.me&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+  ssl_certificate /etc/letsencrypt/live/api.dallog.me/fullchain.pem&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  ssl_certificate_key /etc/letsencrypt/live/api.dallog.me/privkey.pem&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+	&lt;span class=&quot;token comment&quot;&gt;# web server의 경우 리버스 프록시를 위한 proxy 설정이 들어간다.&lt;/span&gt;
+  location / &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    proxy_pass http://&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;backend-prod server ip&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;token comment&quot;&gt;# backend-prod server ip&lt;/span&gt;
+    proxy_set_header Host &lt;span class=&quot;token variable&quot;&gt;$http_host&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    proxy_set_header X-Real-IP &lt;span class=&quot;token variable&quot;&gt;$remote_addr&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    proxy_set_header X-Forwarded-For &lt;span class=&quot;token variable&quot;&gt;$proxy_add_x_forwarded_for&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    proxy_set_header X-Forwarded-Proto &lt;span class=&quot;token variable&quot;&gt;$scheme&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;proxy_pass&lt;/code&gt; : 프록시 주소, 백엔드 운영 서버 ip를 넣어준다.&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;proxy_set_header Host $http_host&lt;/code&gt; : HTTP Request의 Host 헤더 값, 클라이언트가 요청한 원래 호스트 주소&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;X-Real-IP $remote_addr&lt;/code&gt;: 실제 방문자의 원격 ip 주소&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;X-Forwarded-For $proxy_add_x_forwared_for&lt;/code&gt; : 클라이언트가 프록시 처리한 모든 서버의 IP 주소를 포함하는 목록&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;X-forwarded-Proto $scheme&lt;/code&gt; : HTTP의 구조로 http or https를 의미한다. HTTPS 서버 블록 내에서 사용할 경우 프록시 서버의 HTTP 응답이 HTTPS로 변환된다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Nginx 설정 이후 재시작&lt;/h3&gt;
+&lt;p&gt;설정을 끝냈다면 적용을 위해 Nginx를 재시작 해주어야 합니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# nginx 재시작, 둘 중 하나 선택&lt;/span&gt;
+$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;service&lt;/span&gt; nginx reload
+$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;service&lt;/span&gt; nginx restart&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;인증서 발급 시 발생할 수 있는 에러&lt;/h2&gt;
+&lt;p&gt;인증서 발급 시 발생할 수 있는 에러들을 알아봅시다. 아래 두 가지 에러는 실제로 달록이 SSL 인증서를 발급받는 과정에서 겪은 에러입니다.&lt;/p&gt;
+&lt;h3&gt;1. too many failed authorizations recently&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://letsencrypt.org/docs/failed-validation-limit/&quot;&gt;Let&apos;s encrypt 공식 문서 - failed validation limit&lt;/a&gt;&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; certbot certonly --nginx -d api.dallog.me
+
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+Requesting a certificate &lt;span class=&quot;token keyword&quot;&gt;for&lt;/span&gt; api.dallog.me
+An unexpected error occurred:
+Error creating new order :: too many failed authorizations recently: see https://letsencrypt.org/docs/failed-validation-limit/
+Ask &lt;span class=&quot;token keyword&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;token builtin class-name&quot;&gt;help&lt;/span&gt; or search &lt;span class=&quot;token keyword&quot;&gt;for&lt;/span&gt; solutions at https://community.letsencrypt.org. See the logfile /var/log/letsencrypt/letsencrypt.log or re-run Certbot with -v &lt;span class=&quot;token keyword&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;more&lt;/span&gt; details.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;이 오류는 계정, 호스트 네임, 시간당 5번의 유효성 검사 실패시 발생합니다. 몇 시간(3-4시간 정도) 기다리면 제한이 풀립니다. 그 때 다시 시도하면 됩니다.&lt;/p&gt;
+&lt;h3&gt;2. too many certificates&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://letsencrypt.org/docs/duplicate-certificate-limit/&quot;&gt;Let&apos;s encrypt 공식 문서 - duplicate certificate limit&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; margin-bottom: 16px;&apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/35e6869a39f68ee5c9daceb01252b1b0/f28c3/error.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 19.411764705882355%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAECAYAAACOXx+WAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAz0lEQVQY01WQW26DMBBFWUaoQiUamgqKbWzzKgQoLeSpdP+7ublY5KMfR2fsGY899vLrDdl8hpqOSMcZyXCD+PmDGO9I+zNEf4TsT4ibX0RFh9C0eMsPjn014DWrsfm08NMcPu3ZeoSuvqHKAZKoskdM9mWHQBSOLYsX/MT8YxNr5xc2CtYaT+sapWlg9JdD8UZJSzqjNXO5bZ0LesGsWL7SEM1YMB/xjKc4juRYah1NHCak7eS87IludvFzbccLPjjqjk0iNnvnNyxxyDikH7GZgDUmjHZuAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;error&apos; title=&apos;error&apos; src=&apos;/static/35e6869a39f68ee5c9daceb01252b1b0/ca1dc/error.png&apos; srcset=&apos;/static/35e6869a39f68ee5c9daceb01252b1b0/e7570/error.png 170w,
+/static/35e6869a39f68ee5c9daceb01252b1b0/f46e7/error.png 340w,
+/static/35e6869a39f68ee5c9daceb01252b1b0/ca1dc/error.png 680w,
+/static/35e6869a39f68ee5c9daceb01252b1b0/02d09/error.png 1020w,
+/static/35e6869a39f68ee5c9daceb01252b1b0/9d567/error.png 1360w,
+/static/35e6869a39f68ee5c9daceb01252b1b0/f28c3/error.png 1424w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;문제는 이 두 번째 에러입니다. 이 오류는 주당 5번이라는 인증서 발급 횟수 제한을 넘긴 경우 발생합니다. 이 경우 일주인간 인증서 발급이 제한됩니다(…🥲). 이 오류를 피하기 위해서는 인증서를 재발급 받는 대신 pem key를 복사해서 사용해야 합니다. &lt;strong&gt;재발급은 신중히 받도록 합시다.&lt;/strong&gt;&lt;/p&gt;
+&lt;h2&gt;기타 인증서 관련 명령어&lt;/h2&gt;
+&lt;h3&gt;인증서 자동 갱신&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;$ &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; certbot renew --dry-run&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;인증서 삭제&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;$ certbot delete --cert-name &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;인증서 이름&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;br&gt;
+ 
+- reference
+  - [후디 블로그 - Nginx와 Let&apos;s Encrypt로 HTTPS 웹 서비스 배포하기 (feat. Certbot)](https://hudi.blog/https-with-nginx-and-lets-encrypt/)
+  - [2. Nginx 설치 부터 spring boot 기반 앱 배포 - Cerbot 인증서 발급과 SSL 적용](https://velog.io/@jihyunhillpark/2.-spring-boot-기반-앱-배포-Cerbot-인증서-발급과-SSL-적용)
+  - [4. SSL 인증서(letsencrypt) 발급](https://blog.naver.com/PostView.naver?blogId=kangdydtjs&amp;logNo=222546308110&amp;from=search&amp;redirect=Log&amp;widgetTypeCall=true&amp;directAccess=false)
+&lt;h4&gt;Special Thanks To &lt;code class=&quot;language-text&quot;&gt;승팡&lt;/code&gt;&lt;/h4&gt;</content:encoded></item><item><title><![CDATA[달록 배포 총🔫정리 2 - EC2와 DNS 설정하기]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 파랑이 작성했습니다. 실제 배포 설정 그럼 이제 실제로 어떤 과정을 통해 배포를 진행했는지 자세히 살펴보겠습니다. EC2 생성 EC2 → 인스턴스 → 인스턴스 시작 이름 및 태그 이름: ec2-dallog-XXXX…]]></description><link>https://dallog.github.io/deploy-full-course2/</link><guid isPermaLink="false">https://dallog.github.io/deploy-full-course2/</guid><pubDate>Sun, 07 Aug 2022 23:50:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/summerlunaa&quot;&gt;파랑&lt;/a&gt;이 작성했습니다.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2&gt;실제 배포 설정&lt;/h2&gt;
 &lt;p&gt;그럼 이제 실제로 어떤 과정을 통해 배포를 진행했는지 자세히 살펴보겠습니다.&lt;/p&gt;
