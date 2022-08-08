@@ -12,8 +12,8 @@
 <url> <loc>https://dallog.github.io/separated-interface/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/continuous-deploy-with-jenkins-1-backend/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/continuous-deploy-with-jenkins-2-frontend/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
-<url> <loc>https://dallog.github.io/mechanism-of-jpa/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/apply-rest-docs/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://dallog.github.io/mechanism-of-jpa/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/properties-to-object/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/test-fixture-constant/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/what_is_nginx/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
@@ -26,6 +26,7 @@
 <url> <loc>https://dallog.github.io/deploy-full-course2/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/deploy-full-course3/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/test-isolation/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://dallog.github.io/jenkins-build-optimization/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/series/달록팀-CI/CD-이야기</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/series/JPA-시리즈</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/series/달록-배포-총🔫정리</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
