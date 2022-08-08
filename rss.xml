@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 08 Aug 2022 10:29:52 GMT</lastBuildDate><item><title><![CDATA[달록 배포 총🔫정리 3 - SSL 인증서 발급과 NGINX 설정]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 파랑이 작성했습니다. NGINX 설치 NGINX란? 달록 기술블로그 - 리버의 NGINX 란? 설치 SSL 인증서 발급 (with Certbot) Let’s Encrypt 9…]]></description><link>https://dallog.github.io/deploy-full-course3/</link><guid isPermaLink="false">https://dallog.github.io/deploy-full-course3/</guid><pubDate>Mon, 08 Aug 2022 19:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 08 Aug 2022 12:10:39 GMT</lastBuildDate><item><title><![CDATA[달록 배포 총🔫정리 3 - SSL 인증서 발급과 NGINX 설정]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 파랑이 작성했습니다. NGINX 설치 NGINX란? 달록 기술블로그 - 리버의 NGINX 란? 설치 SSL 인증서 발급 (with Certbot) Let’s Encrypt 9…]]></description><link>https://dallog.github.io/deploy-full-course3/</link><guid isPermaLink="false">https://dallog.github.io/deploy-full-course3/</guid><pubDate>Mon, 08 Aug 2022 19:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
 &lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/summerlunaa&quot;&gt;파랑&lt;/a&gt;이 작성했습니다.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2&gt;NGINX 설치&lt;/h2&gt;
@@ -28,7 +28,7 @@ $ certbot --version &lt;span class=&quot;token comment&quot;&gt;# 버전 확인&
 &lt;p&gt;Certbot을 통해 SSL 인증서를 발급받는 방법은 여러가지가 있습니다. 그 중 몇 가지를 간단하게 살펴볼게요. 달록은 Nginx 방법을 사용했습니다.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;**Nginx**&lt;/code&gt; (우리가 사용한 방법)&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code class=&quot;language-text&quot;&gt;Nginx&lt;/code&gt;&lt;/strong&gt; (우리가 사용한 방법)&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;인증 및 설치를 위해 nginx 플러그인을 사용한다. nginx에 대한 인증서 취득 및 설치가 자동적으로 이루어진다.&lt;/li&gt;
 &lt;/ul&gt;
@@ -186,10 +186,10 @@ Ask &lt;span class=&quot;token keyword&quot;&gt;for&lt;/span&gt; &lt;span class=
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;$ certbot delete --cert-name &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;인증서 이름&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;br&gt;
  
-- reference
-  - [후디 블로그 - Nginx와 Let&apos;s Encrypt로 HTTPS 웹 서비스 배포하기 (feat. Certbot)](https://hudi.blog/https-with-nginx-and-lets-encrypt/)
-  - [2. Nginx 설치 부터 spring boot 기반 앱 배포 - Cerbot 인증서 발급과 SSL 적용](https://velog.io/@jihyunhillpark/2.-spring-boot-기반-앱-배포-Cerbot-인증서-발급과-SSL-적용)
-  - [4. SSL 인증서(letsencrypt) 발급](https://blog.naver.com/PostView.naver?blogId=kangdydtjs&amp;logNo=222546308110&amp;from=search&amp;redirect=Log&amp;widgetTypeCall=true&amp;directAccess=false)
+#### reference
+&lt;p&gt;&lt;a href=&quot;https://hudi.blog/https-with-nginx-and-lets-encrypt/&quot;&gt;후디 블로그 - Nginx와 Let&apos;s Encrypt로 HTTPS 웹 서비스 배포하기 (feat. Certbot)&lt;/a&gt;
+&lt;a href=&quot;https://velog.io/@jihyunhillpark/2.-spring-boot-%EA%B8%B0%EB%B0%98-%EC%95%B1-%EB%B0%B0%ED%8F%AC-Cerbot-%EC%9D%B8%EC%A6%9D%EC%84%9C-%EB%B0%9C%EA%B8%89%EA%B3%BC-SSL-%EC%A0%81%EC%9A%A9&quot;&gt;2. Nginx 설치 부터 spring boot 기반 앱 배포 - Cerbot 인증서 발급과 SSL 적용&lt;/a&gt;
+&lt;a href=&quot;https://blog.naver.com/PostView.naver?blogId=kangdydtjs&amp;#x26;logNo=222546308110&amp;#x26;from=search&amp;#x26;redirect=Log&amp;#x26;widgetTypeCall=true&amp;#x26;directAccess=false&quot;&gt;4. SSL 인증서(letsencrypt) 발급&lt;/a&gt;&lt;/p&gt;
 &lt;h4&gt;Special Thanks To &lt;code class=&quot;language-text&quot;&gt;승팡&lt;/code&gt;&lt;/h4&gt;</content:encoded></item><item><title><![CDATA[달록 배포 총🔫정리 2 - EC2와 DNS 설정하기]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 파랑이 작성했습니다. 실제 배포 설정 그럼 이제 실제로 어떤 과정을 통해 배포를 진행했는지 자세히 살펴보겠습니다. EC2 생성 EC2 → 인스턴스 → 인스턴스 시작 이름 및 태그 이름: ec2-dallog-XXXX…]]></description><link>https://dallog.github.io/deploy-full-course2/</link><guid isPermaLink="false">https://dallog.github.io/deploy-full-course2/</guid><pubDate>Sun, 07 Aug 2022 23:50:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
 &lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/summerlunaa&quot;&gt;파랑&lt;/a&gt;이 작성했습니다.&lt;/p&gt;
 &lt;/blockquote&gt;
