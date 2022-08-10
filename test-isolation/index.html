@@ -213,7 +213,7 @@ data-styled.g66[id="Footer__HiddenWrapper-sc-zqxmks-9"]{content:"iyImhS,iqspNU,"
 <p>앞서 언급한 단점을 해결하기 위한 방법이다. <code class="language-text">EntityManager</code>를 통해 동적으로 현재 등록된 <code class="language-text">Entity</code>를 조회한 뒤 각각의 <code class="language-text">Entity</code>의 클래스 정보를 활용하여 테이블 이름을 획득한 뒤 쿼리문을 실행하도록 할 수 있다. </p>
 <p>하지만 단순히 Entity의 이름을 가져올 경우 아래와 같이 클래스 이름을 가져올 뿐이다.</p>
 <div class="gatsby-highlight" data-language="java"><pre class="language-java"><code class="language-java"><span class="token annotation punctuation">@DataJpaTest</span>
-<span class="token keyword">class</span> <span class="token class-name">DatabaseCleanupTest</span> <span class="token punctuation">{</span>
+<span class="token keyword">class</span> <span class="token class-name">DatabaseCleanerTest</span> <span class="token punctuation">{</span>
 
     <span class="token annotation punctuation">@Autowired</span>
     <span class="token keyword">private</span> <span class="token class-name">EntityManager</span> entityManager<span class="token punctuation">;</span>
@@ -254,12 +254,12 @@ Schedule</code></pre></div>
 <span class="token punctuation">}</span></code></pre></div>
 <p>해답은 바로 Java의 <code class="language-text">Reflection API</code>를 활용한 방법이다. 아래는 Java의 Reflection을 활용하여 Table 애노테이션에 명시한 name 값을 추출하여 <code class="language-text">tableNames</code>로 활용한 예시이다.</p>
 <div class="gatsby-highlight" data-language="java"><pre class="language-java"><code class="language-java"><span class="token annotation punctuation">@Component</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DatabaseCleanup</span> <span class="token punctuation">{</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DatabaseCleaner</span> <span class="token punctuation">{</span>
 
     <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">EntityManager</span> entityManager<span class="token punctuation">;</span>
     <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> tableNames<span class="token punctuation">;</span>
 
-    <span class="token keyword">public</span> <span class="token class-name">DatabaseCleanup</span><span class="token punctuation">(</span><span class="token keyword">final</span> <span class="token class-name">EntityManager</span> entityManager<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token class-name">DatabaseCleaner</span><span class="token punctuation">(</span><span class="token keyword">final</span> <span class="token class-name">EntityManager</span> entityManager<span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">this</span><span class="token punctuation">.</span>entityManager <span class="token operator">=</span> entityManager<span class="token punctuation">;</span>
         <span class="token keyword">this</span><span class="token punctuation">.</span>tableNames <span class="token operator">=</span> entityManager<span class="token punctuation">.</span><span class="token function">getMetamodel</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
                 <span class="token punctuation">.</span><span class="token function">getEntities</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -290,7 +290,7 @@ Schedule</code></pre></div>
 <li><code class="language-text">Table::name</code>: 해당 애노테이션에 명시한 이름 정보를 가져온다.</li>
 </ul>
 <p>우리는 이제 작성한 <code class="language-text">Entity</code>의 모든 테이블명을 가지게 되었다. 이제 앞서 작성한 <code class="language-text">TRUNCATE</code> 관련 쿼리를 <code class="language-text">entityManager</code>가 실행할 수 있도록 작성 해준다.</p>
-<p>자 이제 우리가 만든 <code class="language-text">DatabaseCleanup</code> 객체를 주입 받아 각각의 메서드 실행 이전에 호출할 수 있도록 개선하자.</p>
+<p>자 이제 우리가 만든 <code class="language-text">DatabaseCleaner</code> 객체를 주입 받아 각각의 메서드 실행 이전에 호출할 수 있도록 개선하자.</p>
 <div class="gatsby-highlight" data-language="java"><pre class="language-java"><code class="language-java"><span class="token annotation punctuation">@SpringBootTest</span><span class="token punctuation">(</span>webEnvironment <span class="token operator">=</span> <span class="token class-name">SpringBootTest<span class="token punctuation">.</span>WebEnvironment</span><span class="token punctuation">.</span>RANDOM_PORT<span class="token punctuation">)</span>
 <span class="token annotation punctuation">@Import</span><span class="token punctuation">(</span><span class="token class-name">TestConfig</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
 <span class="token keyword">class</span> <span class="token class-name">AcceptanceTest</span> <span class="token punctuation">{</span>
@@ -299,17 +299,17 @@ Schedule</code></pre></div>
     <span class="token keyword">private</span> <span class="token keyword">int</span> port<span class="token punctuation">;</span>
 
     <span class="token annotation punctuation">@Autowired</span>
-    <span class="token keyword">private</span> <span class="token class-name">DatabaseCleanup</span> databaseCleanup<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">DatabaseCleaner</span> databaseCleaner<span class="token punctuation">;</span>
 
     <span class="token annotation punctuation">@BeforeEach</span>
     <span class="token keyword">void</span> <span class="token function">setUp</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token class-name">RestAssured</span><span class="token punctuation">.</span>port <span class="token operator">=</span> port<span class="token punctuation">;</span>
-        databaseCleanup<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        databaseCleaner<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></code></pre></div>
 <ul>
-<li><code class="language-text">@Autowired private DatabaseCleanup databaseCleanup</code>: 앞서 작성한 <code class="language-text">DatabaseCleanup</code>을 주입 받는다.</li>
-<li><code class="language-text">databaseCleanup.execute()</code>: <code class="language-text">@BeforeEach</code>를 통해 각 테스트 메서드가 실행되기 이전에 DB 테이블의 행을 모두 비워준다.</li>
+<li><code class="language-text">@Autowired private DatabaseCleaner databaseCleaner</code>: 앞서 작성한 <code class="language-text">DatabaseCleaner</code>을 주입 받는다.</li>
+<li><code class="language-text">databaseCleaner.execute()</code>: <code class="language-text">@BeforeEach</code>를 통해 각 테스트 메서드가 실행되기 이전에 DB 테이블의 행을 모두 비워준다.</li>
 </ul>
 <p>이제 우리는 직접 파일을 수정하지 않아도 <code class="language-text">Entity</code>의 추가에 유동적으로 대응할 수 있게 되었다.</p>
 <h2>테스트 격리 방식 비교</h2>
