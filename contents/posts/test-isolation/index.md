@@ -85,7 +85,7 @@ class AcceptanceTest {
 
 ```java
 @DataJpaTest
-class DatabaseCleanupTest {
+class DatabaseCleanerTest {
 
     @Autowired
     private EntityManager entityManager;
@@ -138,12 +138,12 @@ public class Category extends BaseEntity {
 
 ```java
 @Component
-public class DatabaseCleanup {
+public class DatabaseCleaner {
 
     private final EntityManager entityManager;
     private final List<String> tableNames;
 
-    public DatabaseCleanup(final EntityManager entityManager) {
+    public DatabaseCleaner(final EntityManager entityManager) {
         this.entityManager = entityManager;
         this.tableNames = entityManager.getMetamodel()
                 .getEntities()
@@ -176,7 +176,7 @@ public class DatabaseCleanup {
 
 우리는 이제 작성한 `Entity`의 모든 테이블명을 가지게 되었다. 이제 앞서 작성한 `TRUNCATE` 관련 쿼리를 `entityManager`가 실행할 수 있도록 작성 해준다.
 
-자 이제 우리가 만든 `DatabaseCleanup` 객체를 주입 받아 각각의 메서드 실행 이전에 호출할 수 있도록 개선하자.
+자 이제 우리가 만든 `DatabaseCleaner` 객체를 주입 받아 각각의 메서드 실행 이전에 호출할 수 있도록 개선하자.
 
 ```java
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -187,18 +187,18 @@ class AcceptanceTest {
     private int port;
 
     @Autowired
-    private DatabaseCleanup databaseCleanup;
+    private DatabaseCleaner databaseCleaner;
 
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
-        databaseCleanup.execute();
+        databaseCleaner.execute();
     }
 }
 ```
 
-- `@Autowired private DatabaseCleanup databaseCleanup`: 앞서 작성한 `DatabaseCleanup`을 주입 받는다.
-- `databaseCleanup.execute()`: `@BeforeEach`를 통해 각 테스트 메서드가 실행되기 이전에 DB 테이블의 행을 모두 비워준다.
+- `@Autowired private DatabaseCleaner databaseCleaner`: 앞서 작성한 `DatabaseCleaner`을 주입 받는다.
+- `databaseCleaner.execute()`: `@BeforeEach`를 통해 각 테스트 메서드가 실행되기 이전에 DB 테이블의 행을 모두 비워준다.
 
 이제 우리는 직접 파일을 수정하지 않아도 `Entity`의 추가에 유동적으로 대응할 수 있게 되었다.
 
