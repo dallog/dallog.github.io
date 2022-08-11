@@ -38,6 +38,9 @@ EC2 → 인스턴스 → 인스턴스 시작
 
 ### 네트워크 설정
 
+- VPC
+  - PROJECT
+
 - 보안 그룹
     - 기존 보안 그룹 선택: `SG-PROJECT-DEFAULT`
 
