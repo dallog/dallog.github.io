@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Wed, 10 Aug 2022 10:59:40 GMT</lastBuildDate><item><title><![CDATA[젠킨스 빌드 최적화를 향한 여정]]></title><description><![CDATA[…]]></description><link>https://dallog.github.io/jenkins-build-optimization/</link><guid isPermaLink="false">https://dallog.github.io/jenkins-build-optimization/</guid><pubDate>Tue, 09 Aug 2022 01:50:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Thu, 11 Aug 2022 13:15:21 GMT</lastBuildDate><item><title><![CDATA[젠킨스 빌드 최적화를 향한 여정]]></title><description><![CDATA[…]]></description><link>https://dallog.github.io/jenkins-build-optimization/</link><guid isPermaLink="false">https://dallog.github.io/jenkins-build-optimization/</guid><pubDate>Tue, 09 Aug 2022 01:50:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
 &lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/devHudi&quot;&gt;후디&lt;/a&gt;가 작성했습니다.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2&gt;문제 상황&lt;/h2&gt;
@@ -528,6 +528,12 @@ Ask &lt;span class=&quot;token keyword&quot;&gt;for&lt;/span&gt; &lt;span class=
 &lt;/ul&gt;
 &lt;h3&gt;네트워크 설정&lt;/h3&gt;
 &lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;VPC&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;PROJECT&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;보안 그룹&lt;/p&gt;
 &lt;ul&gt;
