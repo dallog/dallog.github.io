@@ -1,4 +1,184 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Thu, 11 Aug 2022 13:15:21 GMT</lastBuildDate><item><title><![CDATA[젠킨스 빌드 최적화를 향한 여정]]></title><description><![CDATA[…]]></description><link>https://dallog.github.io/jenkins-build-optimization/</link><guid isPermaLink="false">https://dallog.github.io/jenkins-build-optimization/</guid><pubDate>Tue, 09 Aug 2022 01:50:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 15 Aug 2022 17:15:28 GMT</lastBuildDate><item><title><![CDATA[달록의 Jacoco 적용기 (feat. Gradle)]]></title><description><![CDATA[…]]></description><link>https://dallog.github.io/dallog-jacoco/</link><guid isPermaLink="false">https://dallog.github.io/dallog-jacoco/</guid><pubDate>Tue, 16 Aug 2022 02:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/devHudi&quot;&gt;후디&lt;/a&gt;가 작성했습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;코드 커버리지란?&lt;/h2&gt;
+&lt;p&gt;코드 커버리지란, 테스트 코드가 프로덕션 코드를 얼마나 실행했는지를 백분율로 나타내는 지표입니다. 즉, 테스트 코드가 실제로 프로덕션 코드를 얼마나 몇 퍼센트 검증하고 있는지를 나타냅니다. 코드 커버리지를 통해 현재 작성된 테스트 코드의 수가 충분한것인지 논의할 수 있습니다.&lt;/p&gt;
+&lt;p&gt;더 자세한 내용은 제가 작성한 &lt;a href=&quot;https://hudi.blog/code-coverage/&quot;&gt;코드 커버리지(Code Coverage)란?&lt;/a&gt; 포스팅을 참고해주세요! 😊&lt;/p&gt;
+&lt;h2&gt;Jacoco란?&lt;/h2&gt;
+&lt;p&gt;Jacoco는 자바 진영에서 프로젝트의 코드 커버리지를 분석하고, 보고서를 만들어주는 역할을 하는 코드 커버리지 프레임워크입니다. 달록팀은 이번에 Jacoco를 도입하여 코드 커버리지를 분석하고, 코드 커버리지가 일정 수준 이하라면 빌드가 실패하도록 설정하였습니다. 이 과정을 여러분께 공유드립니다.&lt;/p&gt;
+&lt;h2&gt;프로젝트에 Jacoco 적용하기&lt;/h2&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;groovy&quot;&gt;&lt;pre class=&quot;language-groovy&quot;&gt;&lt;code class=&quot;language-groovy&quot;&gt;plugins &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token comment&quot;&gt;// ...&lt;/span&gt;
+    id &lt;span class=&quot;token string&quot;&gt;&apos;jacoco&apos;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;// ...&lt;/span&gt;
+
+jacoco &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    toolVersion &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token interpolation-string&quot;&gt;&lt;span class=&quot;token string&quot;&gt;&quot;0.8.7&quot;&lt;/span&gt;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;위와 같이 &lt;code class=&quot;language-text&quot;&gt;build.gradle&lt;/code&gt; 파일에서 Jacoco를 플러그인으로 가져오고, 버전을 설정해줍니다.&lt;/p&gt;
+&lt;h2&gt;커버리지 보고서 생성하기&lt;/h2&gt;
+&lt;h3&gt;바이너리 보고서 생성&lt;/h3&gt;
+&lt;p&gt;Jacoco 플러그인을 불러왔다면, 프로젝트의 테스트 코드를 한번 실행해봅시다.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 586px; margin-bottom: 16px;&apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/89e4b0b85a807df03c7c5d25a3d7cdc0/52581/test.exec.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 58.235294117647065%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAMCAYAAABiDJ37AAAACXBIWXMAABYlAAAWJQFJUiTwAAABxElEQVQoz5WS22oTURSG5wWEGuydoSJ4IxQpJJkMTeMkTXOY2aeZHKYWq7YkrSGtIVKaG30G30G8TyhKrrzW0AOUPtDv2jNpwNbU9OJnbfbs+fj22stQooCmyqLLk6h7aTT8FDyWhXRsKPfltCrXniuGYOvYFRkcsgSkHwE1QFRyN6BzApWTBXPz2FQFHDGyFKuoKQJ7Jnxa39eUgPpQDq+EjQOeQkNaqPsmAjL1eSY0vQbNYxoCJQFfqzx61MeGskLDGtUGgXWNgH9nlvEUGIgcOtzEJplpw+sHqkq6NlmKSaRzd28jIIsMP/JEaKhhdbLUtaZboCJ4UE1NjWcaSt2biWGbp6l35sTQCgEhVEXroJacAPU//w4ZZmjubGxLG0d8BYE0yZJ+png0AZ5+tArNZYWsytFaOWu0fzt6YgzGSmC8TFcroSNo07PBadCZXEPZ2UCxXITjFsH1uf9EuAUYC/uXWGz9Qqw1xoPmKRK9n0j0z2F9usKL4wusfr7E0w9neNgc41FrVn4jtneBZ2++wni8O8LSuwFliCc7Q5jtb0h3T2Afj2D1fiDfH+H5+xPE3w6xRN/1udsZIL7zHctbX/AHSCnOveAjvgAAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;test exec&apos; title=&apos;test exec&apos; src=&apos;/static/89e4b0b85a807df03c7c5d25a3d7cdc0/52581/test.exec.png&apos; srcset=&apos;/static/89e4b0b85a807df03c7c5d25a3d7cdc0/e7570/test.exec.png 170w,
+/static/89e4b0b85a807df03c7c5d25a3d7cdc0/f46e7/test.exec.png 340w,
+/static/89e4b0b85a807df03c7c5d25a3d7cdc0/52581/test.exec.png 586w&apos; sizes=&apos;(max-width: 586px) 100vw, 586px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;그럼 위와 같이 &lt;strong&gt;build → jacoco&lt;/strong&gt; 에서 &lt;code class=&quot;language-text&quot;&gt;test.exec&lt;/code&gt; 파일이 생성된 것을 확인할 수 있습니다. 해당 파일은 Jacoco가 테스트 코드를 실행하고, 코드 커버리지를 분석하여 만들어준 보고서 파일입니다.&lt;/p&gt;
+&lt;p&gt;이 파일은 바이너리 파일이라서 일반적인 방법으로 우리가 읽을 수 없습니다.&lt;/p&gt;
+&lt;h3&gt;XML, CSV, HTML 파일로 보고서 생성&lt;/h3&gt;
+&lt;p&gt;하지만 Jacoco는 위에서 생성한 바이너리 커버리지 (&lt;code class=&quot;language-text&quot;&gt;test.exec&lt;/code&gt;) 파일을 사람이 읽을 수 있는 XML, CSV, HTML 파일로도 생성하는 기능을 제공합니다.&lt;/p&gt;
+&lt;p&gt;Jacoco Gradle 플러그인은 &lt;code class=&quot;language-text&quot;&gt;jacocoTestReport&lt;/code&gt; 라는 태스크가 있습니다. 이 태스크는 바이너리 보고서를 사람이 읽기 좋은 형태로 출력해주는 역할을 합니다. 아래와 같이 XML 파일을 생성하도록 태스크를 작성합니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;groovy&quot;&gt;&lt;pre class=&quot;language-groovy&quot;&gt;&lt;code class=&quot;language-groovy&quot;&gt;jacocoTestReport &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    reports &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        xml&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;enabled &lt;span class=&quot;token boolean&quot;&gt;true&lt;/span&gt;
+        csv&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;enabled &lt;span class=&quot;token boolean&quot;&gt;true&lt;/span&gt;
+        html&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;enabled &lt;span class=&quot;token boolean&quot;&gt;true&lt;/span&gt;
+
+        xml&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;destination &lt;span class=&quot;token function&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token interpolation-string&quot;&gt;&lt;span class=&quot;token string&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;token expression&quot;&gt;buildDir&lt;/span&gt;&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;/jacoco/index.xml&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        csv&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;destination &lt;span class=&quot;token function&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token interpolation-string&quot;&gt;&lt;span class=&quot;token string&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;token expression&quot;&gt;buildDir&lt;/span&gt;&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;/jacoco/index.csv&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        html&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;destination &lt;span class=&quot;token function&quot;&gt;file&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token interpolation-string&quot;&gt;&lt;span class=&quot;token string&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;token interpolation&quot;&gt;&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;token expression&quot;&gt;buildDir&lt;/span&gt;&lt;span class=&quot;token interpolation-punctuation punctuation&quot;&gt;}&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;/jacoco/index.html&quot;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;위에서 &lt;code class=&quot;language-text&quot;&gt;${buildDir}&lt;/code&gt; 은 빌드 디렉토리 경로를 의미합니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;테스트가 이미 실행되어 &lt;code class=&quot;language-text&quot;&gt;test.exec&lt;/code&gt; 파일이 생성되었다고 가정하고, 아래 명령을 통해 &lt;code class=&quot;language-text&quot;&gt;jacocoTestReport&lt;/code&gt; 태스크를 실행하고 XML, CSV, HTML 파일을 얻어봅니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;$ ./gradlew jacocoTestReport&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 582px; margin-bottom: 16px;&apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/73488bc1ed6d7818f082c2e00d5d5f59/0b5a5/report-files.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 47.64705882352941%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAKCAYAAAC0VX7mAAAACXBIWXMAABYlAAAWJQFJUiTwAAAB5UlEQVQoz4WSS28SURiG5x+YVEEQgiamxrAhlIsiAq1pabkOg1WIRByY6cWkpkJoWuJC/4RxYYwrNyYuqgaKUtoaSmtiG+MfejwzLKyX4uLJd5Lzfu/3noukJG6Sy07zMBemmfVwR/FTVAIUlCD5VEQQRRFVSUbIjWC4H0VKp2dJZRLcy86wJEeZm58hI2oqI9aJOPG5OLOiGrr/kU1NI40tHmHRB5zRv+LSe+QrrwisfyP27Ae+jSNiT78TaB5jWzrkrH6AZeGQc39gWRgwtnjM5fIbJLvWxVlp4ahuMV7d5Fb5Jd5HHUJrPbyrn/E97uIVuLQtHJU2TqFzVNu/YfTbtW3cpRdIVr2PTesJdrHpu0zU2kw0+oSbAzy1vrm+tLyHtbojNP/GLvqt+j5X7r8+kVBMd2kt/Cvv8Ne6xDZ6BOtdbqxtM77c4YKZ7hROJrQIZ2PKeW0Pp7jDKWHorX8huH6Ae7WPp75vVmt1eALzJH+xY76DmdCYcFHdFAk/clV9i1pqMln7QPxJj0ijQ7TxCe9KC+eD97gqp2D0Cx936TmS8XeGiH+UmqSoquTlEHLaRy59DSXrR06G+aUbRQRJFiaGkZyMoaSnUMsFCrdDFPJB7irXKc4HyGciYt/QxTD0o/gJh6ykSyVUQeEAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;report files&apos; title=&apos;report files&apos; src=&apos;/static/73488bc1ed6d7818f082c2e00d5d5f59/0b5a5/report-files.png&apos; srcset=&apos;/static/73488bc1ed6d7818f082c2e00d5d5f59/e7570/report-files.png 170w,
+/static/73488bc1ed6d7818f082c2e00d5d5f59/f46e7/report-files.png 340w,
+/static/73488bc1ed6d7818f082c2e00d5d5f59/0b5a5/report-files.png 582w&apos; sizes=&apos;(max-width: 582px) 100vw, 582px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;build → jacoco 에서 &lt;code class=&quot;language-text&quot;&gt;index.xml&lt;/code&gt; &lt;code class=&quot;language-text&quot;&gt;index.csv&lt;/code&gt; 파일, 그리고 &lt;code class=&quot;language-text&quot;&gt;index.html&lt;/code&gt; 디렉토리가 생성된 것을 확인할 수 있습니다. &lt;code class=&quot;language-text&quot;&gt;html&lt;/code&gt; 파일은 &lt;code class=&quot;language-text&quot;&gt;index.html&lt;/code&gt; 디렉토리 내부 존재합니다.&lt;/p&gt;
+&lt;p&gt;XML과 CSV파일은 소나큐브등과 연동할 때 주로 사용되며, HTML 파일은 사람이 직접 커버리지를 확인할 때 사용됩니다. HTML 파일을 열어보면 아래 사진과 같이 보고서를 눈으로 확인할 수 있습니다.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; margin-bottom: 16px;&apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/ecb04d6d63572fdea859ac014f0840fa/fac4b/report.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 28.82352941176471%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAGCAYAAADDl76dAAAACXBIWXMAABYlAAAWJQFJUiTwAAABI0lEQVQY001RbU/DIBjc//9LJn4zMa7turVWM2384rLMAaO8FVraE6jbDCH38IQ77jlW2+2AurJoXh0OhxHOjfjqWrSqxfF8hFEa8zyHvoOUIqExBtb2AXU6931/26sy19gVAu+NgRAemCdUdIe93IMRiotgmMOy4TLnPAhZaK0T+YrLAzbUBqt15rHZOJSlQ7Z2ID8THk8PqLsaikm05BN2CiRtQClNJCllEosYxa6Ok8MsG2+CES/M45k8gViCjnGc+Al+HpODruM3Z4ug+Bv1n+DL2qMoHPLcoaoG9HZAQfMg4kHPBAf2jQkeWikQQhJJqbvDKHbPMIy8KUdUO4e6dnhrBnBh0YoPTCFLxhhYyDDWkRAdLp+xjKm1StnG3tXhL3zfx4vGUt3/AAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;report&apos; title=&apos;report&apos; src=&apos;/static/ecb04d6d63572fdea859ac014f0840fa/ca1dc/report.png&apos; srcset=&apos;/static/ecb04d6d63572fdea859ac014f0840fa/e7570/report.png 170w,
+/static/ecb04d6d63572fdea859ac014f0840fa/f46e7/report.png 340w,
+/static/ecb04d6d63572fdea859ac014f0840fa/ca1dc/report.png 680w,
+/static/ecb04d6d63572fdea859ac014f0840fa/02d09/report.png 1020w,
+/static/ecb04d6d63572fdea859ac014f0840fa/9d567/report.png 1360w,
+/static/ecb04d6d63572fdea859ac014f0840fa/fac4b/report.png 2276w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;jacocoTestReport에 대한 자세한 내용은 &lt;a href=&quot;https://docs.gradle.org/current/dsl/org.gradle.testing.jacoco.tasks.JacocoReport.html&quot;&gt;https://docs.gradle.org/current/dsl/org.gradle.testing.jacoco.tasks.JacocoReport.html&lt;/a&gt; 를 참고해주세요.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;테스트가 끝난뒤 바로 jacocoTestReport 실행하기&lt;/h3&gt;
+&lt;p&gt;test 태스크가 끝난 다음에 jacocoTestReport 를 실행하는 2번의 과정은 조금 번거롭습니다. 아래와 같이 설정하면, 테스트가 끝나면 곧바로 jacocoTestReport가 실행되게 만들수 있습니다. 아래와 같이 test 태스크에 추가합니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;groovy&quot;&gt;&lt;pre class=&quot;language-groovy&quot;&gt;&lt;code class=&quot;language-groovy&quot;&gt;test &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token comment&quot;&gt;// ...&lt;/span&gt;
+    finalizedBy &lt;span class=&quot;token string&quot;&gt;&apos;jacocoTestReport&apos;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Gradle에서 &lt;code class=&quot;language-text&quot;&gt;finalizedBy&lt;/code&gt; 를 사용하면, 해당 태스크가 끝나고 성공 여부와 관계없이 명시한 태스크를 이어 실행하도록 설정할 수 있습니다.&lt;/p&gt;
+&lt;h2&gt;빌드가 성공하는 커버리지 기준 설정&lt;/h2&gt;
+&lt;p&gt;Jacoco Gradle 플러그인에서는 &lt;code class=&quot;language-text&quot;&gt;jacocoTestCoverageVerification&lt;/code&gt; 이라는 태스크가 존재합니다. 이 태스크에서 규칙을 설정하여 프로젝트의 코드 커버리지가 규칙을 통과하지 않으면 빌드가 실패하도록 만들 수 있습니다. 아래는 달록팀의 설정입니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;groovy&quot;&gt;&lt;pre class=&quot;language-groovy&quot;&gt;&lt;code class=&quot;language-groovy&quot;&gt;jacocoTestCoverageVerification &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    violationRules &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        rule &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            enabled &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;true&lt;/span&gt;
+            element &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;CLASS&apos;&lt;/span&gt;
+
+            limit &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+                counter &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;LINE&apos;&lt;/span&gt;
+                value &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;COVEREDRATIO&apos;&lt;/span&gt;
+                minimum &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;0.75&lt;/span&gt;
+            &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+        &lt;span class=&quot;token comment&quot;&gt;// ...&lt;/span&gt;
+
+        rule &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;token comment&quot;&gt;// 규칙을 여러개 추가할 수 있습니다.&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;rule&lt;/code&gt; 블럭 내부에서 아래와 같은 속성으로 규칙을 정의할 수 있습니다.&lt;/p&gt;
+&lt;h3&gt;enabled&lt;/h3&gt;
+&lt;p&gt;규칙의 활성화 여부를 나타냅니다. 기본 값은 &lt;code class=&quot;language-text&quot;&gt;true&lt;/code&gt; 입니다.&lt;/p&gt;
+&lt;h3&gt;element&lt;/h3&gt;
+&lt;p&gt;커버리지를 체크할 단위를 설정합니다. 아래와 같은 옵션이 있습니다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;BUNDLE&lt;/code&gt; : 패키지 번들 (전체 프로젝트)&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;CLASS&lt;/code&gt; : 클래스&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;GROUP&lt;/code&gt; : 논리적 번들 그룹&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;METHOD&lt;/code&gt; : 메소드&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;PACKAGE&lt;/code&gt; : 패키지&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;SOURCEFILE&lt;/code&gt; : 소스파일&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;기본값은 &lt;code class=&quot;language-text&quot;&gt;BUNDLE&lt;/code&gt; 입니다.&lt;/p&gt;
+&lt;h3&gt;counter&lt;/h3&gt;
+&lt;p&gt;코드 커버리지를 측정할 때 사용되는 지표입니다. 아래와 같은 옵션이 있습니다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;LINE&lt;/code&gt; : 빈 줄을 제외한 실제 코드의 라인 수&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;BRANCH&lt;/code&gt; : 조건문등의 분기 수&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;CLASS&lt;/code&gt; : 클래스 수&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;METHOD&lt;/code&gt; : 메소드 수&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;INSTRUCTION&lt;/code&gt; : 자바 바이트코드 명령 수&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;COMPLEXITY&lt;/code&gt; : 복잡도&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;기본값은 &lt;code class=&quot;language-text&quot;&gt;INSTRUCTION&lt;/code&gt; 입니다.&lt;/p&gt;
+&lt;h2&gt;보고서 생성 후 커버리지 만족 검사&lt;/h2&gt;
+&lt;p&gt;조금 전, &lt;code class=&quot;language-text&quot;&gt;finalizedBy&lt;/code&gt; 속성으로 &lt;code class=&quot;language-text&quot;&gt;test&lt;/code&gt; 태스크가 실행되고 &lt;code class=&quot;language-text&quot;&gt;jacocoTestReport&lt;/code&gt; 가 실행되도록 설정했습니다.&lt;/p&gt;
+&lt;p&gt;이어서 &lt;code class=&quot;language-text&quot;&gt;jacocoTestReport&lt;/code&gt; 태스크가 실행된 이후 &lt;code class=&quot;language-text&quot;&gt;jacocoTestCoverageVerification&lt;/code&gt; 가 바로 실행되어 테스트가 실행되고, 커버리지가 기준 미달이면 빌드가 실패되도록 흐름을 만들어봅시다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;groovy&quot;&gt;&lt;pre class=&quot;language-groovy&quot;&gt;&lt;code class=&quot;language-groovy&quot;&gt;jacocoTestReport &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token comment&quot;&gt;// ...&lt;/span&gt;
+
+    finalizedBy &lt;span class=&quot;token string&quot;&gt;&apos;jacocoTestCoverageVerification&apos;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;간단히 위처럼 &lt;code class=&quot;language-text&quot;&gt;jacocoTestReport&lt;/code&gt; 에 추가해주면 끝입니다.&lt;/p&gt;
+&lt;h2&gt;코드 커버리지 분석 대상 제외&lt;/h2&gt;
+&lt;p&gt;예외 클래스, DTO 클래스 등 굳이 테스트를 하지 않아도 되는 클래스들이 있습니다. 이런 클래스까지 포함하여 코드 커버리지를 계산하면 코드 커버리지가 낮게 나올 것 입니다. 이런 클래스를 분석 대상에서 제외할 수 있습니다.&lt;/p&gt;
+&lt;h3&gt;jacocoTestReport&lt;/h3&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;jacocoTestReport&lt;/code&gt; 태스크에서는 보고서에 표시되는 클래스 중 일부를 제외할 수 있습니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;groovy&quot;&gt;&lt;pre class=&quot;language-groovy&quot;&gt;&lt;code class=&quot;language-groovy&quot;&gt;jacocoTestReport &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token comment&quot;&gt;// ...&lt;/span&gt;
+    afterEvaluate &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        classDirectories&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;setFrom&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+                &lt;span class=&quot;token function&quot;&gt;files&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;classDirectories&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;files&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;collect &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+                    &lt;span class=&quot;token function&quot;&gt;fileTree&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;dir&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; it&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; excludes&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;
+                            &lt;span class=&quot;token string&quot;&gt;&apos;**/*Application*&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                            &lt;span class=&quot;token string&quot;&gt;&apos;**/*Exception*&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                            &lt;span class=&quot;token string&quot;&gt;&apos;**/dto/**&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                            &lt;span class=&quot;token comment&quot;&gt;// ...&lt;/span&gt;
+                    &lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+                &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;token comment&quot;&gt;// ...&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;제외 대상 파일의 경로를 &lt;a href=&quot;https://ant.apache.org/manual/dirtasks.html&quot;&gt;Ant 스타일&lt;/a&gt;로 작성합니다.&lt;/p&gt;
+&lt;h3&gt;jacocoTestCoverageVerification&lt;/h3&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;jacocoTestCoverageVerification&lt;/code&gt; 에서는 코드 커버리지를 만족하는지 확인할 대상 중 일부를 제외할 수 있습니다. &lt;code class=&quot;language-text&quot;&gt;jacocoTestReport&lt;/code&gt; 에서 작성한 것과 다르게 파일의 경로가 아닌 패키지 + 클래스명을 적어주어야 합니다. 와일드 카드로 &lt;code class=&quot;language-text&quot;&gt;*&lt;/code&gt; (여러 글자) 와 &lt;code class=&quot;language-text&quot;&gt;?&lt;/code&gt; (한 글자) 를 사용할 수 있습니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;groovy&quot;&gt;&lt;pre class=&quot;language-groovy&quot;&gt;&lt;code class=&quot;language-groovy&quot;&gt;jacocoTestCoverageVerification &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    violationRules &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        rule &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;token comment&quot;&gt;// ...&lt;/span&gt;
+
+            excludes &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;
+                    &lt;span class=&quot;token string&quot;&gt;&apos;*.*Application&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                    &lt;span class=&quot;token string&quot;&gt;&apos;*.*Exception&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                    &lt;span class=&quot;token string&quot;&gt;&apos;*.dto.*&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                    &lt;span class=&quot;token comment&quot;&gt;// ...&lt;/span&gt;
+            &lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2&gt;참고&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://techblog.woowahan.com/2661/&quot;&gt;https://techblog.woowahan.com/2661&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://bottom-to-top.tistory.com/36&quot;&gt;https://bottom-to-top.tistory.com/36&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</content:encoded></item><item><title><![CDATA[젠킨스 빌드 최적화를 향한 여정]]></title><description><![CDATA[…]]></description><link>https://dallog.github.io/jenkins-build-optimization/</link><guid isPermaLink="false">https://dallog.github.io/jenkins-build-optimization/</guid><pubDate>Tue, 09 Aug 2022 01:50:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
 &lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/devHudi&quot;&gt;후디&lt;/a&gt;가 작성했습니다.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2&gt;문제 상황&lt;/h2&gt;
