@@ -28,6 +28,7 @@
 <url> <loc>https://dallog.github.io/test-isolation/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/jenkins-build-optimization/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/dallog-jacoco/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://dallog.github.io/google-refresh-token/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/series/달록팀-CI/CD-이야기</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/series/JPA-시리즈</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/series/달록-배포-총🔫정리</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
