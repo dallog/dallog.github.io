@@ -1,4 +1,144 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Fri, 09 Sep 2022 16:15:11 GMT</lastBuildDate><item><title><![CDATA[순환 참조 문제 개선기 (1)]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 '매트'가 작성했습니다. 순환 참조란, 서로 다른 여러 빈이 상호 간의 의존성을 가져 의존성이 순환하고 있다는 것을 의미한다. 예를 들면 아래와 같은 상황이다. 우리 달록은 Member…]]></description><link>https://dallog.github.io/circular-reference-1/</link><guid isPermaLink="false">https://dallog.github.io/circular-reference-1/</guid><pubDate>Sat, 10 Sep 2022 01:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Sat, 17 Sep 2022 14:08:40 GMT</lastBuildDate><item><title><![CDATA[서블릿 생명주기와 직접만든 톰캣을 통한 의문점]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 '리버'가 작성했습니다. 글을 쓰게된 계기 우아한 테크코스 레벨4 Tomcat 구현하기 미션을 진행하면서 직접만든 Tomcat과 실제 Tomcat이 다르게 작동하는 부분이 있었다.
+Servlet…]]></description><link>https://dallog.github.io/servlet-life-cycle/</link><guid isPermaLink="false">https://dallog.github.io/servlet-life-cycle/</guid><pubDate>Sat, 17 Sep 2022 23:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;이 글은 우테코 달록팀 크루 &apos;&lt;a href=&quot;https://github.com/gudonghee2000&quot;&gt;리버&lt;/a&gt;&apos;가 작성했습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;글을 쓰게된 계기&lt;/h2&gt;
+&lt;p&gt;우아한 테크코스 레벨4 Tomcat 구현하기 미션을 진행하면서 직접만든 Tomcat과 실제 Tomcat이 다르게 작동하는 부분이 있었다.
+Servlet과 ServletContainer, ServletLifeCycle를 알아보고
+왜 다르게 작동하는지에 대한 의문점을 공유하고자 글을 작성해본다.&lt;/p&gt;
+&lt;h2&gt;Servlet이란?&lt;/h2&gt;
+&lt;p&gt;자바로 HTTP 요청을 처리하는 프로그램을 만들 때 사용하는 인터페이스이다.
+Servlet은 자바 표준으로 &lt;code class=&quot;language-text&quot;&gt;Jakarta EE&lt;/code&gt;의 표준 API이다.
+Servlet은 클라이언트의 &lt;code class=&quot;language-text&quot;&gt;Request&lt;/code&gt;를 받아서 일련의 작업을 처리하고 &lt;code class=&quot;language-text&quot;&gt;Response&lt;/code&gt;에 작업의 결과물을 담아준다.&lt;/p&gt;
+&lt;h2&gt;Servlet Container란?&lt;/h2&gt;
+&lt;p&gt;서버에서 만들어진 &lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt;들을 &lt;strong&gt;관리&lt;/strong&gt;하고 &lt;strong&gt;중계&lt;/strong&gt;하는 역할을 한다.&lt;/p&gt;
+&lt;p&gt;ServletContainer는 클라이언트의 &lt;strong&gt;요청&lt;/strong&gt;을 받았을 때, 요청에 대응할 수 있는 Servlet을 인스턴스화 해주고 &lt;strong&gt;요청&lt;/strong&gt;에 대한 &lt;strong&gt;응답&lt;/strong&gt;을 해준다.&lt;/p&gt;
+&lt;h2&gt;ServletContainer의 역할&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;웹서버와의 통신 지원
+ServletContainer는 &lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt;과 &lt;code class=&quot;language-text&quot;&gt;WebServer&lt;/code&gt;가 손쉽게 통신 할 수 있게 중계 해준다.
+ServletContainer는 &lt;code class=&quot;language-text&quot;&gt;ServerSoket&lt;/code&gt;을 만들고 &lt;code class=&quot;language-text&quot;&gt;listen()&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;accept()&lt;/code&gt; 등의 API로 클라이언트 요청이 오면 적절한 &lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt;에게 요청을 처리하게끔 한다.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;Servlet 생명주기 관리
+ServletContainer는 &lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt;을 관리한다.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;Servlet 클래스를 로딩하여 인스턴스화&lt;/li&gt;
+&lt;li&gt;Servlet 초기화&lt;/li&gt;
+&lt;li&gt;요청에 적절한 Servlet 할당&lt;/li&gt;
+&lt;li&gt;Servlet 제거&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Servlet 생명주기를 어떻게 관리하는지 좀 더 자세히 살펴보자.&lt;/p&gt;
+&lt;h2&gt;Servlet 생명주기를 관리하는 메서드&lt;/h2&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;ExampleServlet&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;extends&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;HttpServlet&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;String&lt;/span&gt; 인코딩 &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;인코딩&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;token annotation punctuation&quot;&gt;@Override&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;ServletConfig&lt;/span&gt; config&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;ServletException&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;token annotation punctuation&quot;&gt;@Override&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;protected&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;service&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;HttpServletRequest&lt;/span&gt; request&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;HttpServletResponse&lt;/span&gt; response&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;IOException&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+    &lt;span class=&quot;token annotation punctuation&quot;&gt;@Override&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;destroy&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;ServletContainer는 &lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt;들의 생명주기를 그림과 같이 &lt;code class=&quot;language-text&quot;&gt;init()&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;service()&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;destroy()&lt;/code&gt; 메서드를 통해 관리해준다.
+아래에서 전체적인 과정을 간략하게 살펴보고 &lt;code class=&quot;language-text&quot;&gt;Servlet 생명주기&lt;/code&gt;를 자세히 살펴보자.&lt;/p&gt;
+&lt;h2&gt;Servlet 생명주기 과정 알아보기&lt;/h2&gt;
+&lt;p&gt;ServletContainer가 &lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt;을 어떻게 사용하고 관리하는지 그림을 통해 정리해보자.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://velog.velcdn.com/images/gudonghee2000/post/1993301b-561f-419d-9082-a5e668e0c13f/image.png&quot;&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;톰캣이 가지고 있는 Connector 중 하나를 통해 &lt;code class=&quot;language-text&quot;&gt;Request&lt;/code&gt;를 전달 받는다.&lt;/li&gt;
+&lt;li&gt;톰캣은 &lt;code class=&quot;language-text&quot;&gt;Request&lt;/code&gt;의 &lt;code class=&quot;language-text&quot;&gt;url&lt;/code&gt;을 기반으로 적절한 &lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt;을 찾아내 매핑한다.&lt;/li&gt;
+&lt;li&gt;요청이 적절한 &lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt;에게 매핑되면 메모리에 해당 &lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt; 인스턴스가 올라와있는지 확인한다. 만약 존재하지 않으면 &lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt; 인스턴스를 생성한다.&lt;/li&gt;
+&lt;li&gt;톰캣이 &lt;code class=&quot;language-text&quot;&gt;init()&lt;/code&gt; 메서드를 호출하여 &lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt;을 초기화한다.&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt;이 초기화 되면 톰캣은 &lt;code class=&quot;language-text&quot;&gt;service()&lt;/code&gt; 메서드를 호출하여 &lt;code class=&quot;language-text&quot;&gt;Request&lt;/code&gt;를 처리한다.&lt;/li&gt;
+&lt;li&gt;마지막으로 톰캣을 종료하거나 &lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt;을 수정하게되면 &lt;code class=&quot;language-text&quot;&gt;destroy()&lt;/code&gt; 메서드를 호출하여 메모리에 올라와있던 &lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt;을 제거한다.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Servlet 생명주기 조금 더 자세히 살펴보기&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;https://velog.velcdn.com/images/gudonghee2000/post/02b01768-d52a-4820-b829-9361d1328b4c/image.JPG&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Servlet은 처음 호출되어 메모리에 올라가면 해당 인스턴스를 재활용한다.
+&lt;strong&gt;그래서 객체가 생성되는 순간부터 자원이 해제되는 순간까지가 서블릿의 라이프사이클이다.&lt;/strong&gt; &lt;/p&gt;
+&lt;p&gt;과정을 하나씩 자세히 살펴보자.&lt;/p&gt;
+&lt;h4&gt;1. Servlet 객체 생성&lt;/h4&gt;
+&lt;p&gt;먼저 Servlet이 최초에 호출되면 톰캣에서 서블릿 파일(.java)을 불러와 컴파일한 후 메모리에 로드시킨다. 톰캣은 서블릿 파일이 변경되지 않는 이상 서버가 종료될 때까지 계속해서 해당 객체를 재활용한다.&lt;/p&gt;
+&lt;h4&gt;2. init() 메서드 호출 (객체 생성시 최초 1회만 실행)&lt;/h4&gt;
+&lt;p&gt;Servlet에서 기본 상속받는 HttpServlet의 부모 추상 클래스인 GenericServlet에 아래와 같이 정의하고 있는 메서드이다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;abstract&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;GenericServlet&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;implements&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Servlet&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;ServletConfig&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;&lt;span class=&quot;token namespace&quot;&gt;java&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;io&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;/span&gt;Serializable&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+
+	&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;
+    
+	&lt;span class=&quot;token annotation punctuation&quot;&gt;@Override&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;ServletConfig&lt;/span&gt; config&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;throws&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;ServletException&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;config &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; config&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Servlet 객체 생성시 초기화 작업을 수행하는데, &lt;code class=&quot;language-text&quot;&gt;ServerConfig&lt;/code&gt; 객체를 넣어 실행한다.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;ServerConfig&lt;/code&gt;객체는 아래에서 다시살펴보자.&lt;/p&gt;
+&lt;h4&gt;3. service() 메서드 호출&lt;/h4&gt;
+&lt;p&gt;클라이언트의 요청에 따라 생성된 &lt;code class=&quot;language-text&quot;&gt;Request&lt;/code&gt;객체를 통해 요청을 처리하고 &lt;code class=&quot;language-text&quot;&gt;Response&lt;/code&gt; 객체에 적절한 응답을 추가해준다.
+이때, 쓰레드풀의 쓰레드 하나를 사용한다.&lt;/p&gt;
+&lt;h4&gt;4. destroy() 메서드 호출 (자원 해제시에 1번만 실행)&lt;/h4&gt;
+&lt;p&gt;Servlet에 수정사항이 생겨 Servlet을 다시 로드해야하거나 서버가 정상적으로 종료되는 경우에 호출된다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://velog.velcdn.com/images/gudonghee2000/post/93a0c18e-4db4-4538-ad85-4b291322b430/image.JPG&quot;&gt;
+실제 톰캣의 Servlet을 호출할 때의 로그이다.
+처음 Servlet이 호출됬을 때만 &lt;code class=&quot;language-text&quot;&gt;init()&lt;/code&gt; 메서드가 호출됨을 알 수 있다.&lt;/p&gt;
+&lt;h2&gt;직접 구현한 톰캣과 달랐던 의문점들&lt;/h2&gt;
+&lt;p&gt;우아한 테크코스 레벨4 저번미션을 진행하면서 직접 Tomcat을 구현해보았었다.
+직접만든 Tomcat과 달랐던 부분이있어서 이를 공유하고자 한다.&lt;/p&gt;
+&lt;h3&gt;1. Servlet 실행시점에 Servlet 객체 생성&lt;/h3&gt;
+&lt;p&gt;직접 구현해본 톰캣에서는 다음과 같이 &lt;code class=&quot;language-text&quot;&gt;Tomcat&lt;/code&gt; 실행시점에 &lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt; 인스턴스를 생성하였다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Tomcat&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;
+
+    &lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token class-name&quot;&gt;ControllerContainer&lt;/span&gt; container &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;ControllerContainer&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;configuration&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;var&lt;/span&gt; connector &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;Connector&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;container&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+      	&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;ControllerContainer&lt;/code&gt;가 ServletCotainer이고 &lt;code class=&quot;language-text&quot;&gt;ControllerContainer&lt;/code&gt; 생성자 파라미터의 &lt;code class=&quot;language-text&quot;&gt;Configuration&lt;/code&gt; 객체에 &lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt;
+인스턴스 생성에 대한 코드가 담겨있다.&lt;/p&gt;
+&lt;p&gt;그런데, 실제 톰캣은 클라이언트의 &lt;code class=&quot;language-text&quot;&gt;Request&lt;/code&gt;가 들어오고 매핑할 &lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt;이 필요해질 때 &lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt; 인스턴스를 생성한다😮😮&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://velog.velcdn.com/images/gudonghee2000/post/93a0c18e-4db4-4538-ad85-4b291322b430/image.JPG&quot;&gt;&lt;/p&gt;
+&lt;p&gt;실제 테스트 코드에서 &lt;code class=&quot;language-text&quot;&gt;쉐어드 서블릿&lt;/code&gt;이라는 객체에 요청을 보냈을 때 확인해 본 결과이다.&lt;/p&gt;
+&lt;p&gt;이런 결과를 보고 &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;톰캣을 실행 할 때, Servlet 객체를 모두 생성 해놓으면 클라이언트 요청이 들어올때 더 빨리 응답을 해줄 수 있지않나? 라는 의문이 들었다.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;아마, &lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt;에 변경사항이 있을 때, 실제 Server를 종료시키지 않고 &lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt; 변경사항을 적용하기 위해서 클라이언트 &lt;strong&gt;요청&lt;/strong&gt;이 들어올 때, &lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt; 인스턴스를 생성하도록 구현 한게 아닐까 조심스럽게 추측한다🙄 &lt;/p&gt;
+&lt;h3&gt;2. Servlet 객체 생성과 init()을 따로하는 이유&lt;/h3&gt;
+&lt;p&gt;두번째는 &lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt;을 생성 하고 &lt;code class=&quot;language-text&quot;&gt;init()&lt;/code&gt; 메서드를 호출한다는 점이다.
+&lt;strong&gt;Servlet을 생성 할 때 초기화도 같이 하면 되는거 아닌가? 왜 과정을 나눠놨지? 라는 의문이 들었다.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;찾아본 자료에서 몇가지 이유를 보았는데 일리가 있다고 생각하는 이유는 다음과 같다.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Interface는 생성자를 가질수 없기 때문이다.
+&lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt; 초기화를 위해서는 앞에서 이야기한 &lt;code class=&quot;language-text&quot;&gt;ServletConfig&lt;/code&gt; 객체를 &lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt;에게 전달해주어야 하는데 Interface는 생성자를 가질 수 없다.
+그래서 &lt;code class=&quot;language-text&quot;&gt;Java EE Servlet API&lt;/code&gt; 표준에 &lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt; 객체를 초기화하기 위해서는 &lt;code class=&quot;language-text&quot;&gt;ServletConfig&lt;/code&gt; 객체가 필요함을 명시해주기 위해서 &lt;code class=&quot;language-text&quot;&gt;init()&lt;/code&gt;메서드를 통해 초기화 하도록 한것이 아닐까 한다.   &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;💡ServletConfig란?&lt;/strong&gt;
+하나의 Servlet 초기화에 필요한 정보를 전달하기 위한 Config 객체를 의미한다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;생성자는 복잡한 논리/비즈니스 처리가 없어야 하기때문이다. &lt;code class=&quot;language-text&quot;&gt;ServletConfig&lt;/code&gt;객체를 생성하는 것은 비용이 비싼작업이기 때문에 생성자가 아닌 &lt;code class=&quot;language-text&quot;&gt;init()&lt;/code&gt; 메서드를 통해 처리해야 한다는 의견도 있다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;마치면서&lt;/h2&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt;과 &lt;code class=&quot;language-text&quot;&gt;ServletContainer&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt; 생명주기에 대해서 살표보았다.
+&lt;code class=&quot;language-text&quot;&gt;Servlet&lt;/code&gt; 생명주기에 대해서 같은 의문점이 있었다면 의문을 해소하는데 도움이 되었으면 좋겠다😊&lt;/p&gt;
+&lt;h2&gt;참고한 자료&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://stackoverflow.com/questions/7580771/can-we-replace-the-purpose-of-init-method-to-the-servlet-constructor&quot;&gt;https://stackoverflow.com/questions/7580771/can-we-replace-the-purpose-of-init-method-to-the-servlet-constructor&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://codevang.tistory.com/193&quot;&gt;https://codevang.tistory.com/193&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://velog.io/@jihoson94/Servlet-Container-%EC%A0%95%EB%A6%AC&quot;&gt;https://velog.io/@jihoson94/Servlet-Container-%EC%A0%95%EB%A6%AC&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://bashbeta.com/ko/%EC%84%9C%EB%B8%94%EB%A6%BF%EC%97%90%EC%84%9C-%EC%83%9D%EC%84%B1%EC%9E%90%EB%A5%BC-%ED%98%B8%EC%B6%9C%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0%EB%8A%94-%EB%AC%B4%EC%97%87%EC%9E%85%EB%8B%88%EA%B9%8C/&quot;&gt;https://bashbeta.com/ko/%EC%84%9C%EB%B8%94%EB%A6%BF%EC%97%90%EC%84%9C-%EC%83%9D%EC%84%B1%EC%9E%90%EB%A5%BC-%ED%98%B8%EC%B6%9C%ED%95%98%EB%8A%94-%EC%9D%B4%EC%9C%A0%EB%8A%94-%EB%AC%B4%EC%97%87%EC%9E%85%EB%8B%88%EA%B9%8C/&lt;/a&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[순환 참조 문제 개선기 (1)]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 '매트'가 작성했습니다. 순환 참조란, 서로 다른 여러 빈이 상호 간의 의존성을 가져 의존성이 순환하고 있다는 것을 의미한다. 예를 들면 아래와 같은 상황이다. 우리 달록은 Member…]]></description><link>https://dallog.github.io/circular-reference-1/</link><guid isPermaLink="false">https://dallog.github.io/circular-reference-1/</guid><pubDate>Sat, 10 Sep 2022 01:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
 &lt;p&gt;이 글은 우테코 달록팀 크루 &apos;&lt;a href=&quot;https://github.com/hyeonic&quot;&gt;매트&lt;/a&gt;&apos;가 작성했습니다.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;순환 참조란, 서로 다른 여러 빈이 상호 간의 의존성을 가져 의존성이 순환하고 있다는 것을 의미한다. 예를 들면 아래와 같은 상황이다.&lt;/p&gt;
