@@ -35,6 +35,7 @@
 <url> <loc>https://dallog.github.io/circular-reference-1/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/servlet-life-cycle/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/preparing-for-performance-test/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://dallog.github.io/cyclic-dependency/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/series/달록팀-CI/CD-이야기</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/series/JPA-시리즈</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/series/달록-배포-총🔫정리</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
