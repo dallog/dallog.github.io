@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 04 Oct 2022 13:09:49 GMT</lastBuildDate><item><title><![CDATA[달력 서비스의 DB 시간 다루기 1 - DB에 시간이 +9 되어 저장되는 문제]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 파랑이 작성했습니다. 문제 상황  어느날 실제 배포 서버의 DB를 확인해보았는데 start/end date time이 전부 +9시간되어 저장된 것을 확인했다.  분명 서비스에서는 00시 00분으로 잘 나오는데 왜 DB…]]></description><link>https://dallog.github.io/db-time-2-plus-nine-hours/</link><guid isPermaLink="false">https://dallog.github.io/db-time-2-plus-nine-hours/</guid><pubDate>Tue, 04 Oct 2022 22:10:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 04 Oct 2022 13:16:04 GMT</lastBuildDate><item><title><![CDATA[달력 서비스의 DB 시간 다루기 1 - DB에 시간이 +9 되어 저장되는 문제]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 파랑이 작성했습니다. 문제 상황  어느날 실제 배포 서버의 DB를 확인해보았는데 start/end date time이 전부 +9시간되어 저장된 것을 확인했다.  분명 서비스에서는 00시 00분으로 잘 나오는데 왜 DB…]]></description><link>https://dallog.github.io/db-time-2-plus-nine-hours/</link><guid isPermaLink="false">https://dallog.github.io/db-time-2-plus-nine-hours/</guid><pubDate>Tue, 04 Oct 2022 22:10:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
 &lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/summerlunaa&quot;&gt;파랑&lt;/a&gt;이 작성했습니다.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2&gt;문제 상황&lt;/h2&gt;
@@ -108,7 +108,17 @@ System clock synchronized: &lt;span class=&quot;token function&quot;&gt;yes&lt;/
     &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;내가 그린 기린 그림&lt;/figcaption&gt;
   &lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;JVM의 timezone은 기본값인 UTC로 설정된 상태다. 여기서 yml 설정을 통해 db의 serverTimezone을 Asia/Seoul이라고 알려줬다. 이때문에 DB에 시간이 저장되는 과정에서 자동으로 9시간을 더해준 것이다. DB에서 시간을 가져올 때는 반대로 -9시간을 적용하기 때문에 서비스 로직에는 아무 문제가 없었다.&lt;/p&gt;
+&lt;blockquote&gt;
 &lt;p&gt;시간을 다룰 때 MySQL 서버 뿐만 아니라 JVM의 Time Zone도 고려해야 함을 잊지 말자!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;(참고) DB server의 Time Zone 설정 우선순위&lt;/h3&gt;
+&lt;p&gt;그렇다면 왜 DB의 Time Zone 설정을 변경하는 것은 먹히지 않고 yml 파일의 serverTimezone 설정만 적용될까? MySQL의 Time Zone 설정 우선순위 때문이다. 우선순위는 아래와 같다.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;클라이언트 수준에서의 설정&lt;/li&gt;
+&lt;li&gt;DB 설정&lt;/li&gt;
+&lt;li&gt;OS 설정&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;1번이 바로 우리가 설정해준 yml의 serverTimezone 설정인 것이다. 그래서 1번을 지우지 않는 이상 아무리 DB server의 Time Zone을 변경해봤자 소용이 없었던 것이다.&lt;/p&gt;
 &lt;h2&gt;해결 방법&lt;/h2&gt;
 &lt;p&gt;내가 찾은 해결 방법은 두 가지다.&lt;/p&gt;
 &lt;h3&gt;1. serverTimezone 설정을 제거한다.&lt;/h3&gt;
