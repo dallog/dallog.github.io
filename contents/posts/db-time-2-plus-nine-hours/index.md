@@ -93,7 +93,17 @@ spring:
 
 JVM의 timezone은 기본값인 UTC로 설정된 상태다. 여기서 yml 설정을 통해 db의 serverTimezone을 Asia/Seoul이라고 알려줬다. 이때문에 DB에 시간이 저장되는 과정에서 자동으로 9시간을 더해준 것이다. DB에서 시간을 가져올 때는 반대로 -9시간을 적용하기 때문에 서비스 로직에는 아무 문제가 없었다.
 
-시간을 다룰 때 MySQL 서버 뿐만 아니라 JVM의 Time Zone도 고려해야 함을 잊지 말자!
+> 시간을 다룰 때 MySQL 서버 뿐만 아니라 JVM의 Time Zone도 고려해야 함을 잊지 말자!
+
+### (참고) DB server의 Time Zone 설정 우선순위
+
+그렇다면 왜 DB의 Time Zone 설정을 변경하는 것은 먹히지 않고 yml 파일의 serverTimezone 설정만 적용될까? MySQL의 Time Zone 설정 우선순위 때문이다. 우선순위는 아래와 같다.
+
+1. 클라이언트 수준에서의 설정
+2. DB 설정
+3. OS 설정
+
+1번이 바로 우리가 설정해준 yml의 serverTimezone 설정인 것이다. 그래서 1번을 지우지 않는 이상 아무리 DB server의 Time Zone을 변경해봤자 소용이 없었던 것이다.
 
 ## 해결 방법
 
