@@ -1,5 +1,5 @@
 ---
-title: "DB 시간 다루기 1 - TimeStamp 2038 문제"
+title: "달력 서비스의 DB 시간 다루기 1 - TimeStamp 2038 문제"
 date: 2022-10-04 22:00:00
 update: 2022-10-04 22:00:00
 tags:
@@ -7,7 +7,7 @@ tags:
 - time
 - be
 - 파랑
-series: DB 시간 다루기
+series: 달력 서비스의 DB 시간 다루기
 ---
 
 > 이 글은 우테코 달록팀 크루 [파랑](https://github.com/summerlunaa)이 작성했습니다.
