@@ -1,4 +1,150 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 18 Oct 2022 04:46:25 GMT</lastBuildDate><item><title><![CDATA[react-query useMutation onSuccess 안 되는줄 알았던 트러블 슈팅]]></title><description><![CDATA[…]]></description><link>https://dallog.github.io/react-query-useMutation-trouble-shooting/</link><guid isPermaLink="false">https://dallog.github.io/react-query-useMutation-trouble-shooting/</guid><pubDate>Tue, 18 Oct 2022 13:30:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 18 Oct 2022 05:02:49 GMT</lastBuildDate><item><title><![CDATA[달력 서비스의 DB 시간 다루기 3 - Time Zone, 어디서 어떻게 설정해야 할까?]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 파랑이 작성했습니다. 시간과 날짜를 다루는 달록을 개발하다보니 타임존을 설정할 수 있는 곳과 그 방법이 아주 다양하다는 걸 알게 되었다. 설정 방법과 그 결과를 공유해보려 한다. TimeZone 설정할 수 있는 곳…]]></description><link>https://dallog.github.io/db-time-3-time-zone/</link><guid isPermaLink="false">https://dallog.github.io/db-time-3-time-zone/</guid><pubDate>Tue, 18 Oct 2022 13:57:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/summerlunaa&quot;&gt;파랑&lt;/a&gt;이 작성했습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;시간과 날짜를 다루는 달록을 개발하다보니 타임존을 설정할 수 있는 곳과 그 방법이 아주 다양하다는 걸 알게 되었다. 설정 방법과 그 결과를 공유해보려 한다.&lt;/p&gt;
+&lt;h1&gt;TimeZone 설정할 수 있는 곳&lt;/h1&gt;
+&lt;h2&gt;1. yml 파일 설정&lt;/h2&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;spring&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt;
+	datasource&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt;
+    driver&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;name&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;&lt;span class=&quot;token namespace&quot;&gt;com&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;mysql&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;cj&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;jdbc&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;/span&gt;Driver&lt;/span&gt;
+    url&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt; jdbc&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt;mysql&lt;span class=&quot;token operator&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;어쩌고저쩌고&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;dallog&lt;span class=&quot;token operator&quot;&gt;?&lt;/span&gt;serverTimezone&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;Asia&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;Seoul&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;이 설정은 실제로 DB 서버의 타임존을 변경하지는 않는다. 단순히 Spring에게 DB의 서버 타임존이 이것이니, 이에 맞게 동작(time zone에 맞춰 시간을 더하거나 빼주는 행위)하라고 알려주는 것 뿐이다.&lt;/p&gt;
+&lt;p&gt;다른 설정 없이 이 설정만 적용하면 모든 datetime 값이 아래처럼 +9시간 되어 저장된다.&lt;/p&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/128bda3853ee459d7789c2e91fd444be/50bf7/serverTimezone.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 31.176470588235293%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAGCAYAAADDl76dAAAACXBIWXMAAAsTAAALEwEAmpwYAAABLElEQVQY011R7WqEMBD0/V/npIW+wPXgBKHVo5Q79PTUmPgVv+LZOt1NWyj9MbDZ7ExmNs40TZBSwvM8hGGIIAig+x7zPANmxtZrbNOIbRwAwrYYzMYgjmMcj0eENO/7PpRSMNR3siyzBQszuO5JUBQFNlXiM0vwQdhEDnN+xyoFsjzHOI52fmDebKC7Djn1nY4KrTUKEqiqCmma2uEoiiDIuaprKOpXTYNcCETXq03EAqIsoWWJRhRo6dzQjBXsftTZdpIkGIbBCjJRqgolEZWSyG43e89n5hT0gKa6LnI0bfstyM7WdcWyLBZccxR+ICY3/vMeT48P2O1cuK5rkzB4NXeaN4Q7cdiEjcz7+nX5Fxy7o1XUbyecX1+wPxxwuVzsZ/3ncPyWHLKRLzQ4woubTgx8AAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;serverTimezone을 설정했을 때 일어나는 현상&apos; title=&apos;serverTimezone을 설정했을 때 일어나는 현상&apos; src=&apos;/static/128bda3853ee459d7789c2e91fd444be/ca1dc/serverTimezone.png&apos; srcset=&apos;/static/128bda3853ee459d7789c2e91fd444be/e7570/serverTimezone.png 170w,
+/static/128bda3853ee459d7789c2e91fd444be/f46e7/serverTimezone.png 340w,
+/static/128bda3853ee459d7789c2e91fd444be/ca1dc/serverTimezone.png 680w,
+/static/128bda3853ee459d7789c2e91fd444be/02d09/serverTimezone.png 1020w,
+/static/128bda3853ee459d7789c2e91fd444be/50bf7/serverTimezone.png 1342w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;serverTimezone을 설정했을 때 일어나는 현상&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;h2&gt;2. MySQL 서버 설정&lt;/h2&gt;
+&lt;p&gt;여기서 타임존을 바꾸려면 timedatectl을 사용하는 방법과 symlink를 사용하는 방법이 있다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;sql&quot;&gt;&lt;pre class=&quot;language-sql&quot;&gt;&lt;code class=&quot;language-sql&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# 1. Using timedatectl command (추천)&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; sudo timedatectl &lt;span class=&quot;token keyword&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;timezone &lt;span class=&quot;token string&quot;&gt;&quot;Asia/Seoul&quot;&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;# 2. Using /etc/localtime Symlink&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; sudo cp &lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;usr&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;share&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;zoneinfo&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;Asia&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;Seoul &lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;etc&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;localtime
+
+&lt;span class=&quot;token comment&quot;&gt;# timedatectl로 변경사항 확인&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; timedatectl
+							 &lt;span class=&quot;token keyword&quot;&gt;Local&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;time&lt;/span&gt;: Tue &lt;span class=&quot;token number&quot;&gt;2022&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;04&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;21&lt;/span&gt;:&lt;span class=&quot;token number&quot;&gt;31&lt;/span&gt;:&lt;span class=&quot;token number&quot;&gt;53&lt;/span&gt; KST
+           Universal &lt;span class=&quot;token keyword&quot;&gt;time&lt;/span&gt;: Tue &lt;span class=&quot;token number&quot;&gt;2022&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;04&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;12&lt;/span&gt;:&lt;span class=&quot;token number&quot;&gt;31&lt;/span&gt;:&lt;span class=&quot;token number&quot;&gt;53&lt;/span&gt; UTC
+                 RTC &lt;span class=&quot;token keyword&quot;&gt;time&lt;/span&gt;: Tue &lt;span class=&quot;token number&quot;&gt;2022&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;04&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;12&lt;/span&gt;:&lt;span class=&quot;token number&quot;&gt;31&lt;/span&gt;:&lt;span class=&quot;token number&quot;&gt;54&lt;/span&gt;
+                &lt;span class=&quot;token keyword&quot;&gt;Time&lt;/span&gt; zone: UTC &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;KST&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;token number&quot;&gt;0900&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+System clock synchronized: yes
+              NTP service: active
+          RTC &lt;span class=&quot;token operator&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;local&lt;/span&gt; TZ: &lt;span class=&quot;token keyword&quot;&gt;no&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;# date 명령어로 현재 시간 확인&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;# 위의 값과 다를 수 있으니 둘 다 확인하는 것이 좋다&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;date&lt;/span&gt; 
+
+&lt;span class=&quot;token comment&quot;&gt;# mysql에 time zone 적용을 위해 재시작한다&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; sudo service mysql restart 
+
+&lt;span class=&quot;token comment&quot;&gt;# UTC로 되돌리기&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;# 주의: sudo timedatectl set-timezone &quot;UTC&quot; 명령어를 사용해도 원래대로 돌아가지 않는다. 꼭 아래의 명령어를 사용해서 파일을 삭제해주어야 한다.&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; sudo rm &lt;span class=&quot;token operator&quot;&gt;-&lt;/span&gt;f &lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;etc&lt;span class=&quot;token operator&quot;&gt;/&lt;/span&gt;localtime &lt;span class=&quot;token comment&quot;&gt;# UTC로 되돌리기&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;MySQL 안에서 확인하려면 아래의 명령어를 사용하면 된다. 값이 SYSTEM인 경우 서버의 설정 값을 따라간다는 뜻이다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;sql&quot;&gt;&lt;pre class=&quot;language-sql&quot;&gt;&lt;code class=&quot;language-sql&quot;&gt;&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;SHOW&lt;/span&gt; VARIABLES &lt;span class=&quot;token keyword&quot;&gt;WHERE&lt;/span&gt; Variable_name &lt;span class=&quot;token operator&quot;&gt;LIKE&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;%time_zone%&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;token comment&quot;&gt;------------------+--------+&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; Variable_name    &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;Value&lt;/span&gt;  &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;token comment&quot;&gt;------------------+--------+&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; system_time_zone &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; KST    &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; time_zone        &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; SYSTEM &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;token comment&quot;&gt;------------------+--------+&lt;/span&gt;
+
+&lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;SELECT&lt;/span&gt; @&lt;span class=&quot;token variable&quot;&gt;@GLOBAL.time_zone&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; @&lt;span class=&quot;token variable&quot;&gt;@SESSION.time_zone&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;token comment&quot;&gt;--------------------+---------------------+&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; @&lt;span class=&quot;token variable&quot;&gt;@GLOBAL.time_zone&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; @&lt;span class=&quot;token variable&quot;&gt;@SESSION.time_zone&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;token comment&quot;&gt;--------------------+---------------------+&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; SYSTEM             &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; SYSTEM              &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt;
+&lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;token comment&quot;&gt;--------------------+---------------------+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;이는 말 그대로 MySQL의 타임존을 변경하는 것이다. 다른 설정들이 모두 UTC인데 db 서버만 KST로 변경하는 것은 무의미하다. 다른 특별한 설정이 없으므로 직접 시간을 넣어주는 &lt;code class=&quot;language-text&quot;&gt;start_date_time&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;end_date_time&lt;/code&gt;의 경우 값이 그대로 들어간다. 하지만  &lt;code class=&quot;language-text&quot;&gt;created_at&lt;/code&gt; , &lt;code class=&quot;language-text&quot;&gt;updated_at&lt;/code&gt; 과 같이 현재 시간이 찍히는 값은 UCT 시간으로 저장된다.&lt;/p&gt;
+&lt;h2&gt;3. system properties의 user.timezone 설정&lt;/h2&gt;
+&lt;p&gt;이 변수를 설정하는 방법은 두 가지가 있다.&lt;/p&gt;
+&lt;h3&gt;3-1. jar 파일 실행 시 설정&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# -Duser.timezone=Asia/Seoul&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;nohup&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;java&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-jar&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-Duser.timezone&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;Asia/Seoul &lt;span class=&quot;token parameter variable&quot;&gt;-Dspring.profiles.active&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token variable&quot;&gt;${SPRING_PROFILE}&lt;/span&gt; /home/ubuntu/&lt;span class=&quot;token variable&quot;&gt;$JAR_NAME&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; /dev/null &lt;span class=&quot;token operator&quot;&gt;&lt;span class=&quot;token file-descriptor important&quot;&gt;2&lt;/span&gt;&gt;&lt;/span&gt;&lt;span class=&quot;token file-descriptor important&quot;&gt;&amp;amp;1&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&amp;amp;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;system properties의 user.timezone을 설정할 수 있다. 이를 설정하면 &lt;code class=&quot;language-text&quot;&gt;created_at&lt;/code&gt; , &lt;code class=&quot;language-text&quot;&gt;updated_at&lt;/code&gt; 과 같이 현재 시간이 찍히는 값도 한국 시간으로 DB에 잘 저장된다.&lt;/p&gt;
+&lt;h3&gt;3-2. 애플리케이션 레벨에서 SpringBoot 설정&lt;/h3&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token annotation punctuation&quot;&gt;@Configuration&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;TimeZoneConfig&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+
+    &lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;token constant&quot;&gt;DEFAULT_TIME_ZONE&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;Asia/Seoul&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+
+    &lt;span class=&quot;token annotation punctuation&quot;&gt;@PostConstruct&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;setDefaultTimeZone&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token class-name&quot;&gt;TimeZone&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;setDefault&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token class-name&quot;&gt;TimeZone&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;getTimeZone&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token constant&quot;&gt;DEFAULT_TIME_ZONE&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;TimeZone.setDefault&lt;/code&gt; 메서드를 사용하면 같은 설정을 애플리케이션 레벨에서 설정할 수 있다. 메서드를 자세히 보면 아래와 같은 로직이 있다. 즉, 3-1 방법과 동일하게 system properties의 user.timezone의 값을 바꿔주는 것이다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;java&quot;&gt;&lt;pre class=&quot;language-java&quot;&gt;&lt;code class=&quot;language-java&quot;&gt;&lt;span class=&quot;token class-name&quot;&gt;SecurityManager&lt;/span&gt; sm &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;getSecurityManager&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;sm &lt;span class=&quot;token operator&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+		sm&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;checkPermission&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token keyword&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;PropertyPermission&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;user.timezone&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;write&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;로컬에서는 이렇게 해도 서버 시간이 잘 변경되지만 이상하게 배포 서버에서는 설정이 적용되지 않고 모든 시간이 -9시간으로 저장된다. 다른 팀에서도 같은 문제를 겪었다고 한다. 분명 3번이랑 같은 변수를 설정해주는 방법인데 왜 결과가 다르게 나오는지 모르겠다.&lt;/p&gt;
+&lt;p&gt;아마 아래와 같은 느낌으로 동작하는 것 같지만 원인은 모른다.&lt;/p&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/ea2fd338ead2b5e0d93ca23e637c96ea/329d6/jvm_timezone.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 30%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAGCAYAAADDl76dAAAACXBIWXMAAAsTAAALEwEAmpwYAAABJElEQVQY021Qa0/CUAzd//8lEvwTJkZEYzBugDg3t5G92WXvuwfs2F7wC7HJSZs+Tk+rNW0LsdtArHUczS+I9zcI+xutlGAbhgFd1ylwzDaOI+I4xmq1gmEYypumiaZpoIVhiL6uIMsCssjRiYx8gThJ1HCWZXBdF7ZtI7nm8jzH4XBAWZYQFB8JkgT4vg+NC6dpQk1KZd+jIj+ezwiCQJHxcEELGFEUKfBMXdfoqX8inIhsINVpml4Iuelzu4XjONB1XZ1jWdaFlOp/xHxNSLn9fq96dnRm4fwgM3ewHRcJ5TRm/c8EkTDBh25guVzihfC0WGC92ahfsbpbY3Hqh7dgZQktmmSL+PUZ89kdZvN7eI8PwJHUVhU8+qt6wXWGY8/z8AvkJsEn0UdMEwAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;애플리케이션 레벨에서 타임존을 설정했을 때 일어나는 현상&apos; title=&apos;애플리케이션 레벨에서 타임존을 설정했을 때 일어나는 현상&apos; src=&apos;/static/ea2fd338ead2b5e0d93ca23e637c96ea/ca1dc/jvm_timezone.png&apos; srcset=&apos;/static/ea2fd338ead2b5e0d93ca23e637c96ea/e7570/jvm_timezone.png 170w,
+/static/ea2fd338ead2b5e0d93ca23e637c96ea/f46e7/jvm_timezone.png 340w,
+/static/ea2fd338ead2b5e0d93ca23e637c96ea/ca1dc/jvm_timezone.png 680w,
+/static/ea2fd338ead2b5e0d93ca23e637c96ea/02d09/jvm_timezone.png 1020w,
+/static/ea2fd338ead2b5e0d93ca23e637c96ea/329d6/jvm_timezone.png 1326w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;애플리케이션 레벨에서 타임존을 설정했을 때 일어나는 현상&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;이 경우 MySQL의 타임존을 Asia/Seoul로 JVM 시간과 같게 맞춰주면 원하는 대로 동작한다.&lt;/p&gt;
+&lt;h2&gt;정리&lt;/h2&gt;
+&lt;p&gt;원하는 결과: DB에 일정의 일시와 데이터의 생성, 수정 일시가 한국 시간으로 들어갔으면 좋겠다.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;JVM 타임존&lt;/th&gt;
+&lt;th&gt;DB 타임존&lt;/th&gt;
+&lt;th&gt;결과&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1. yml 설정&lt;/td&gt;
+&lt;td&gt;UTC&lt;/td&gt;
+&lt;td&gt;UTC&lt;/td&gt;
+&lt;td&gt;모두 +9로 저장&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2. MySQL 서버 설정&lt;/td&gt;
+&lt;td&gt;UTC&lt;/td&gt;
+&lt;td&gt;Asia/Seoul&lt;/td&gt;
+&lt;td&gt;일정의 일시는 원하는 대로 저장, 데이터의 생성, 수정 일시가 -9로 저장&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3-1. jar 파일 실행 시 설정&lt;/td&gt;
+&lt;td&gt;Asia/Seoul&lt;/td&gt;
+&lt;td&gt;UTC&lt;/td&gt;
+&lt;td&gt;모두 원하는 대로 저장&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3-2. 애플리케이션 레벨에서 SpringBoot 설정&lt;/td&gt;
+&lt;td&gt;Asia/Seoul&lt;/td&gt;
+&lt;td&gt;UTC&lt;/td&gt;
+&lt;td&gt;모두 -9로 저장&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;결론: 지금으로썬 3-1 방법이 가장 간단한 방법이다.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Special Thanks To &lt;code class=&quot;language-text&quot;&gt;제이슨&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;</content:encoded></item><item><title><![CDATA[react-query useMutation onSuccess 안 되는줄 알았던 트러블 슈팅]]></title><description><![CDATA[…]]></description><link>https://dallog.github.io/react-query-useMutation-trouble-shooting/</link><guid isPermaLink="false">https://dallog.github.io/react-query-useMutation-trouble-shooting/</guid><pubDate>Tue, 18 Oct 2022 13:30:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
 &lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/jhy979&quot;&gt;나인&lt;/a&gt;이 작성했습니다.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;img src=&apos;https://velog.velcdn.com/images/jhy979/post/60cffbe1-a0bb-4f53-aa8f-e08ee092d038/image.png&apos;&gt;
