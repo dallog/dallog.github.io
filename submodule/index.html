@@ -334,7 +334,7 @@ $ <span class="token function">git</span> submodule update <span class="token pa
 <p>이렇게 애플리케이션 실행 시점에 의존하여 주입하는 것 보다 기본으로 제공하는 우선 순위에 따라 조정하는 것이 더욱 편하다 판단하여 <code class="language-text">config</code>라는 이름을 가진 <code class="language-text">private repository</code>를 생성하여 반영했다.</p>
 <h2>정리</h2>
 <p>우리 달록은 다양한 환경과 private한 정보 관리를 위해 서브모듈을 도입하게 되었다. 환경 변수를 사용할 때 보다 적절한 형상 관리와 팀원 간의 정보 공유를 통해 편리하게 설정 정보를 관리할 수 있게 되었다.</p>
-<p>장점만 있는 것은 아닌다. private repository와 서브모듈에 대한 관리 포인트가 늘어나게 되었다. 모든 팀원들이 서브모듈에 대한 배경지식이 없다면 최악의 경우 commit 기록이 꼬이게 되어 설정 정보가 온전하게 적용되지 않을 수 있다. 또한 <code class="language-text">외부 환경(jenkins 등)</code>에서 <code class="language-text">CD</code>를 진행할 때도 서브모듈을 적용한 repository도 함께 pull 받기 위해 추가적인 설정이 필요해진다.</p>
+<p>장점만 있는 것은 아니다. private repository와 서브모듈에 대한 관리 포인트가 늘어나게 되었다. 모든 팀원들이 서브모듈에 대한 배경지식이 없다면 최악의 경우 commit 기록이 꼬이게 되어 설정 정보가 온전하게 적용되지 않을 수 있다. 또한 <code class="language-text">외부 환경(jenkins 등)</code>에서 <code class="language-text">CD</code>를 진행할 때도 서브모듈을 적용한 repository도 함께 pull 받기 위해 추가적인 설정이 필요해진다.</p>
 <p>서브모듈은 편리한 부분도 많지만 결국 관리해야 할 포인트가 늘어난다는 단점도 있다. 팀원과의 충분한 협의와 프로젝트의 규모를 잘 고민한 뒤 적용하는 것이 바람직하다 판단한다.</p>
 <h3>References.</h3>
 <p><a href="https://tecoble.techcourse.co.kr/post/2021-07-31-git-submodule/">git submodule로 중요한 정보 관리하기</a><br>
