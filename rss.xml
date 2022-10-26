@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Wed, 26 Oct 2022 01:40:56 GMT</lastBuildDate><item><title><![CDATA[달록 무중단 배포 도입기]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 파랑이 작성했습니다. 무중단 배포 도입 이유 달록의 기존 배포 스크립트는 이렇습니다. 여기서 2 →…]]></description><link>https://dallog.github.io/zero-downtime-deployment/</link><guid isPermaLink="false">https://dallog.github.io/zero-downtime-deployment/</guid><pubDate>Wed, 26 Oct 2022 10:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Wed, 26 Oct 2022 02:24:09 GMT</lastBuildDate><item><title><![CDATA[달록 무중단 배포 도입기]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 파랑이 작성했습니다. 무중단 배포 도입 이유 달록의 기존 배포 스크립트는 이렇습니다. 여기서 2 →…]]></description><link>https://dallog.github.io/zero-downtime-deployment/</link><guid isPermaLink="false">https://dallog.github.io/zero-downtime-deployment/</guid><pubDate>Wed, 26 Oct 2022 10:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
 &lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/summerlunaa&quot;&gt;파랑&lt;/a&gt;이 작성했습니다.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h1&gt;무중단 배포 도입 이유&lt;/h1&gt;
@@ -27,7 +27,8 @@
 &lt;/blockquote&gt;
 &lt;h2&gt;1. 롤링(Rolling) 배포&lt;/h2&gt;
 &lt;blockquote&gt;
-&lt;p&gt;트래픽을 점진적으로 구버전에서 새로운 버전으로 옮기는 방식.&lt;/p&gt;
+&lt;p&gt;트래픽을 점진적으로 구버전에서 새로운 버전으로 옮기는 방식.
+정&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;애초에 달록은 EC2 한 대만 사용하고 있으며 호환성 문제가 발생할 가능성이 있어 제외했습니다.&lt;/p&gt;
 &lt;h2&gt;2. 카나리(Canary) 배포&lt;/h2&gt;
@@ -74,7 +75,7 @@
 &lt;ul&gt;
 &lt;li&gt;파이프라인 스크립트는 선언형(Declarative)으로 작성했습니다.&lt;/li&gt;
 &lt;li&gt;SSH Agent 플러그인을 사용했습니다.&lt;/li&gt;
-&lt;li&gt;전체 코드가 궁금하다면? &lt;a href=&quot;https://www.notion.so/9435a94ef13244d2bb31e4adfb339b38&quot;&gt;달록의 backedn-prod 젠킨스 파일 전체 보기&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;전체 코드가 궁금하다면? &lt;a href=&quot;https://www.notion.so/9435a94ef13244d2bb31e4adfb339b38&quot;&gt;달록의 backend-prod 젠킨스 파일 전체 보기&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h3&gt;1. 현재 실행 중인 포트 번호 확인&lt;/h3&gt;
 &lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;bash&quot;&gt;&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;curl&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;http://&lt;span class=&quot;token variable&quot;&gt;${BACKEND_PROD_PUBLIC_IP}&lt;/span&gt;:&lt;span class=&quot;token variable&quot;&gt;${BLUE_PORT}&lt;/span&gt;&quot;&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&gt;&lt;/span&gt; /dev/null
