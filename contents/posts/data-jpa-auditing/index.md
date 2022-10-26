@@ -6,6 +6,7 @@ tags:
   - Spring
   - Data JPA
   - Auditing
+  - 파랑
 ---
 
 > 이 글은 우테코 달록팀 크루 [파랑](https://github.com/summerlunaa)이 작성했습니다.
