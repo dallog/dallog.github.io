@@ -6,7 +6,6 @@ tags:
 - deploy
 - DevOps
 - 파랑
-series: 달록 무중단 배포 도입기
 ---
 
 > 이 글은 우테코 달록팀 크루 [파랑](https://github.com/summerlunaa)이 작성했습니다.
@@ -49,8 +48,8 @@ nohup java -jar -Dserver.port=$1 -Dspring.profiles.active=${SPRING_PROFILE} -Dus
 
 ## 1. 롤링(Rolling) 배포
 
-> 트래픽을 점진적으로 구버전에서 새로운 버전으로 옮기는 방식.
->
+> 트래픽을 점진적으로 구버전에서 새로운 버전으로 옮기는 방식.
+>정
 
 애초에 달록은 EC2 한 대만 사용하고 있으며 호환성 문제가 발생할 가능성이 있어 제외했습니다.
 
@@ -103,7 +102,7 @@ nohup java -jar -Dserver.port=$1 -Dspring.profiles.active=${SPRING_PROFILE} -Dus
 
 - 파이프라인 스크립트는 선언형(Declarative)으로 작성했습니다.
 - SSH Agent 플러그인을 사용했습니다.
-- 전체 코드가 궁금하다면? [달록의 backedn-prod 젠킨스 파일 전체 보기](https://www.notion.so/9435a94ef13244d2bb31e4adfb339b38)
+- 전체 코드가 궁금하다면? [달록의 backend-prod 젠킨스 파일 전체 보기](https://www.notion.so/9435a94ef13244d2bb31e4adfb339b38)
 
 ### 1. 현재 실행 중인 포트 번호 확인
 
