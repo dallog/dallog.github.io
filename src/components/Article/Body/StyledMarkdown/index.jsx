@@ -1,9 +1,9 @@
-import styled from "styled-components"
+import styled from "styled-components";
 
 const StyledMarkdown = styled.div`
   & {
     font-size: 17.6px;
-    color: ${props => props.theme.colors.text};
+    color: ${(props) => props.theme.colors.text};
     line-height: 1.7;
     overflow: hidden;
   }
@@ -78,8 +78,8 @@ const StyledMarkdown = styled.div`
 
   & blockquote {
     padding: 18px 24px;
-    border-left: 4px solid ${props => props.theme.colors.blockQuoteBorder};
-    background-color: ${props => props.theme.colors.blockQuoteBackground};
+    border-left: 4px solid ${(props) => props.theme.colors.blockQuoteBorder};
+    background-color: ${(props) => props.theme.colors.blockQuoteBackground};
 
     & *:last-child {
       margin-bottom: 0;
@@ -95,13 +95,13 @@ const StyledMarkdown = styled.div`
   }
 
   & th {
-    border-bottom: 2px solid ${props => props.theme.colors.border};
+    border-bottom: 2px solid ${(props) => props.theme.colors.border};
     font-weight: 700;
   }
 
   & td {
-    border-top: 1px solid ${props => props.theme.colors.border};
-    border-bottom: 1px solid ${props => props.theme.colors.border};
+    border-top: 1px solid ${(props) => props.theme.colors.border};
+    border-bottom: 1px solid ${(props) => props.theme.colors.border};
   }
 
   & td,
@@ -114,7 +114,7 @@ const StyledMarkdown = styled.div`
   }
 
   & tr:nth-child(even) {
-    background-color: ${props => props.theme.colors.tableBackground};
+    background-color: ${(props) => props.theme.colors.tableBackground};
   }
 
   & tr:last-child td {
@@ -129,17 +129,12 @@ const StyledMarkdown = styled.div`
     background-color: #1e1e1e;
   }
 
-  & h2 > code.language-text,
-  & h3 > code.language-text,
-  & h4 > code.language-text,
-  & p > code.language-text,
-  & li > code.language-text,
-  & table code.language-text {
+  & *:not(pre) > code.language-text {
     padding: 1.6px 4.8px;
     font-size: 14.4px;
-    background-color: ${props => props.theme.colors.inlineCodeBackground};
+    background-color: ${(props) => props.theme.colors.inlineCodeBackground};
     font-weight: bold;
-    color: ${props => props.theme.colors.text};
+    color: ${(props) => props.theme.colors.text};
   }
 
   & h2 > code.language-text,
@@ -149,7 +144,8 @@ const StyledMarkdown = styled.div`
   }
 
   & tr:nth-child(even) code.language-text {
-    background-color: ${props => props.theme.colors.inlineCodeBackgroundDarker};
+    background-color: ${(props) =>
+      props.theme.colors.inlineCodeBackgroundDarker};
   }
 
   & ul,
@@ -186,11 +182,11 @@ const StyledMarkdown = styled.div`
       height: 12px;
     }
     ::-webkit-scrollbar-track {
-      background: ${props => props.theme.colors.scrollTrack};
+      background: ${(props) => props.theme.colors.scrollTrack};
     }
 
     ::-webkit-scrollbar-thumb {
-      background: ${props => props.theme.colors.scrollHandle};
+      background: ${(props) => props.theme.colors.scrollHandle};
     }
   }
 
@@ -215,18 +211,18 @@ const StyledMarkdown = styled.div`
 
   & hr {
     border: none;
-    border-bottom: 1px solid ${props => props.theme.colors.border};
+    border-bottom: 1px solid ${(props) => props.theme.colors.border};
   }
 
   & a {
     padding: 1.6px 0;
-    color: ${props => props.theme.colors.text};
+    color: ${(props) => props.theme.colors.text};
   }
 
   & a:hover {
-    background-color: ${props => props.theme.colors.text};
-    color: ${props => props.theme.colors.hoveredLinkText};
+    background-color: ${(props) => props.theme.colors.text};
+    color: ${(props) => props.theme.colors.hoveredLinkText};
   }
-`
+`;
 
-export default StyledMarkdown
+export default StyledMarkdown;
