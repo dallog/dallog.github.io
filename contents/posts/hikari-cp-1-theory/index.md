@@ -1,5 +1,5 @@
 ---
-title: "HikariCP와 적절한 풀 사이즈 고민하기 (이론편)"
+title: "HikariCP와 적절한 풀 사이즈 고민하기 (1) - 이론편"
 date: 2022-10-17 15:00:00
 update: 2022-10-17 15:00:00
 tags:
@@ -7,11 +7,12 @@ tags:
   - BE
   - HikariCP
   - 데이터베이스 커넥션
+series: HikariCP와 적절한 풀 사이즈 고민하기
 ---
 
 > 이 글은 우테코 달록팀 크루 [매트](https://github.com/hyeonic)가 작성했습니다.
 
-## HikariCP와 적절한 풀 사이즈 고민하기 (이론편)
+## HikariCP와 적절한 풀 사이즈 고민하기 (1) - 이론편
 
 `HikariCP`는 `connection pooling`을 제공하는 `JDBC DataSource 구현체`이다. 
 
