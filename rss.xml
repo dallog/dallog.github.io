@@ -1,4 +1,164 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 01 Nov 2022 04:16:07 GMT</lastBuildDate><item><title><![CDATA[HikariCP와 적절한 풀 사이즈 고민하기 (3) - 삽질편]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 매트가 작성했습니다. HikariCP와 적절한 풀 사이즈 고민하기 (…]]></description><link>https://dallog.github.io/hikari-cp-3-spadework/</link><guid isPermaLink="false">https://dallog.github.io/hikari-cp-3-spadework/</guid><pubDate>Tue, 01 Nov 2022 15:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Wed, 02 Nov 2022 12:36:58 GMT</lastBuildDate><item><title><![CDATA[어떻게 테스트 코드 가독성을 개선할 수 있을까??]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 '리버'가 작성했습니다. 글을 쓴 계기 최근 4개월간 우아한 테크 코스…]]></description><link>https://dallog.github.io/test-readability/</link><guid isPermaLink="false">https://dallog.github.io/test-readability/</guid><pubDate>Wed, 02 Nov 2022 00:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;이 글은 우테코 달록팀 크루 &apos;&lt;a href=&quot;https://github.com/gudonghee2000&quot;&gt;리버&lt;/a&gt;&apos;가 작성했습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;글을 쓴 계기&lt;/h2&gt;
+&lt;p&gt;최근 4개월간 &lt;strong&gt;우아한 테크 코스 4기 달록 팀 프로젝트&lt;/strong&gt;를 진행하였다.
+프로젝트 기간이 종료될 쯔음 팀원들과 프로젝트 과정에서 나온 &lt;strong&gt;트러블 슈팅&lt;/strong&gt;에 대해 이야기를 나눠보았다.😮&lt;/p&gt;
+&lt;p&gt;트러블 슈팅을 이야기하던 중, 우연하게 현재 프로젝트 &lt;strong&gt;테스트 코드의 문제점&lt;/strong&gt;에 대해 이야기를 나누었다.&lt;/p&gt;
+&lt;p&gt;달록팀은 약 350개의 테스트 코드를 가지고 있다. 트러블 슈팅을 통해 깨달은 &lt;strong&gt;350개의 테스트 코드의 문제점&lt;/strong&gt;은 아래와 같다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;1. &lt;code class=&quot;language-text&quot;&gt;TestFixture&lt;/code&gt;의 개수가 무분별하게 많다.&lt;/strong&gt;
+&lt;strong&gt;2. &lt;code class=&quot;language-text&quot;&gt;TestMethod&lt;/code&gt;의 &lt;code class=&quot;language-text&quot;&gt;given&lt;/code&gt;절이 너무 방대하고 복잡하다.&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;TestCode&lt;/code&gt;의 &lt;strong&gt;무분별하게 많아진 &lt;code class=&quot;language-text&quot;&gt;TestFixture&lt;/code&gt;&lt;/strong&gt;는 팀원들의 테스트 관리점만 늘렷고, &lt;strong&gt;복잡한 &lt;code class=&quot;language-text&quot;&gt;given&lt;/code&gt;절&lt;/strong&gt;은 읽기 싫은 테스트 코드를 만들었다. &lt;/p&gt;
+&lt;br&gt;
+&lt;p&gt;그래서 &lt;strong&gt;&quot;어떻게 하면 관리점이 적고 읽기 좋은 테스트 코드를 만들 수 있을까?&quot;&lt;/strong&gt; 에 대해 고민한 생각들을 공유해보고자 한다.&lt;/p&gt;
+&lt;h2&gt;기존의 달록 프로젝트 테스트 코드&lt;/h2&gt;
+&lt;p&gt;우선, 위에서 언급한 &lt;strong&gt;두가지 문제점&lt;/strong&gt;을 달록 프로젝트의 실제 코드를 통해 살펴보자.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;첫번째 문제점인 &lt;code class=&quot;language-text&quot;&gt;1. TestFixture의 개수가 무분별하게 많다.&lt;/code&gt; 부터 살펴보자.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;우리 팀은 &lt;code class=&quot;language-text&quot;&gt;TestCode&lt;/code&gt; 작성 시에 재활용될 만한 &lt;code class=&quot;language-text&quot;&gt;DataSet&lt;/code&gt;들을 &lt;strong&gt;&lt;code class=&quot;language-text&quot;&gt;Fixture&lt;/code&gt;로 관리&lt;/strong&gt;했다.
+특이한 점은 아래와 같이 &lt;strong&gt;객체를 생성하는 &lt;code class=&quot;language-text&quot;&gt;Method&lt;/code&gt;&lt;/strong&gt; 자체도 &lt;code class=&quot;language-text&quot;&gt;Fixture&lt;/code&gt;로 만들었다는 점이다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://velog.velcdn.com/images/gudonghee2000/post/fe038aac-9a54-4522-b68b-cfb235c39cdf/image.JPG&quot;&gt;&lt;/p&gt;
+&lt;p&gt;사진을 보면 &lt;strong&gt;&lt;code class=&quot;language-text&quot;&gt;공통_일정()&lt;/code&gt;&lt;/strong&gt;이라는 네이밍으로 &lt;code class=&quot;language-text&quot;&gt;Category&lt;/code&gt; 객체를 생성하는 &lt;strong&gt;메서드 자체를 &lt;code class=&quot;language-text&quot;&gt;Fixture&lt;/code&gt;&lt;/strong&gt;로 가져갔음을 알 수 있다.&lt;/p&gt;
+&lt;p&gt;그렇다면 &lt;code class=&quot;language-text&quot;&gt;공통_일정()&lt;/code&gt; 메서드를 사용하는 &lt;code class=&quot;language-text&quot;&gt;TestCode&lt;/code&gt;를 보자.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://velog.velcdn.com/images/gudonghee2000/post/62e3e133-3392-4266-a260-bc00c184b50f/image.JPG&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;TestCode&lt;/code&gt;의 208번 줄의 &lt;code class=&quot;language-text&quot;&gt;categoryRepository.save()&lt;/code&gt; 메서드의 파라미터인 &lt;strong&gt;&lt;code class=&quot;language-text&quot;&gt;공통_일정()&lt;/code&gt;&lt;/strong&gt; 부분이 &lt;code class=&quot;language-text&quot;&gt;Fixture&lt;/code&gt;로 만든 &lt;strong&gt;&lt;code class=&quot;language-text&quot;&gt;Method&lt;/code&gt;를 활용 한 부분이다.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;처음에는 사진과 같이 나름 깔끔한 &lt;code class=&quot;language-text&quot;&gt;TestCode&lt;/code&gt;를 만들 수 있었고 팀원들의 만족도도 높았다.&lt;/p&gt;
+&lt;p&gt;하지만...😥&lt;/p&gt;
+&lt;h3&gt;달록의 테스트 Fixture가 만난 문제들&lt;/h3&gt;
+&lt;p&gt;1달, 2달 프로젝트가 진행 될 수록, 아래와 같이 &lt;strong&gt;무분별하게 &lt;code class=&quot;language-text&quot;&gt;Fixture&lt;/code&gt; 메서드&lt;/strong&gt;가 늘어갔다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://velog.velcdn.com/images/gudonghee2000/post/a6c26afd-df61-486c-9b40-e90fc0f9965e/image.JPG&quot;&gt;&lt;/p&gt;
+&lt;p&gt;한 눈에 봐도 &lt;code class=&quot;language-text&quot;&gt;Fixture&lt;/code&gt;가 엄청 많다..❗❗
+&lt;strong&gt;(심지어 한 가지 &lt;code class=&quot;language-text&quot;&gt;Domain&lt;/code&gt;에 대한 &lt;code class=&quot;language-text&quot;&gt;TestFixture&lt;/code&gt; 이다.)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;재활용 할 수 있는 &lt;code class=&quot;language-text&quot;&gt;Fixture&lt;/code&gt;들이 많을 것 같은데 &lt;strong&gt;모두 어디선가 사용 중&lt;/strong&gt;이다.
+그래서 불필요한 &lt;code class=&quot;language-text&quot;&gt;Fixture&lt;/code&gt;를 제거하기 위한 &lt;strong&gt;리팩터링 비용이 꽤 많이 발생할 것이다.😔&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;만약 프로젝트 규모가 점점 거대해진다면, 산불 처럼 걷잡을수 없이 &lt;code class=&quot;language-text&quot;&gt;Fixture&lt;/code&gt;가 늘어날 수 도 있을 것이다.
+&lt;strong&gt;그때에는 리팩터링 비용은 눈더미처럼 불어날 것이다&lt;/strong&gt;😤&lt;/p&gt;
+&lt;br&gt;
+&lt;p&gt;이렇게 된 원인은 아래와 같다.&lt;/p&gt;
+&lt;p&gt;** 1. 팀원들 모두 &lt;code class=&quot;language-text&quot;&gt;TestCode&lt;/code&gt;를 만들 때마다 &lt;code class=&quot;language-text&quot;&gt;Fixture&lt;/code&gt; 메서드를 생성함
+**&lt;code class=&quot;language-text&quot;&gt;TestCode&lt;/code&gt; 작성은 지루한 작업이다.
+그래서 빠르게 &lt;code class=&quot;language-text&quot;&gt;TestCode&lt;/code&gt; 작성을 끝내기 위해서 기존의 &lt;code class=&quot;language-text&quot;&gt;Fixture&lt;/code&gt;를 활용하기 보다 필요할 때마다&lt;code class=&quot;language-text&quot;&gt;Fixture&lt;/code&gt;를 생성하였다.
+그러다보니 점점 무분별하게 &lt;code class=&quot;language-text&quot;&gt;Fixture&lt;/code&gt;의 양이 늘어났다.
+심지어 메서드 자체를 &lt;code class=&quot;language-text&quot;&gt;Fixture&lt;/code&gt;로 만들다 보니 &lt;code class=&quot;language-text&quot;&gt;Fixture&lt;/code&gt;가 더 많이 불어났다..!&lt;/p&gt;
+&lt;br&gt;
+&lt;p&gt;**2. 메서드를 &lt;code class=&quot;language-text&quot;&gt;Fixture&lt;/code&gt;로 만드는 방법이 효율적이지 않음
+**우리 팀은 &lt;code class=&quot;language-text&quot;&gt;TestCode&lt;/code&gt;의 가독성을 고려하여 객체를 생성하는 메서드 자체가 특정한 한글 이름을 가지도록했다. 사진의 &lt;code class=&quot;language-text&quot;&gt;공통_일정()&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;BE_일정()&lt;/code&gt;과 같이 특정한 이름을 가진 &lt;code class=&quot;language-text&quot;&gt;Fixture&lt;/code&gt;가 그러한 예이다.
+그러다 보니, &lt;code class=&quot;language-text&quot;&gt;OCP&lt;/code&gt;원칙에 어긋나면서 &lt;code class=&quot;language-text&quot;&gt;Test&lt;/code&gt;를 위한 새로운 객체가 필요할 때 마다
+&lt;code class=&quot;language-text&quot;&gt;Fixture&lt;/code&gt; 메서드도 함께 늘어나는 문제가 발생했다.&lt;/p&gt;
+&lt;br&gt;
+&lt;p&gt;우리 팀 &lt;code class=&quot;language-text&quot;&gt;TestCode&lt;/code&gt;의 &lt;code class=&quot;language-text&quot;&gt;Fixture&lt;/code&gt;가 가져오는 &lt;strong&gt;단점을 살펴보았다.&lt;/strong&gt;
+이어서 두번째 문제였던, &lt;strong&gt;&lt;code class=&quot;language-text&quot;&gt;2. TestMethod`의 `given`절이 너무 방대하고 복잡하다.&lt;/code&gt;를 살펴보자.&lt;/strong&gt;&lt;/p&gt;
+&lt;br&gt;
+&lt;h3&gt;달록의 테스트 given절이 만난 문제들&lt;/h3&gt;
+&lt;p&gt;아래 사진은 &lt;strong&gt;달록 Service 객체&lt;/strong&gt;인 &lt;code class=&quot;language-text&quot;&gt;CategoryService&lt;/code&gt;의 &lt;code class=&quot;language-text&quot;&gt;TestCode&lt;/code&gt; 일부이다.
+&lt;img src=&quot;https://velog.velcdn.com/images/gudonghee2000/post/3ec046dc-0076-4d4d-bbca-8db07c7cee27/image.JPG&quot;&gt;&lt;/p&gt;
+&lt;p&gt;207번 줄부터 코드를 살펴보자.
+&lt;strong&gt;한 눈에 보아도 굉장히 복잡한 &lt;code class=&quot;language-text&quot;&gt;given&lt;/code&gt;절이 우리를 맞이한다.😤&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;복잡한 비지니스 로직을 가진 기능을 개발 할 때마다, 위와 같은 &lt;strong&gt;복잡한 &lt;code class=&quot;language-text&quot;&gt;given&lt;/code&gt;절을 가진 &lt;code class=&quot;language-text&quot;&gt;TestMethod&lt;/code&gt;가 반복된다면 어떨까?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;아마 &lt;strong&gt;Task를 맡은 사람도&lt;/strong&gt; &lt;code class=&quot;language-text&quot;&gt;TestCode&lt;/code&gt;를 작성한다고 에너지를 다 쓰고, &lt;strong&gt;코드를 리뷰하는 우리도&lt;/strong&gt; &lt;code class=&quot;language-text&quot;&gt;TestCode&lt;/code&gt;를 리뷰하다가 앓아 누울것이다!😵&lt;/p&gt;
+&lt;br&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code class=&quot;language-text&quot;&gt;TestMethod&lt;/code&gt;의 복잡한 &lt;code class=&quot;language-text&quot;&gt;given&lt;/code&gt;절의 문제는 조금 더 자세하게 살펴보면  아래와 같다.&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;TestMethod&lt;/code&gt;의 가독성을 현저히 떨어트림
+복잡한 &lt;code class=&quot;language-text&quot;&gt;given&lt;/code&gt;절은 리뷰어에게 하여금 &lt;code class=&quot;language-text&quot;&gt;TestMethod&lt;/code&gt;의 목적인 &lt;strong&gt;&lt;code class=&quot;language-text&quot;&gt;when&lt;/code&gt;절에 집중하는 것을 방해&lt;/strong&gt;한다.
+그럼으로써, &lt;code class=&quot;language-text&quot;&gt;TestMethod&lt;/code&gt;의 가독성을 떨어트리고 우리는 &lt;strong&gt;어느순간 테스트 코드 리뷰를 안하게 된다.&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;올바른 &lt;code class=&quot;language-text&quot;&gt;TestMethod&lt;/code&gt;인지 인지하기가 어려움
+1번 문제에 이어지는 내용이다.
+우리가 &lt;code class=&quot;language-text&quot;&gt;TestCode&lt;/code&gt;를 볼 때, 일반적으로 &lt;strong&gt;&lt;code class=&quot;language-text&quot;&gt;given&lt;/code&gt;절을 통해 &lt;code class=&quot;language-text&quot;&gt;when&lt;/code&gt;절에 필요한 &lt;code class=&quot;language-text&quot;&gt;DataSet&lt;/code&gt;을 파악&lt;/strong&gt;한다.
+그런데, 복잡한 &lt;code class=&quot;language-text&quot;&gt;given&lt;/code&gt;절은 우리의 코드 이해를 방해하고 &lt;code class=&quot;language-text&quot;&gt;TestMethod&lt;/code&gt;가 &lt;strong&gt;정상적으로 프로덕션 코드를 검증하는 &lt;code class=&quot;language-text&quot;&gt;TestMethod&lt;/code&gt;&lt;/strong&gt;인지에 대한 이해를 방해한다.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;br&gt;
+&lt;h3&gt;문제점들을 해결할 방법은?&lt;/h3&gt;
+&lt;p&gt;달록 프로젝트가 가지는 &lt;code class=&quot;language-text&quot;&gt;TestCode&lt;/code&gt;의 문제점들을 위에서 살펴보았다.
+그렇다면 해결해야 할 부분은 아래와 같다.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;**1. 객체를 생성하는 &lt;code class=&quot;language-text&quot;&gt;Method&lt;/code&gt;는 &lt;code class=&quot;language-text&quot;&gt;Fixture&lt;/code&gt;로 만들어 사용하지 않는다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;TestMethod&lt;/code&gt;의 &lt;code class=&quot;language-text&quot;&gt;given&lt;/code&gt;절을 최소화 한다.**&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;TestCode 문제점 해결 방법 구체화하기&lt;/h2&gt;
+&lt;p&gt;위에서 언급한 두가지 문제점을 해결하는 방법을 고민해보자!😤
+우선, 한가지씩 해결해보기위해 &lt;strong&gt;1번 문항과 관련하여 하나의 규칙을 정해보았다.&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;💡1번 문항에 대한 규칙 **
+객체를 생성하는 &lt;code class=&quot;language-text&quot;&gt;Method&lt;/code&gt;는 반드시 같은 &lt;code class=&quot;language-text&quot;&gt;TestClass&lt;/code&gt; 내부에 &lt;code class=&quot;language-text&quot;&gt;Static 하지 않게&lt;/code&gt; 선언하고. **한가지로 재활용해서 사용&lt;/strong&gt;한다.
+왜냐하면, 각 &lt;code class=&quot;language-text&quot;&gt;TestClass&lt;/code&gt;마다 객체의 &lt;strong&gt;필드 중 필요한 필드는 다를 수 있기 때문&lt;/strong&gt;이다. &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;위 규칙을 가지고 &lt;code class=&quot;language-text&quot;&gt;TestCode&lt;/code&gt;의 &lt;code class=&quot;language-text&quot;&gt;given&lt;/code&gt;절을 최소화 할 방법을 &lt;strong&gt;구체화 하기위한 몇가지 시도&lt;/strong&gt;를 해보았다.
+&lt;strong&gt;(시간이 부족하여 실제 프로젝트에는 적용하지 못하고 미션 또는 개인적으로 방법으로 실험 해보았다😔)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;이제 본론이다!
+하나씩 살펴보자!🔥&lt;/p&gt;
+&lt;br&gt;
+&lt;h2&gt;구체화한 개선 방법들&lt;/h2&gt;
+&lt;h3&gt;Builder 패턴의 활용&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&quot;https://velog.velcdn.com/images/gudonghee2000/post/20ec5320-25f3-4347-9ac7-3599e045d90f/image.JPG&quot;&gt;&lt;/p&gt;
+&lt;p&gt;첫번째는 &lt;strong&gt;Builder 패턴을 활용하는 방법&lt;/strong&gt;이다.
+만약, Builder 패턴을 통해서 &lt;code class=&quot;language-text&quot;&gt;given&lt;/code&gt; 절의 객체를 생성한다면 &lt;strong&gt;메서드체이닝을 통해&lt;/strong&gt; 생성자를 통한 생성보다는 조금이나마 &lt;strong&gt;가독성을 가져 갈 수 있다.&lt;/strong&gt;
+&lt;strong&gt;(만약 객체의 필드가 10 ~ 20개가 되면 상당히 유용할 수 도 있을것 같다😤)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;그러나 아직도 63번줄의 &lt;strong&gt;&lt;code class=&quot;language-text&quot;&gt;menuGroupRepository.save()&lt;/code&gt; 와 같은 로직&lt;/strong&gt;은 우리가 &lt;strong&gt;&lt;code class=&quot;language-text&quot;&gt;when&lt;/code&gt;절에만 온전히 집중하는 것을 방해&lt;/strong&gt;하고 &lt;code class=&quot;language-text&quot;&gt;menuGroupRepository.save()&lt;/code&gt;에 대한 이해를 필요로 한다.&lt;/p&gt;
+&lt;br&gt;
+&lt;h3&gt;@BeforeEach 구문의 활용&lt;/h3&gt;
+&lt;p&gt;@BeforeEach 구문에 테스트 메서드의 &lt;strong&gt;&lt;code class=&quot;language-text&quot;&gt;given&lt;/code&gt; 절과 관련한 로직을 가능한 최대한 넣는다면&lt;/strong&gt; 코드를 볼 때, &lt;code class=&quot;language-text&quot;&gt;TestMethod&lt;/code&gt;의 &lt;code class=&quot;language-text&quot;&gt;given&lt;/code&gt;절을 간소화하고 우리가 &lt;code class=&quot;language-text&quot;&gt;when&lt;/code&gt;절에 집중 하는 것을 도울 수 있다.
+&lt;img src=&quot;https://velog.velcdn.com/images/gudonghee2000/post/45b6cffb-e5e8-40c0-a68a-6a9c14f339c6/image.JPG&quot;&gt;&lt;/p&gt;
+&lt;p&gt;그럼에도 불구하고 여전히 90번 줄의 &lt;strong&gt;&lt;code class=&quot;language-text&quot;&gt;orderTableRepository.save()&lt;/code&gt; 와 같은 &lt;code class=&quot;language-text&quot;&gt;DB 저장 로직&lt;/code&gt;&lt;/strong&gt;은 제거 할 수 없고 우리가 &lt;code class=&quot;language-text&quot;&gt;when&lt;/code&gt;절에만 온전히 집중하는 것을 방해하고 있다.&lt;/p&gt;
+&lt;p&gt;위 두가지 방식은 &lt;code class=&quot;language-text&quot;&gt;orderTableRepository.save()&lt;/code&gt; 와 같은 &lt;code class=&quot;language-text&quot;&gt;DB 저장 로직&lt;/code&gt;을 제거하지 못한다.
+&lt;strong&gt;그렇다면 &lt;code class=&quot;language-text&quot;&gt;orderTableRepository.save()&lt;/code&gt; 와 같은 로직을 제거 할 방법은 뭐가 있을까??&lt;/strong&gt;&lt;/p&gt;
+&lt;br&gt;
+&lt;h3&gt;메서드 체이닝 방식의 활용&lt;/h3&gt;
+&lt;p&gt;내가 찾은 방법은 &lt;strong&gt;메서드 체이닝 방식의 활용&lt;/strong&gt;이다.
+Builder 패턴의 메서드 체이닝을 보면서 힌트를 얻었다.&lt;/p&gt;
+&lt;p&gt;만약, 메서드 체이닝 방식으로 &lt;strong&gt;&lt;code class=&quot;language-text&quot;&gt;orderTableRepository.save()&lt;/code&gt; 와 같은 로직을 숨긴다면&lt;/strong&gt; 더 가독성 &lt;strong&gt;좋은 &lt;code class=&quot;language-text&quot;&gt;given&lt;/code&gt; 절&lt;/strong&gt;을 만들 수 있지 않을까 하는 생각이였다.&lt;/p&gt;
+&lt;p&gt;또한, &lt;strong&gt;한글 네이밍의 메서드들을 병렬로 배치함&lt;/strong&gt; 으로써 마치 소설을 읽듯이 잘 읽히는 &lt;code class=&quot;language-text&quot;&gt;given&lt;/code&gt;절을 만들 수 있지 않을까하는 생각이 들었다.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;한번 코드로 자세히 살펴보자.🦾🦾&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;우선, 기존의 달록 프로젝트 테스트 코드 일부를 보자.
+&lt;img src=&quot;https://velog.velcdn.com/images/gudonghee2000/post/3ec046dc-0076-4d4d-bbca-8db07c7cee27/image.JPG&quot;&gt;&lt;/p&gt;
+&lt;p&gt;놀랍게도 하나의 테스트 메서드이다.🙄
+만약 이 코드를 본다면 &lt;strong&gt;넓디 넓은 &lt;code class=&quot;language-text&quot;&gt;given&lt;/code&gt;절&lt;/strong&gt;에서 우리는 이미 지쳐 버릴 것이다.&lt;/p&gt;
+&lt;p&gt;왜 그럴까?
+앞서 설명한 &lt;strong&gt;방대한 &lt;code class=&quot;language-text&quot;&gt;given&lt;/code&gt;절이 가져오는 문제&lt;/strong&gt; 때문이다.&lt;/p&gt;
+&lt;p&gt;이 테스트 메서드에 메서드체이닝 방식을 적용해보자.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://velog.velcdn.com/images/gudonghee2000/post/73b98df9-d321-413a-843c-10ef43c0bc4c/image.JPG&quot;&gt;&lt;/p&gt;
+&lt;p&gt;위 사진은 기존 테스트 메서드를 &lt;strong&gt;메서드체이닝 방식으로 리팩터링&lt;/strong&gt; 한 코드이다.
+_
+&lt;code class=&quot;language-text&quot;&gt;orderTableRepository.save()&lt;/code&gt; 같은 메서드가 제거되면서 &lt;code class=&quot;language-text&quot;&gt;given&lt;/code&gt;절이 굉장히 간소화 됬다!
+그리고 한글문장이 소설처럼 이어지면서 &lt;code class=&quot;language-text&quot;&gt;given&lt;/code&gt;절을 통해 프로덕션의 비지니스 로직이 이해되기도 한다!
+마지막으로 &lt;code class=&quot;language-text&quot;&gt;given&lt;/code&gt;절 과 &lt;code class=&quot;language-text&quot;&gt;when&lt;/code&gt;절의 구분이 명확하게 느껴진다!_&lt;/p&gt;
+&lt;p&gt;그럼 메서드 체이닝을 하는 객체를 살펴보자.
+&lt;strong&gt;첫번째 규칙에 따라서&lt;/strong&gt; &lt;code class=&quot;language-text&quot;&gt;TestClass&lt;/code&gt; 내부의 &lt;code class=&quot;language-text&quot;&gt;InnerClass&lt;/code&gt;로 객체 종류에 따라 &lt;strong&gt;한가지 메서드만 정의&lt;/strong&gt;해보았다. &lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://velog.velcdn.com/images/gudonghee2000/post/e9020492-486c-4ccf-8894-77edbd446812/image.JPG&quot;&gt;&lt;/p&gt;
+&lt;p&gt;사진과 같이 InnerClass에 체이닝 방식을 위한 메서드들을 만들고 &lt;strong&gt;&lt;code class=&quot;language-text&quot;&gt;xxxRepository.save()&lt;/code&gt;와 같은 로직, 객체를 숨겨놓았다.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://velog.velcdn.com/images/gudonghee2000/post/3ec046dc-0076-4d4d-bbca-8db07c7cee27/image.JPG&quot;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;최종적으로 다시 차이를 살펴보자! **
+위와 같이 복잡한 &lt;code class=&quot;language-text&quot;&gt;given&lt;/code&gt;절이 필요한 경우에도
+메서드 체이닝을 통해서 **아래와 같이 간소화&lt;/strong&gt; 시킬 수 있다.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://velog.velcdn.com/images/gudonghee2000/post/73b98df9-d321-413a-843c-10ef43c0bc4c/image.JPG&quot;&gt;&lt;/p&gt;
+&lt;h3&gt;내가 느낀 메서드 체이닝 방식의 장점&lt;/h3&gt;
+&lt;p&gt;직접 프로젝트 코드 일부에 &lt;strong&gt;메서드체이닝 방식&lt;/strong&gt;을 실험 해보면서 느낀 장점을 정리해보자!😤&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;다른 객체의 메서드 호출(&lt;code class=&quot;language-text&quot;&gt;ex. xxxRepository.save()&lt;/code&gt;)을 숨김으로써 &lt;code class=&quot;language-text&quot;&gt;given&lt;/code&gt; 절을 간소화 할 수 있다.&lt;/li&gt;
+&lt;li&gt;소설을 읽듯 한글로 이어지는 &lt;code class=&quot;language-text&quot;&gt;given&lt;/code&gt; 절의 메서드 체이닝으로 프로덕션 비지니스 로직의 이해에 도움이 된다.&lt;/li&gt;
+&lt;li&gt;코드를 읽는 입장에서 &lt;code class=&quot;language-text&quot;&gt;when&lt;/code&gt;절 테스트를 위해 필요한 &lt;code class=&quot;language-text&quot;&gt;given&lt;/code&gt;절의 &lt;code class=&quot;language-text&quot;&gt;DataSet&lt;/code&gt;이 한눈에 들어온다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br&gt;
+물론 장점과 더불어 단점도 있다고 생각한다.
+&lt;h3&gt;내가 느낀 메서드 체이닝 방식의 단점&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;메서드 체이닝&lt;/code&gt;을 위한 객체를 생성하는 비용이 발생하고 관리점이 늘어난다.&lt;/li&gt;
+&lt;li&gt;도메인 객체에 변화가 생기면 &lt;code class=&quot;language-text&quot;&gt;메서드 체이닝&lt;/code&gt; 객체도 함께 수정 해주어야한다.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;메서드 체이닝 방식을 &lt;code class=&quot;language-text&quot;&gt;ServiceTest&lt;/code&gt;에만 적용&lt;/strong&gt; 해보았지만, 인수테스트, 단위 테스트 등에도 적절하게 사용할 수 있지 않을까 생각한다!&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;**💡 &lt;code class=&quot;language-text&quot;&gt;DynamicTest&lt;/code&gt;와 &lt;code class=&quot;language-text&quot;&gt;메서드체이닝&lt;/code&gt;의 결합?
+**우연히 크루분의 코드를 보다가 &lt;code class=&quot;language-text&quot;&gt;DynamicTest&lt;/code&gt;를 만드신 코드를 보았다. 아직 &lt;code class=&quot;language-text&quot;&gt;DynamicTest&lt;/code&gt;를 공부해보지 않았지만, &lt;code class=&quot;language-text&quot;&gt;메서드 체이닝&lt;/code&gt; 방식과 결합한다면 가독성과 성능 두가지 측면을 개선 할 수 있지는 않을까 생각이 든다!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2&gt;마치면서&lt;/h2&gt;
+&lt;p&gt;이상으로 테스트 코드 가독성 개선을 위한 생각을 적어보았다!
+테스트 코드의 가독성은 굉장히 주관적인 부분이기 때문에 위에 적은 생각들이 맞다고 생각하지 않는다.&lt;/p&gt;
+&lt;p&gt;하지만, &lt;strong&gt;포스팅을 하면서 &lt;code class=&quot;language-text&quot;&gt;읽기 좋은 테스트 코드는 소설 같지 않을까?&lt;/code&gt; 라는 생각이 들었다.&lt;/strong&gt; &lt;/p&gt;
+&lt;p&gt;소설을 읽듯이 재밌게 읽히는 테스트 코드는 우리가 코드를 작성하거나 리뷰할 때도 즐거움을 줄것이다!&lt;/p&gt;
+&lt;p&gt;테스트 코드의 가독성을 개선하기 위한 과정에 조금이나마 도움이되는 글이 되었으면 좋겠다!😊&lt;/p&gt;</content:encoded></item><item><title><![CDATA[HikariCP와 적절한 풀 사이즈 고민하기 (3) - 삽질편]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 매트가 작성했습니다. HikariCP와 적절한 풀 사이즈 고민하기 (…]]></description><link>https://dallog.github.io/hikari-cp-3-spadework/</link><guid isPermaLink="false">https://dallog.github.io/hikari-cp-3-spadework/</guid><pubDate>Tue, 01 Nov 2022 15:00:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
 &lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/hyeonic&quot;&gt;매트&lt;/a&gt;가 작성했습니다.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2&gt;HikariCP와 적절한 풀 사이즈 고민하기 (3) - 삽질편&lt;/h2&gt;
