@@ -47,6 +47,7 @@
 <url> <loc>https://dallog.github.io/get-valid-accessToken/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/hikari-cp-3-spadework/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/test-readability/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://dallog.github.io/troubleshooting-of-category-role-concurrency-issue/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/series/달록팀-CI/CD-이야기</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/series/JPA-시리즈</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://dallog.github.io/series/달록-배포-총🔫정리</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
