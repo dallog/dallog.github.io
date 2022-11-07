@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 07 Nov 2022 08:34:30 GMT</lastBuildDate><item><title><![CDATA[JPA의 낙관적 락을 사용한 동시성 이슈 해결]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 후디가 작성했습니다. 오랜만의 포스팅 입니다. 이번 글에서는 달록에서 발생한 동시성 이슈를 JPA…]]></description><link>https://dallog.github.io/troubleshooting-of-category-role-concurrency-issue/</link><guid isPermaLink="false">https://dallog.github.io/troubleshooting-of-category-role-concurrency-issue/</guid><pubDate>Sun, 06 Nov 2022 01:30:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Mon, 07 Nov 2022 14:45:24 GMT</lastBuildDate><item><title><![CDATA[JPA의 낙관적 락을 사용한 동시성 이슈 해결]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 후디가 작성했습니다. 오랜만의 포스팅 입니다. 이번 글에서는 달록에서 발생한 동시성 이슈를 JPA…]]></description><link>https://dallog.github.io/troubleshooting-of-category-role-concurrency-issue/</link><guid isPermaLink="false">https://dallog.github.io/troubleshooting-of-category-role-concurrency-issue/</guid><pubDate>Sun, 06 Nov 2022 01:30:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
 &lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/devHudi&quot;&gt;후디&lt;/a&gt;가 작성했습니다.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;오랜만의 포스팅 입니다. 이번 글에서는 달록에서 발생한 동시성 이슈를 JPA의 낙관적 락을 사용하여 해결한 경험에 대해 공유드리겠습니다.&lt;/p&gt;
@@ -193,6 +193,18 @@
 &lt;/blockquote&gt;
 &lt;p&gt;위에서 본 것 처럼 카테고리 역할 변경 로직은 &lt;strong&gt;(1) 자신의 CategoryRole을 가져와 권한 확인 (2) 상대방의 CategoryRole 변경&lt;/strong&gt; 이 두 단계로 진행됩니다. 격리레벨이 SERIALIZABLE 이라면 자신의 CategoryRole을 조회하므로 이 행에 대하여 공유락이 걸려야하고, 따라서 다른 트랜잭션에서는 이 행을 수정할 수 없어야합니다.&lt;/p&gt;
 &lt;p&gt;하지만 테스트 결과 트랜잭션 격리 수준을 SERIALIZABLE로 변경하기만 하는걸로는 동시성 이슈가 해결되지 않았습니다. 낙관락 혹은 비관락을 통해서만 이 문제가 해결되었는데요, 솔직히 아직 정확한 원인은 모르겠습니다. 이에 대해서는 조금 더 깊은 공부가 필요할 것 같습니다.&lt;/p&gt;
+&lt;h3&gt;2022.11.07 추가&lt;/h3&gt;
+&lt;p&gt;위 문제는 테스트 환경에서 데이터베이스를 H2로 사용하고 있어서 발생하고 있는 문제점이었습니다. 테스트 환경의 데이터베이스를 MySQL로 교체하고 SERIALIZABLE로 테스트 코드를 돌려보니 동시성 이슈가 발생하지 않았습니다. 단, 두 트랜잭션이 서로가 필요한 데이터에 락을 걸고 점유하고 있기 때문에 아래와 같이 데드락이 발생하였습니다.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; margin-bottom: 16px;&apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/94d533a5a342b9b84f0ace29d7f89d9b/be2fd/deadlock.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 23.52941176470588%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAFCAYAAABFA8wzAAAACXBIWXMAAAsTAAALEwEAmpwYAAAA2klEQVQY001PW27DMAzLnTIgcewkdmLLrzXdMOxj2IDe/xSspa5BPwhKoknJndYGRisM9hO9u6G3vw+4v8Y/eFu/Gr7RmwOTGjFNk8AYI6yUOmdaa3QhBOScUS8foHTAU218QcwHcr2ivl8RKINilXcxRmHGtm2w1gqWZcG6ruh4SEQopZmCR/A7IoVmDEiRmjFJL1pbztj3Hd57CeILx3E80bHIW0upEkytZlNMSUyspVYzSinnhdy/LnDOyfuXwPIIbGAh/QdyzzWHPDVm9j2D+KvzPGMYBtwBjpyy1qamujwAAAAASUVORK5CYII=&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;deadlock&apos; title=&apos;deadlock&apos; src=&apos;/static/94d533a5a342b9b84f0ace29d7f89d9b/ca1dc/deadlock.png&apos; srcset=&apos;/static/94d533a5a342b9b84f0ace29d7f89d9b/e7570/deadlock.png 170w,
+/static/94d533a5a342b9b84f0ace29d7f89d9b/f46e7/deadlock.png 340w,
+/static/94d533a5a342b9b84f0ace29d7f89d9b/ca1dc/deadlock.png 680w,
+/static/94d533a5a342b9b84f0ace29d7f89d9b/be2fd/deadlock.png 952w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;결론적으로는 SERIALIZABLE 로도 동시성 이슈 자체는 해결할 수 있었습니다. 하지만, 충분히 낙관적 락을 사용하여 애플리케이션 레벨에서 동시성 이슈를 해결할 수 있는데, 비싼 SERIALIZABLE을 선택할 이유는 없습니다. 따라서 계속 낙관적 락을 사용할 예정입니다.&lt;/p&gt;
 &lt;h2&gt;참고&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;자바 ORM 표준 JPA 프로그래밍, 김영한&lt;/li&gt;
