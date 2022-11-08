@@ -1,4 +1,173 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 08 Nov 2022 00:32:12 GMT</lastBuildDate><item><title><![CDATA[JPA의 낙관적 락을 사용한 동시성 이슈 해결]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 후디가 작성했습니다. 오랜만의 포스팅 입니다. 이번 글에서는 달록에서 발생한 동시성 이슈를 JPA…]]></description><link>https://dallog.github.io/troubleshooting-of-category-role-concurrency-issue/</link><guid isPermaLink="false">https://dallog.github.io/troubleshooting-of-category-role-concurrency-issue/</guid><pubDate>Sun, 06 Nov 2022 01:30:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[RSS Feed of dal.log]]></title><description><![CDATA[우아한테크코스 4기 달록팀 기술 블로그입니다.]]></description><link>https://dallog.github.io</link><generator>GatsbyJS</generator><lastBuildDate>Tue, 08 Nov 2022 13:43:49 GMT</lastBuildDate><item><title><![CDATA[컴포넌트의 불필요한 리렌더링 막기: 달력 페이지 리팩토링]]></title><description><![CDATA[…]]></description><link>https://dallog.github.io/prevent-useless-rerendering/</link><guid isPermaLink="false">https://dallog.github.io/prevent-useless-rerendering/</guid><pubDate>Tue, 08 Nov 2022 00:05:08 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/daaaayeah&quot;&gt;티거&lt;/a&gt;가 작성했습니다.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/7cd0f224947563ab4cd3fabf332b2f85/45647/1-calendar-page.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 65.29411764705883%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAANCAYAAACpUE5eAAAACXBIWXMAABYlAAAWJQFJUiTwAAACWElEQVQ4y5VSuW5TQRSdBjokhKCJSBs6Kj6BAgqcxXZwkMgLRQpiNxQgEIaWUEDJTyAkJAQRogoOjjEoig0fYIhjY+PYb19muZc782zJSBRkno7uMm/OXdkJxi6ePnXy2dyFuc3Z8zOb586eecoYOy6eEJ4TLrEr89fWl2+uoLW2hoUb65i9bmE2l0uRX8HccoHkMi7l8phZWPwnsvk8rq7d0vodttfYX+0PBugHQay45H7/N+f2EcfAI/hjmQI8h6spTOxw0I/dbge/Vyu32W7lo3X4s4WAqIQzhMixkUcRAk9QJgmKOEZFuvbJJDY+ENz4tU4+IClj18HG1psNVt+uWIetH8ilVMpzAaRAfQBAB0EFYGzOBcaaTN8R6G8DuoeYc5lQwOaHrSKrfflsHbQPMAgDBb4LavII9EP6ZJLqY2JFJFoXQlAQrm2gQDL0PGy8f1tk1dpXq93uoDAZOqDLM5lRWUAlKilTe0w0LSXdaUJ6KXkUEuG7Itup7lrdXz1Upoc2AEXVJ9nbxvjVC5SdVtoCIpgc045xxpMO6P6aDPdqNatLJbu+/1eGJrsooChpTxMaguuMMApDY+uSPddGn/quCUUc4b4m3P20Y3XabZR6HK6tCSctM1KlU4E4CmE46EPge8YWnIM9HIAzGuofhJ46ZbjBGs2mNU5f0q7p5kwGeRwIvUrf9JTr9brlOg4GNHa310XviJacbN+mcmgnp6VnjwjTdurzXRedXgfrr18WWalUmimXywvlR48zD+/dnb9fyBKWxsj+hzTIPChkFzeuXp79A0n4QuRsirCmAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;달력 페이지&apos; title=&apos;달력 페이지&apos; src=&apos;/static/7cd0f224947563ab4cd3fabf332b2f85/ca1dc/1-calendar-page.png&apos; srcset=&apos;/static/7cd0f224947563ab4cd3fabf332b2f85/e7570/1-calendar-page.png 170w,
+/static/7cd0f224947563ab4cd3fabf332b2f85/f46e7/1-calendar-page.png 340w,
+/static/7cd0f224947563ab4cd3fabf332b2f85/ca1dc/1-calendar-page.png 680w,
+/static/7cd0f224947563ab4cd3fabf332b2f85/02d09/1-calendar-page.png 1020w,
+/static/7cd0f224947563ab4cd3fabf332b2f85/9d567/1-calendar-page.png 1360w,
+/static/7cd0f224947563ab4cd3fabf332b2f85/45647/1-calendar-page.png 3248w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;달력 페이지&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;짜잔 🌈 달록에 접속했을 때 로그인 사용자가 가장 처음 마주하는 화면입니다. 메인 페이지라고 말할 수 있는 &lt;del&gt;애증의&lt;/del&gt; 달력 페이지! 저희는 이 페이지에서 내비게이션 바를 제외한 빨간 영역을 &lt;code class=&quot;language-text&quot;&gt;CalendarPage&lt;/code&gt;라는 컴포넌트로 만들었어요.&lt;/p&gt;
+&lt;p&gt;이 컴포넌트는 어떻게 구성되어 있을까요? 내부의 어떤 요소를 컴포넌트로 분리할 수 있을까요?&lt;/p&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 502px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/1df3acc7f784855c9b653aa042299b57/3e0a9/2-thinking-sea-otter.jpg&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 62.35294117647059%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAMABQDASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAUBAgME/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAH/2gAMAwEAAhADEAAAAVTfmvGJIn//xAAbEAACAgMBAAAAAAAAAAAAAAAAAgEDBBMhMf/aAAgBAQABBQKrjxexZjyzr4bGP//EABQRAQAAAAAAAAAAAAAAAAAAABD/2gAIAQMBAT8BP//EABQRAQAAAAAAAAAAAAAAAAAAABD/2gAIAQIBAT8BP//EABwQAAEEAwEAAAAAAAAAAAAAABEAARASAyFBgf/aAAgBAQAGPwKz8Rf3SOMVeBH/xAAbEAACAQUAAAAAAAAAAAAAAAABEQAhMUFRYf/aAAgBAQABPyFQAYwV4sKgaDKHg7hEpcghNajXEIDQz//aAAwDAQACAAMAAAAQMz//xAAWEQADAAAAAAAAAAAAAAAAAAABECH/2gAIAQMBAT8QEX//xAAWEQADAAAAAAAAAAAAAAAAAAAAARH/2gAIAQIBAT8QapD/xAAdEAEAAgICAwAAAAAAAAAAAAABABEhMUFRcYHw/9oACAEBAAE/EBYv3stxNHE4CjquzxNN0Lhu6fbisGDRwCLSK9I+KzoJ/9k=&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;눈 가린 해달&apos; title=&apos;눈 가린 해달&apos; src=&apos;/static/1df3acc7f784855c9b653aa042299b57/3e0a9/2-thinking-sea-otter.jpg&apos; srcset=&apos;/static/1df3acc7f784855c9b653aa042299b57/0b705/2-thinking-sea-otter.jpg 170w,
+/static/1df3acc7f784855c9b653aa042299b57/31389/2-thinking-sea-otter.jpg 340w,
+/static/1df3acc7f784855c9b653aa042299b57/3e0a9/2-thinking-sea-otter.jpg 502w&apos; sizes=&apos;(max-width: 502px) 100vw, 502px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;눈 가린 해달&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;놀랍게도 &lt;code class=&quot;language-text&quot;&gt;CalendarPage&lt;/code&gt;는 하나의 큰 컴포넌트였습니다. 내부의 그 어떤 요소도 별개의 컴포넌트로 분리하지 않았었어요.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Components let you split the UI into independent, reusable pieces, and think about each piece in isolation.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;a href=&quot;https://reactjs.org/docs/components-and-props.html&quot;&gt;리액트 공식 문서&lt;/a&gt;에 따르면 우리는 컴포넌트를 통해 UI를 재사용 가능한 개별적인 여러 조각으로 나누고, 각 조각을 개별적으로 살펴볼 수 있습니다. 달록은 여기서 &apos;개별적&apos;이라는 단어에 집중했습니다. 요소가 서로 연관이 있다면 컴포넌트로 분리하지 않는 것을 기본으로 하고, 이유가 생겼을 때 분리하기로 했죠. 컴포넌트 분리 기준은 &lt;code class=&quot;language-text&quot;&gt;UI&lt;/code&gt;와 &lt;code class=&quot;language-text&quot;&gt;모델&lt;/code&gt;로 세웠습니다. (자세한 컴포넌트 분리 기준이 궁금하시다면 &lt;a href=&quot;https://dallog.github.io/seperate-components/&quot;&gt;이 글&lt;/a&gt;을 참고해 주세요 🙃) 결국, 달력은 내부의 요소가 서로 연관되어 있어 하나의 큰 컴포넌트로 남을 수밖에 없었던 거죠.&lt;/p&gt;
+&lt;p&gt;컴포넌트가 크면 어떤 문제가 발생할까요?&lt;/p&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 560px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/8109bd3206dfe72b6a7152161dcf82fb/6d7b8/3-thinking-sea-otter.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 67.05882352941177%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAANCAIAAAAmMtkJAAAACXBIWXMAAAsTAAALEwEAmpwYAAACpklEQVQoz2NghAImCGJgYGQAA5AQExMDBmBmZgZKMcAVwTQzwlUAtUG4omJi2lpaeppKJqbGltZWcopKEC1wzUxgjRDAAJfj5uFx9/Rprq+b118zd0LdrStnPrx8cPf2zfbeCbz8AlBlUAczgRDQyUAmUEJRWSUzu6iqqq4yN3rPpqXPnzx4fu/q/i2rj+/d/vH1yymz50E1M4EBMysLELGwsgJF+YWEktNyyisak+Oj8uO9Dm7feHb3qltnDuzZvn37upVXzpxYvmK1lIICA5bwYGONiEuKjkrw9fdzsDE8sG3NxeMHpaQUirKznt+58uTujbvXrh46eMjF0wekWkJcUkZaVklFXUZJVVpJKSY1va29z9HB3tXFNizQefWiaXs2r9LSVEqMCTyzd9XqxVMWz526bdPGkqo6kOastOK0pLzSkua5i3etWbfvwulzy5ety83NzUhL7G6t6WupmNCcFxdqE+FvnpMRkZEa3ttcfGzf/mlzFoE0FxU21Vb3NtT1z5q5ZvmK3Vu2HDq07+jG9XtrKqq7Wmo6G4qzk4IyUqLCQz3t7MxKC1JXLZx24tDROQuXMrKxMyQlZBbm16emFNdWd9fW9Hd3z5syef6O7YeXLFrb3zslPze7uDCvoqqptratrqa+vaFy/oypC+YsyCupBtns6hqQmVGZnFyallqelFScl9cQGJSkrWvqHxQVEhZvbmFvZGweF5eWnVvu4upuZWMTGZfgExZh6uQF0iynqG5p66FjaKVjaK1vYm/l6KtjZCkqKaespadnZi6rpCAqI21s5+jg46dpbqpmoqNnZeQSFGjq4ApJYgysHJycfPwKmjoaBpZ65vZqhiaOfkF6VmbK+qr8EvzsXOwcvDwistLSWqqKeiqmzrZ6Nrbc4EQGACSn5iGQtk9MAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;고민하는 해달&apos; title=&apos;고민하는 해달&apos; src=&apos;/static/8109bd3206dfe72b6a7152161dcf82fb/6d7b8/3-thinking-sea-otter.png&apos; srcset=&apos;/static/8109bd3206dfe72b6a7152161dcf82fb/e7570/3-thinking-sea-otter.png 170w,
+/static/8109bd3206dfe72b6a7152161dcf82fb/f46e7/3-thinking-sea-otter.png 340w,
+/static/8109bd3206dfe72b6a7152161dcf82fb/6d7b8/3-thinking-sea-otter.png 560w&apos; sizes=&apos;(max-width: 560px) 100vw, 560px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;고민하는 해달&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;달록은 다음과 같은 문제점을 겪었습니다.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;리렌더링이 자주 발생한다.&lt;/li&gt;
+&lt;li&gt;코드가 길고 복잡해 읽기 어렵다.&lt;/li&gt;
+&lt;li&gt;재사용하기 어렵다.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;CalendarPage&lt;/code&gt;가 달력과 관련된 모든 state를 관리하다 보니 사용자의 액션이 있을 때마다 리렌더링 되었습니다. 코드를 읽기 어려운 건 당연했고요. 다른 페이지에 달력을 사용하고 싶을 땐 긴 코드를 그대~로 복사해서 가져다 써야 했어요.&lt;/p&gt;
+&lt;p&gt;하하... 컴포넌트를 분리할 이유가 생긴 것 같나요? 저희도 개발할 때마다 신경 쓰였지만 제한된 시간에 타협해서 눈 감기 바빴답니다. 공식적인 프로젝트 기간이 끝나자마자 후다닥 리팩토링을 시작했어요.&lt;/p&gt;
+&lt;h2&gt;🛠 리팩토링&lt;/h2&gt;
+&lt;p&gt;찬찬히 &lt;code class=&quot;language-text&quot;&gt;CalendarPage&lt;/code&gt; 이곳저곳을 뜯어보았습니다. 여기에서는 무려 14개의 state를 관리하고 있었습니다. 이 정도면 리렌더링이 자주 발생하지 않는 게 더 이상하죠 😇🔫&lt;/p&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 506px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/6ce7eaedb71ffbd3e74116d2a7a30ee3/61db1/4-shocked-sea-otter.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 105.88235294117648%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,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&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;놀란 해달&apos; title=&apos;놀란 해달&apos; src=&apos;/static/6ce7eaedb71ffbd3e74116d2a7a30ee3/61db1/4-shocked-sea-otter.png&apos; srcset=&apos;/static/6ce7eaedb71ffbd3e74116d2a7a30ee3/e7570/4-shocked-sea-otter.png 170w,
+/static/6ce7eaedb71ffbd3e74116d2a7a30ee3/f46e7/4-shocked-sea-otter.png 340w,
+/static/6ce7eaedb71ffbd3e74116d2a7a30ee3/61db1/4-shocked-sea-otter.png 506w&apos; sizes=&apos;(max-width: 506px) 100vw, 506px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;놀란 해달&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;state를 분산시키기 위해 각각 어떤 요소에 가장 종속적인지 정리해 보았습니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;달력
+- root font size
+- 일정을 조회하려는 달의 첫 번째 날짜 (default: 오늘 날짜)
+- 일정을 조회하려는 달의 날짜 배열
+- 날짜 한 칸에 보여줄 수 있는 최대 일정 개수
+- 일정 생성 모달의 개폐 여부
+
+날짜
+- 일정을 생성하려는 날짜
+- 일정 더보기를 하려는 날짜
+- 일정 더보기 모달의 개폐 여부
+- 일정 더보기 모달의 위치
+
+일정
+- hover하고 있는 일정의 id
+- 상세 조회하려는 일정의 정보
+- 일정 상세 조회 모달의 개폐 여부
+- 일정 상세 조회 모달의 위치
+- 일정 수정 모달의 개폐 여부&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;달력, 날짜, 일정 세 가지로 아주 깔끔하게 분류됐네요. 달력 페이지는 &lt;code class=&quot;language-text&quot;&gt;state가 어떤 요소에 가장 종속적인지&lt;/code&gt;에 따라 컴포넌트를 추출하여 분리하였습니다.&lt;/p&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/24376a656f6c89565bec178faefd55b7/45647/5-calendar-page.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 65.29411764705883%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAANCAYAAACpUE5eAAAACXBIWXMAABYlAAAWJQFJUiTwAAACdElEQVQ4y5VRO28TQRDeBjokEDS8ylBS8SOQghM7TnhIxEeQKIgNEW3k1IQCSn4DDTSI8CyAhMQYsEiUhJIEv88mie9u72739maYXdshUQrESp++mdnVN9/MskOMnT965PDDgXMDs2dOn5w9cfzYA8bY/+I+4RHhArs4nLh1efwajmcyOHb1JibHrmNyJIWp1Agm01cwlR6jfJSQxsHEEF5KDBseJO7HI+lRzExMYCKZvMdKy98zdruNHuchKJB+qyWjnS2J3CV4PbhdeI5Et3OAg7YduvUarhcWb7Ol+Y9W9dcmAmIcux0It3+jDAIEITAmqJBiKTCimhKhqYGUpm7uBfkQQgmng2uvnk+y4od5q7qxiUKpGH0PtJA+AKCbYAxgchlFKIQ0NQ0VxwZ0D6GUSptYe/syywpfPlvlShm5z0mQQ6wd7RHUjBBjJHwaAbp1QkQNJDmNqRiSw8B1cfXNXJYtFr5alUoNIxXFwMlhTzCOyI0eUamuI+K468gI6lipiFgBOSWHfldwYXHJqjea9FDv0DGC+ojSewyfPkZV29hdQf/sjfsb0Ptdff0iy0qFglWnkR3P2+fQuAs4OY26DcIQnc42Bj43eRjsYLO5ji37h/arVNgTXPq0YNUqFVRAzj3j0GzNHL09vTjiMPBhq90ETlPoPPAaUKutQr1aAqCuPcFJtryyYvVGUBhwQBX1P/If0I30W6HzCGif6+/ol4vFouU4DnL6dq9lo1ctEzfRsxu74HYvbzb21HXNRpeYt1volH/it2dPsiyXy53K5/PJfH5mKD89PTxzN/cXU7n9+QFkCZM6HpqZupOaupE5+wcsV0RC9kKDnwAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;달력 페이지의 컴포넌트 구조&apos; title=&apos;달력 페이지의 컴포넌트 구조&apos; src=&apos;/static/24376a656f6c89565bec178faefd55b7/ca1dc/5-calendar-page.png&apos; srcset=&apos;/static/24376a656f6c89565bec178faefd55b7/e7570/5-calendar-page.png 170w,
+/static/24376a656f6c89565bec178faefd55b7/f46e7/5-calendar-page.png 340w,
+/static/24376a656f6c89565bec178faefd55b7/ca1dc/5-calendar-page.png 680w,
+/static/24376a656f6c89565bec178faefd55b7/02d09/5-calendar-page.png 1020w,
+/static/24376a656f6c89565bec178faefd55b7/9d567/5-calendar-page.png 1360w,
+/static/24376a656f6c89565bec178faefd55b7/45647/5-calendar-page.png 3248w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;달력 페이지의 컴포넌트 구조&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;노란색 영역은 날짜 컴포넌트로, 초록색 영역은 일정 컴포넌트로 분리되었습니다. (면밀하게는 재사용을 위한 달력 컴포넌트도 있습니다. 달력 페이지 안에 달력이, 달력 안에 날짜가, 날짜 안에 일정이 있어요.) 각 컴포넌트가 관리하는 state는 다음과 같습니다.&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;text&quot;&gt;&lt;pre class=&quot;language-text&quot;&gt;&lt;code class=&quot;language-text&quot;&gt;달력 페이지 컴포넌트
+- root font size
+- 일정을 조회하려는 달의 첫 번째 날짜 (default: 오늘 날짜)
+- 일정을 조회하려는 달의 날짜 배열
+- 날짜 한 칸에 보여줄 수 있는 최대 일정 개수
+- 일정 생성 모달의 개폐 여부
+
+날짜 컴포넌트
+- 일정을 생성하려는 날짜
+- 일정 더보기 모달의 개폐 여부
+- 일정 더보기 모달의 위치
+
+일정 컴포넌트
+- hover하고 있는 일정의 id
+- 일정 상세 조회 모달의 개폐 여부
+- 일정 상세 조회 모달의 위치
+- 일정 수정 모달의 개폐 여부&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;컴포넌트를 분리하면서 날짜와 일정 컴포넌트에서 각각 1개의 state가 불필요해졌습니다. 의도치 않은 이득...! 따라서 각 컴포넌트가 관리하는 state가 1개씩 줄었습니다. &lt;del&gt;은 원래 필요하지 않았을 수도 있는 state 💩&lt;/del&gt;&lt;/p&gt;
+&lt;h2&gt;✨ 성과&lt;/h2&gt;
+&lt;p&gt;뭐가 얼마나 개선되었을까요?&lt;/p&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/2b79f5bee587b61ed076627c7dc96970/e0c07/6-excited-sea-otter.jpg&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 66.47058823529413%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAANABQDASIAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAAAAMEAgX/xAAVAQEBAAAAAAAAAAAAAAAAAAABAP/aAAwDAQACEAMQAAAB496dlGOE/8QAGBABAAMBAAAAAAAAAAAAAAAAAgEDEhH/2gAIAQEAAQUCx2cExYMsXyTt2Szyf//EABQRAQAAAAAAAAAAAAAAAAAAABD/2gAIAQMBAT8BP//EABQRAQAAAAAAAAAAAAAAAAAAABD/2gAIAQIBAT8BP//EABwQAAMAAQUAAAAAAAAAAAAAAAABESECEBNRkf/aAAgBAQAGPwLF8Jx3ukEkiPVjb//EABoQAQADAQEBAAAAAAAAAAAAAAEAESFBMcH/2gAIAQEAAT8hHYB3E1BAg1ayw2DnpCyb1nRw8qBSfZ//2gAMAwEAAgADAAAAEOwf/8QAFhEBAQEAAAAAAAAAAAAAAAAAAAER/9oACAEDAQE/EI1//8QAFREBAQAAAAAAAAAAAAAAAAAAARD/2gAIAQIBAT8QZ//EABwQAQACAgMBAAAAAAAAAAAAAAEAESExQWHBkf/aAAgBAQABPxArd9KZ7CIMAbN07s6j4bgCWg8WSj8GEVPscVNYee5X4QDb4Z//2Q==&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;신난 해달&apos; title=&apos;신난 해달&apos; src=&apos;/static/2b79f5bee587b61ed076627c7dc96970/a22ce/6-excited-sea-otter.jpg&apos; srcset=&apos;/static/2b79f5bee587b61ed076627c7dc96970/0b705/6-excited-sea-otter.jpg 170w,
+/static/2b79f5bee587b61ed076627c7dc96970/31389/6-excited-sea-otter.jpg 340w,
+/static/2b79f5bee587b61ed076627c7dc96970/a22ce/6-excited-sea-otter.jpg 680w,
+/static/2b79f5bee587b61ed076627c7dc96970/e0c07/6-excited-sea-otter.jpg 728w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;신난 해달&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;CalendarPage&lt;/code&gt;의 코드는 399줄에서 119줄로 무려 280줄(약 70%)이 줄었습니다. 페이지에서 관리하던 state는 14개에서 5개로 무려 9개(약 64%)가 줄었습니다. 그만큼 코드 가독성이 좋아졌고 관심사가 분리되었어요.&lt;/p&gt;
+&lt;p&gt;리렌더링은 얼마나 줄었을까요?&lt;/p&gt;
+&lt;p&gt;이전에는 일정 수정 모달이나 일정 더보기 모달을 여닫을 때, 달력 전체가 리렌더링 되던 것이 해당 날짜에서만 리렌더링 되는 것으로 개선되었어요. 이전에는 일정에 mouse enter나 leave 할 때도, 달력 전체에서 리렌더링이 발생했었어요. 지금은 일정에서만 리렌더링이 발생합니다.&lt;/p&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/881a37fa13bb28d4ed8049afbbf7006f/45647/7-previous-profiler.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 65.29411764705883%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAANCAYAAACpUE5eAAAACXBIWXMAABYlAAAWJQFJUiTwAAAC7ElEQVQ4y33RXW/bVBgHcH8H2jEVhpo2dZzEdmyfYzsvzmuXJtSxa7tb17w0DtB2bbNNdEyadonUCSxtA8FuEJcgccvHm0zyPBynKd0VFz/97fPy1/Ex1y5rcq1K35o6+dGkCqNGRYNEpq5FJsuSSaNm3YpajWpUYu8VnUYG0SJFzEWUKJFh0Khc1H6olI13hKiUk4h5QswK0mINzfoOGlYLjVIdjXIDiVFBhZRQN6tITQsr1Ro6vo1O0ENCi6jQEoqiilJeRllSURCkS06h1rjZdrHrHHxw9sexExzFPX8YO/4o7nnD2PYG/3GCYewdHMX7h2G8bT+M26PzWGzvxxuW/SFt2biulM85TbfC+10Pd91H857XB8cfshPccoMRyyU21/MG6PojrHcCrPdPUXGPINUKZulWgOukfsFptBJusxPa7uHc9YbgsA0Jd5kfuxnzgiNstGxsNndQ04rA89JMEAq4uZmdcmqxFjZsHztBf24/GgOD/2f3YIxOf4K1zh422z1U9CrweTITRB03eGnK5Rqt0BgM0ByP55XjY6g+fowWk2T1bJk3z2fLuekFmv5D3L5vo6SVloUEN7bEKSdvN0Nrcoj1k9G8dT6B7uUZdhLPTnCHSbLz9PjWk2+w++0pWg/YHTa+ZH/aAj6nsUJ6XVg0pNDpGujb5vyBW4S+Z+IgbGP46yVO3j/Hye+vcPLH9/jVX68XJn9e4enfb3D3+deY3iqgIFFgZbNMfnnCLzbyYYrXMMWTGQPriU0FpOlT0H57D+rrKxBevASNJb26AvLLz6D89A7kJ88gwxcgc134z7LwgtvkxTArUWRmDORkHbJZFeRSDRqvvgPiByAVdJBUA0SRgCgRkK0GkMEAMmwdK1sULj6ZZydMpXMhn1OR3cOtPCMomMkUcIuXcSurLiRzNyl8vH5BxVQ6P+U+Wbm7tvrpZx7jMnsLd9b2Vu9+vrfCrK7dWzwvJHPJOMuVO8u115K9Puu69y9GOqED3k5I/gAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;리팩토링 전 profile 결과&apos; title=&apos;리팩토링 전 profile 결과&apos; src=&apos;/static/881a37fa13bb28d4ed8049afbbf7006f/ca1dc/7-previous-profiler.png&apos; srcset=&apos;/static/881a37fa13bb28d4ed8049afbbf7006f/e7570/7-previous-profiler.png 170w,
+/static/881a37fa13bb28d4ed8049afbbf7006f/f46e7/7-previous-profiler.png 340w,
+/static/881a37fa13bb28d4ed8049afbbf7006f/ca1dc/7-previous-profiler.png 680w,
+/static/881a37fa13bb28d4ed8049afbbf7006f/02d09/7-previous-profiler.png 1020w,
+/static/881a37fa13bb28d4ed8049afbbf7006f/9d567/7-previous-profiler.png 1360w,
+/static/881a37fa13bb28d4ed8049afbbf7006f/45647/7-previous-profiler.png 3248w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;리팩토링 전 profile 결과&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;figure class=&apos;gatsby-resp-image-figure&apos; style=&apos;margin-bottom: 16px;&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-wrapper&apos; style=&apos;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 680px; &apos;&gt;
+      &lt;a class=&apos;gatsby-resp-image-link&apos; href=&apos;/static/a65f2d43ddf31672b1f08e9c797ba37e/45647/8-current-profiler.png&apos; style=&apos;display: block&apos; target=&apos;_blank&apos; rel=&apos;noopener&apos;&gt;
+    &lt;span class=&apos;gatsby-resp-image-background-image&apos; style=&quot;padding-bottom: 65.29411764705883%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAANCAYAAACpUE5eAAAACXBIWXMAABYlAAAWJQFJUiTwAAADAElEQVQ4y32R32/TVhTH/ban8dJROkqnEhzHTWwntm/s/HAd4iZN88O/kgIlP+oyCUrrMoqQtmnSNGmToBZi06aJMR6QkAra4/485CXn7NZlFdskHj4653yP7lffey/TrCiSuUqe6kX1SCcFihyVNDWic6TTWi4Vo3rNiKy6GZV1ElUIicpEiQpCNiJqIdI0qpWUx9WK9qOqyoQRVf22qleRlEzUa+uoGRZq5RpqlauoalWU1TISfZVioFGrYaPdQoXupIKOMimjIMgo5iSURBl5XnzAFIixXW86uGFff2sPtmO7P4l7/ii2/XHc80Zx1xueYffHsXNtEtuDSVzvbMat7TAW1zfjlNF9yxpdXC5U9hi1aASNDQ87zo1Zz7sJtj9Cu3+KkzA+qye7njdEbzBGs+WjYo8w196ClDWYslYfl9XaPiOTamDRhB1na2Z7I6Dgh+i5Q3QHEzTrHWTZHGYyEvB8fsrzEl65shIySmk1sLoetgdbM2drG+wbE/wwY/SGO2iu28hlVeTFImSE4jQjEExxYshctfRgNFnHnVvt2Z27DuyFPt4NvYST/r/s7nt477CPjt9ElleQFwhQppmciqm0EDKlxmpg3/LRvz2YXb+zCZPDMSbcH+H4i+EpJ/0/3BvizsMJtvodTPPy/w1VXQ3WmlUcfbUz+/y3b2D32de49/I7DF/9gAd/RHjw5ggPXj9KCF8/xvD4Ed7/8ye0v9xFNp1Prvwvw2VWCFJsHrNFY2oe7kHj6ffQPvoWOi9/Bvf5E+jRuvHmBfSOn4Nz/Ay8V7+C+/sTKN+8Bhwvw7uEf70z3GdSnBCsSEXMsOI037bBfPELqPU1IK025CQCBdMC3XWh2OmCZq2BoJRAzBMQsmdmiSGffApNeJnNBlxWRm5FxqysI2k06dsUMJ2WEi2dydNeTGaWyyN3sqM6RxNxWeU9ZLzM5kJm7pOFi+cvLHrnFxadubkF9+OPzrnzn15y5y8uuVSj/ZI7v/hZMp9qlxKdnnkfh+JTr6W/AZHpqTwnjlcfAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;&gt;&lt;/span&gt;
+  &lt;img class=&apos;gatsby-resp-image-image&apos; alt=&apos;리팩토링 후 profile 결과&apos; title=&apos;리팩토링 후 profile 결과&apos; src=&apos;/static/a65f2d43ddf31672b1f08e9c797ba37e/ca1dc/8-current-profiler.png&apos; srcset=&apos;/static/a65f2d43ddf31672b1f08e9c797ba37e/e7570/8-current-profiler.png 170w,
+/static/a65f2d43ddf31672b1f08e9c797ba37e/f46e7/8-current-profiler.png 340w,
+/static/a65f2d43ddf31672b1f08e9c797ba37e/ca1dc/8-current-profiler.png 680w,
+/static/a65f2d43ddf31672b1f08e9c797ba37e/02d09/8-current-profiler.png 1020w,
+/static/a65f2d43ddf31672b1f08e9c797ba37e/9d567/8-current-profiler.png 1360w,
+/static/a65f2d43ddf31672b1f08e9c797ba37e/45647/8-current-profiler.png 3248w&apos; sizes=&apos;(max-width: 680px) 100vw, 680px&apos; style=&apos;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&apos; loading=&apos;lazy&apos; decoding=&apos;async&apos;&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;
+    &lt;figcaption class=&apos;gatsby-resp-image-figcaption&apos;&gt;리팩토링 후 profile 결과&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;야호~ 이렇게 profiler로도 렌더링이 개선된 걸 확인할 수 있었답니다.&lt;/p&gt;
+&lt;h2&gt;🐯 결론&lt;/h2&gt;
+&lt;p&gt;불필요한 리렌더링이 자주 발생한다면 컴포넌트 설계를 의심할 필요가 있습니다. 해당 컴포넌트가 관리해야 하는 state가 맞는지, 부모 컴포넌트가 state를 대신 관리하고 있지는 않은지 살펴볼 필요가 있어요. 이번 리팩토링을 계기로 자연스럽게 컴포넌트 분리 기준에 &lt;code class=&quot;language-text&quot;&gt;state&lt;/code&gt;도 추가되었습니다. &lt;a href=&quot;https://github.com/woowacourse-teams/2022-dallog#-%EC%95%8C%EB%A1%9D%EB%8B%AC%EB%A1%9D%ED%95%98%EA%B2%8C-%EC%9D%BC%EC%9D%84-%EB%8D%94-%EC%9E%98%ED%95%98%EB%8A%94-9%EA%B0%80%EC%A7%80-%EB%B0%A9%EB%B2%95&quot;&gt;알록달록하게 일을 더 잘하는 9가지 방법&lt;/a&gt; 5번 &apos;영원한 건 없다&apos;를 또 한 번 느낄 수 있었습니다. 오랫동안 하고 싶었던 리팩토링을 마쳐서 시원~한 태스크였습니다 🥳&lt;/p&gt;</content:encoded></item><item><title><![CDATA[JPA의 낙관적 락을 사용한 동시성 이슈 해결]]></title><description><![CDATA[이 글은 우테코 달록팀 크루 후디가 작성했습니다. 오랜만의 포스팅 입니다. 이번 글에서는 달록에서 발생한 동시성 이슈를 JPA…]]></description><link>https://dallog.github.io/troubleshooting-of-category-role-concurrency-issue/</link><guid isPermaLink="false">https://dallog.github.io/troubleshooting-of-category-role-concurrency-issue/</guid><pubDate>Sun, 06 Nov 2022 01:30:00 GMT</pubDate><content:encoded>&lt;blockquote&gt;
 &lt;p&gt;이 글은 우테코 달록팀 크루 &lt;a href=&quot;https://github.com/devHudi&quot;&gt;후디&lt;/a&gt;가 작성했습니다.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;오랜만의 포스팅 입니다. 이번 글에서는 달록에서 발생한 동시성 이슈를 JPA의 낙관적 락을 사용하여 해결한 경험에 대해 공유드리겠습니다.&lt;/p&gt;
