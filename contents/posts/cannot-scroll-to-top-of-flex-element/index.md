@@ -4,7 +4,7 @@ date: 2022-08-22 00:05:08
 tags:
   - FE
   - CSS
-  - Troubleshooting
+  - troubleshooting
 ---
 
 > 이 글은 우테코 달록팀 크루 [티거](https://github.com/daaaayeah)가 작성했습니다.
